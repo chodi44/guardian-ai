@@ -115,6 +115,8 @@ When the server is running on `http://localhost:8000`:
 - **Emergency Operations Center:** [http://localhost:8000/emergency](http://localhost:8000/emergency)
 - **Emergency Dispatch Portal (Standalone):** [http://localhost:8000/guardian_emergency_portal/index.html](http://localhost:8000/guardian_emergency_portal/index.html)
 
+- https://guardian-ai-fz7l.onrender.com
+
 ---
 
 ## 📄 License
