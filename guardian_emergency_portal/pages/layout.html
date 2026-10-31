@@ -1,0 +1,123 @@
+<div class="portal-layout">
+  <!-- Top Header -->
+  <header class="portal-header">
+    <div class="header-left">
+      <div class="header-logo-container">
+        <div class="header-logo-icon">
+          <i data-lucide="shield" color="#00E5FF" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div class="header-logo-text">
+          <div class="header-logo-title">
+            Guardian AI <span class="header-eoc-badge">EMERGENCY OPERATIONS PORTAL</span>
+          </div>
+          <div class="header-logo-subtitle">Predict • Protect • Prevent</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="portal-switcher-wrap">
+        <a href="/user" class="portal-switch-pill" title="User Safety Portal"><i data-lucide="user-check" style="width:13px;height:13px;"></i> <span>User</span></a>
+        <a href="/guardian" class="portal-switch-pill" title="Family Guardian Portal"><i data-lucide="shield" style="width:13px;height:13px;"></i> <span>Guardian</span></a>
+        <a href="/emergency" class="portal-switch-pill active-emergency" title="Police / Emergency Operations Center"><i data-lucide="siren" style="width:13px;height:13px;"></i> <span>Police / EOC</span></a>
+      </div>
+      <div class="header-status-divider">•</div>
+      <div class="header-status-item">
+        <div class="dot dot-success"></div>
+        <strong>Status:</strong> Operational
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="header-alert-btn">
+        <span class="alert-count">01</span> ACTIVE<br/>CASE
+      </button>
+      
+      <button class="icon-btn">
+        <i data-lucide="volume-2" style="width: 18px; height: 18px;"></i>
+      </button>
+
+      <div class="operator-profile">
+        <div class="operator-details text-right">
+          <div class="operator-name">Sarah Connor</div>
+          <div class="operator-subtext">Inspector • OP-8492</div>
+          <div class="operator-status">ON CONSOLE</div>
+        </div>
+        <div class="operator-avatar">
+          <i data-lucide="user" style="width: 18px; height: 18px;"></i>
+        </div>
+        <button class="logout-btn" onclick="window.router.navigate('/auth')" title="Logout">
+          <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="portal-body">
+    <!-- Sidebar Navigation -->
+    <aside class="portal-sidebar">
+      <div class="sidebar-section-title">
+        <span>OPERATIONAL TRIAGE</span>
+        <span class="eoc-lvl-badge">EOC LVL 1</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="/dashboard" class="nav-item" data-route="/dashboard">
+          <i data-lucide="grid" class="nav-icon" style="width: 18px; height: 18px;"></i>
+          <span>Command Dashboard</span>
+        </a>
+        
+        <a href="/incoming" class="nav-item" data-route="/incoming">
+          <i data-lucide="alert-triangle" class="nav-icon" style="width: 18px; height: 18px;"></i>
+          <span>Active Cases</span>
+          <span class="nav-badge-red">1 NEW</span>
+        </a>
+        
+        <a href="/case/GA-1024" class="nav-item" data-route="/case/GA-1024">
+          <i data-lucide="clipboard-list" class="nav-icon" style="width: 18px; height: 18px;"></i>
+          <span>Case Details</span>
+          <span class="nav-badge-gray">GA-1024</span>
+        </a>
+        
+        <a href="/map" class="nav-item" data-route="/map">
+          <i data-lucide="crosshair" class="nav-icon" style="width: 18px; height: 18px;"></i>
+          <span>Live Tactical Map</span>
+        </a>
+        
+        <a href="/response" class="nav-item" data-route="/response">
+          <i data-lucide="truck" class="nav-icon" style="width: 18px; height: 18px;"></i>
+          <span>Tactical Dispatch</span>
+        </a>
+        
+        <a href="/history" class="nav-item" data-route="/history">
+          <i data-lucide="history" class="nav-icon" style="width: 18px; height: 18px;"></i>
+          <span>Case Archive</span>
+        </a>
+        
+        <a href="/settings" class="nav-item" data-route="/settings">
+          <i data-lucide="settings" class="nav-icon" style="width: 18px; height: 18px;"></i>
+          <span>System Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="node-info">
+          <div class="node-status-main">
+            <div class="dot dot-success"></div>
+            Node TX-402
+          </div>
+          <div class="node-latency">14ms</div>
+        </div>
+        <div class="node-sub-info">
+          5G Secure Enclave
+          <i data-lucide="shield" style="width: 14px; height: 14px;"></i>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="portal-content" id="portal-content">
+      <!-- Page content will be injected here -->
+    </main>
+  </div>
+</div>

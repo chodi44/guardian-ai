@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Login — Guardian AI Safety Sentinel</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-page-body">
+
+  <div class="auth-container">
+    <div class="auth-card">
+      <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--slate-100);">
+        <a href="/index.html" id="btn-back-home" style="display: inline-flex; align-items: center; gap: 8px; color: #0284c7; font-size: 13px; font-weight: 700; text-decoration: none; padding: 6px 14px; background: rgba(2, 132, 199, 0.08); border-radius: 8px; border: 1px solid rgba(2, 132, 199, 0.2); transition: all 0.2s;">
+          <i class="fa-solid fa-arrow-left"></i> <span>Landing Page</span>
+        </a>
+      </div>
+
+      <div class="auth-header">
+        <div class="auth-brand-logo">
+          <div class="auth-logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <span class="auth-brand-name">Guardian AI</span>
+        </div>
+        <h1 class="auth-title">Account Sign In</h1>
+        <p class="auth-subtitle">Enter your credentials to access the Guardian AI safety network.</p>
+      </div>
+
+      <!-- Server / API Error Alert Box -->
+      <div id="login-error-banner" style="display: none; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 10px 14px; color: #b91c1c; font-size: 13px; margin-bottom: 16px; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="login-error-message">Invalid credentials</span>
+      </div>
+
+      <!-- Role Selection Tabs -->
+      <div class="role-tabs-container" style="display: flex; gap: 6px;">
+        <button class="role-tab-btn active" id="tab-guardian" data-role="guardian" type="button" style="flex: 1;">
+          <i class="fa-solid fa-user-shield"></i>
+          <span>Guardian</span>
+        </button>
+        <button class="role-tab-btn" id="tab-banduser" data-role="band_user" type="button" style="flex: 1;">
+          <i class="fa-solid fa-user"></i>
+          <span>User</span>
+        </button>
+        <button class="role-tab-btn" id="tab-police" data-role="police" type="button" style="flex: 1;">
+          <i class="fa-solid fa-truck-medical"></i>
+          <span>Police EOC</span>
+        </button>
+      </div>
+
+      <form id="form-login" onsubmit="event.preventDefault(); return false;">
+        <input type="hidden" id="selected-role" value="guardian">
+
+        <div class="auth-form-group">
+          <label class="auth-form-label" for="login-identity" id="label-identity">Guardian Email / ID</label>
+          <div class="auth-input-wrapper">
+            <i class="fa-solid fa-user-check auth-input-icon"></i>
+            <input type="text" id="login-identity" class="auth-input" placeholder="e.g. name@example.com or phone" required value="inspector.sarah@police.gov.in">
+          </div>
+        </div>
+
+        <div class="auth-form-group">
+          <label class="auth-form-label" for="login-password">Security Password</label>
+          <div class="auth-input-wrapper">
+            <i class="fa-solid fa-lock auth-input-icon"></i>
+            <input type="password" id="login-password" class="auth-input" placeholder="••••••••" required value="password123">
+            <button type="button" id="btn-toggle-pwd" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--slate-400); cursor: pointer; padding: 4px;" title="Toggle password visibility">
+              <i class="fa-solid fa-eye" id="pwd-icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="button" id="btn-login-submit" onclick="executeLoginDirect(event)" class="btn-primary-large btn-full-width" style="margin-top: 8px; cursor: pointer;">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span id="btn-login-text">Sign In to Guardian Console</span>
+        </button>
+      </form>
+
+      <!-- Direct 1-Click Access to All Portals on Localhost -->
+      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--slate-200); text-align: center;">
+        <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">
+          ⚡ Instant Localhost 1-Click Portal Launch
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <a href="/user" style="flex: 1; padding: 8px; font-size: 12px; font-weight: 700; color: #0284c7; background: #e0f2fe; border: 1px solid #bae6fd; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+            <i class="fa-solid fa-user-shield"></i> User Portal
+          </a>
+          <a href="/guardian" style="flex: 1; padding: 8px; font-size: 12px; font-weight: 700; color: #4338ca; background: #e0e7ff; border: 1px solid #c7d2fe; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+            <i class="fa-solid fa-users"></i> Guardian Portal
+          </a>
+          <a href="/emergency" style="flex: 1; padding: 8px; font-size: 12px; font-weight: 700; color: #b91c1c; background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+            <i class="fa-solid fa-truck-medical"></i> Police / EOC
+          </a>
+        </div>
+      </div>
+
+      <div class="auth-footer-link">
+        <span>Need an account?</span>
+        <div class="auth-reg-links-row">
+          <a href="/user/register/index.html" class="btn-secondary" style="flex:1; padding: 10px 12px; text-decoration:none; text-align: center; border-color: var(--primary-600); color: var(--primary-600); font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <i class="fa-solid fa-user-plus"></i> User Register
+          </a>
+          <a href="/guardian/register/index.html" class="btn-secondary" style="flex:1; padding: 10px 12px; text-decoration:none; text-align: center; border-color: var(--slate-300); color: var(--slate-700); font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <i class="fa-solid fa-shield-halved"></i> Guardian Register
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="js/common.js"></script>
+  <script src="js/guardian-core.js"></script>
+  <script src="js/login.js"></script>
+  <script>
+    async function executeLoginDirect(e, forceRole) {
+      if (e) {
+        if (e.preventDefault) e.preventDefault();
+        if (e.stopPropagation) e.stopPropagation();
+      }
+      const role = forceRole || document.getElementById('selected-role')?.value || 'guardian';
+      const identityInput = document.getElementById('login-identity');
+      const passwordInput = document.getElementById('login-password');
+      const errorBanner = document.getElementById('login-error-banner');
+      const errorMessage = document.getElementById('login-error-message');
+      const btnSubmit = document.getElementById('btn-login-submit');
+
+      const email = (identityInput?.value || '').trim();
+      const password = (passwordInput?.value || '').trim();
+
+      if (!email || !password) {
+        if (errorBanner && errorMessage) {
+          errorMessage.textContent = 'Please enter both email/ID and password.';
+          errorBanner.style.display = 'flex';
+        }
+        return false;
+      }
+
+      if (errorBanner) errorBanner.style.display = 'none';
+      if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.style.opacity = '0.7';
+      }
+
+      try {
+        if (role === 'guardian') {
+          const guardian = await GuardianCore.loginGuardian(email, password);
+          GuardianCore.showToast('Login successful! Opening Guardian Console...', 'success');
+          setTimeout(() => {
+            window.location.href = '/guardian/dashboard/index.html';
+          }, 400);
+        } else if (role === 'police') {
+          GuardianCore.showToast('Opening Police Emergency Operations Console...', 'success');
+          setTimeout(() => {
+            window.location.href = '/emergency';
+          }, 400);
+        } else {
+          localStorage.setItem('guardian_band_connected', 'false');
+          const user = await GuardianCore.loginUser(email, password);
+          GuardianCore.showToast('Login successful! Opening User Portal...', 'success');
+          setTimeout(() => {
+            window.location.href = '/user/dashboard/index.html';
+          }, 400);
+        }
+      } catch (err) {
+        if (errorBanner && errorMessage) {
+          errorMessage.textContent = err.message || 'Login failed. Please check your credentials.';
+          errorBanner.style.display = 'flex';
+        }
+        GuardianCore.showToast(err.message || 'Invalid credentials', 'danger');
+      } finally {
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.style.opacity = '1';
+        }
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>

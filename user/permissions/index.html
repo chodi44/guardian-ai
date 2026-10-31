@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    window.location.replace('/user/dashboard/index.html#permissions');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Permissions Control — Guardian AI Safety Sentinel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../css/portal.css">
+  <style>
+    .guardian-perm-card {
+      background: #ffffff;
+      border: 1px solid var(--portal-border);
+      border-radius: var(--portal-radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--portal-shadow-sm);
+    }
+    .guardian-perm-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--portal-border);
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .perm-user-profile {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .perm-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #e2e8f0;
+    }
+    .perm-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .perm-item-row:last-child {
+      border-bottom: none;
+    }
+    .perm-item-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .perm-item-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      color: var(--portal-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .perm-item-text h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--portal-text-main);
+    }
+    .perm-item-text p {
+      font-size: 13px;
+      color: var(--portal-text-muted);
+      margin-top: 2px;
+    }
+    .perm-request-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body class="portal-body">
+  <div class="portal-app-wrapper">
+    <!-- Sidebar -->
+    <aside class="portal-sidebar">
+      <div class="portal-sidebar-header">
+        <a href="/user/dashboard/index.html" class="sidebar-brand">
+          <div class="portal-brand-icon"><i class="fa-solid fa-shield-heart"></i></div>
+          <div class="portal-brand-text-wrap">
+            <span class="sidebar-brand-name">Guardian AI</span>
+            <span class="portal-sub-badge user-badge">USER PORTAL</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="portal-nav-menu">
+        <div class="portal-nav-heading">My Safety</div>
+        <a href="/user/dashboard/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Overview</span>
+        </a>
+        <a href="/location.html" class="portal-nav-item">
+          <i class="fa-solid fa-location-arrow"></i>
+          <span>Live Location</span>
+        </a>
+        <a href="/journeys.html" class="portal-nav-item">
+          <i class="fa-solid fa-route"></i>
+          <span>Safe Journeys</span>
+        </a>
+        <a href="/alerts.html" class="portal-nav-item">
+          <i class="fa-solid fa-bell"></i>
+          <span>Alerts Center</span>
+        </a>
+        <a href="/insights.html" class="portal-nav-item">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Safety Insights</span>
+        </a>
+        <a href="/band.html" class="portal-nav-item">
+          <i class="fa-solid fa-stopwatch"></i>
+          <span>Guardian Band</span>
+        </a>
+
+        <div class="portal-nav-heading">My Guardians</div>
+        <a href="/user/guardians/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-users"></i>
+          <span>My Guardians</span>
+        </a>
+        <a href="/user/guardian-requests/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-user-clock"></i>
+          <span>Guardian Requests</span>
+          <span class="badge-pill" id="nav-requests-badge" style="display: none;">0</span>
+        </a>
+        <a href="/user/guardian-id/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-id-badge"></i>
+          <span>Your Guardian ID</span>
+        </a>
+        <a href="/user/permissions/index.html" class="portal-nav-item active">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Access Permissions</span>
+        </a>
+
+        <div class="portal-nav-heading">Account</div>
+        <a href="/user/profile/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-user"></i>
+          <span>User Profile</span>
+        </a>
+        <a href="/user/settings/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+
+        <div style="margin-top: 14px; padding: 0 4px;">
+          <a href="/sos-alert.html" class="btn-portal-primary btn-portal-danger" style="text-decoration:none; padding: 10px 14px; font-size: 13px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="portal-sidebar-footer">
+        <div class="sidebar-user-card">
+          <img src="" alt="Avatar" class="sidebar-user-avatar" id="sidebar-user-img">
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="sidebar-user-name">User</div>
+            <div class="sidebar-user-role">Protected User</div>
+          </div>
+          <button class="btn-sidebar-logout" id="btn-sidebar-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+      <header class="portal-topbar">
+        <div class="topbar-greeting-wrap">
+          <h1>Guardian Permissions Control</h1>
+          <p>You have full authority to grant or revoke telemetry access per guardian</p>
+        </div>
+        <div class="topbar-actions">
+          <a href="/user/settings/index.html" class="topbar-icon-btn" title="Settings"><i class="fa-solid fa-gear"></i></a>
+          <a href="/user/profile/index.html" class="topbar-avatar-link"><img src="" alt="Avatar" class="topbar-avatar" id="topbar-avatar-img"></a>
+        </div>
+      </header>
+
+      <div class="portal-content">
+        <!-- Privacy Notice Banner -->
+        <div style="background: #f8fafc; border: 1px solid var(--portal-border); border-radius: var(--portal-radius); padding: 18px 22px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px;">
+          <i class="fa-solid fa-lock" style="font-size: 22px; color: var(--portal-primary);"></i>
+          <p style="font-size: 13px; color: #475569; line-height: 1.5;">
+            <strong>Zero-Trust Safety Policy:</strong> Default sensitive permissions remain strictly <strong>OFF</strong> unless you explicitly enable them for that guardian. Guardians cannot view data or receive feeds you have not permitted.
+          </p>
+        </div>
+
+        <div id="permissions-container">
+          <!-- Dynamically populated per approved guardian -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="../../js/guardian-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = GuardianCore.requireAuth('user');
+      if (!currentUser) return;
+
+      const avatarSrc = currentUser.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&h=240&q=80';
+      document.getElementById('sidebar-user-img').src = avatarSrc;
+      document.getElementById('topbar-avatar-img').src = avatarSrc;
+      document.getElementById('sidebar-user-name').textContent = currentUser.fullName;
+
+      const container = document.getElementById('permissions-container');
+
+      async function renderPermissions() {
+        const guardians = (await GuardianCore.getUserApprovedGuardians(currentUser.id)) || [];
+
+        if (guardians.length === 0) {
+          container.innerHTML = `
+            <div class="portal-card" style="text-align: center; padding: 48px 20px;">
+              <i class="fa-solid fa-sliders" style="font-size: 40px; color: #cbd5e1; margin-bottom: 14px;"></i>
+              <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 6px;">No Connected Guardians</h3>
+              <p style="font-size: 14px; color: #64748b; margin-bottom: 18px;">
+                You must approve a guardian before configuring their access permissions.
+              </p>
+              <a href="/user/guardian-requests/index.html" class="btn-portal-secondary" style="display:inline-flex;">
+                <i class="fa-solid fa-user-clock"></i> View Connection Requests
+              </a>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = guardians.map(g => {
+          const p = g.permissions || {
+            sosAlerts: false,
+            location: false,
+            incidentHistory: false,
+            insights: false,
+            audio: false
+          };
+          const requests = g.permissionRequests || [];
+
+          return `
+            <div class="guardian-perm-card" id="card-${g.id}">
+              <div class="guardian-perm-header">
+                <div class="perm-user-profile">
+                  <img src="${g.guardianAvatar}" alt="${g.guardianName}" class="perm-avatar">
+                  <div>
+                    <h3 style="font-size: 17px; font-weight: 700; color: var(--portal-text-main);">
+                      ${g.guardianName}
+                    </h3>
+                    <p style="font-size: 13px; color: #64748b;">
+                      Relationship: <strong>${g.relationship}</strong> &nbsp;•&nbsp; Connected: ${new Date(g.approvedDate || g.requestDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <button class="btn-portal-primary" onclick="savePermissionsForLink('${g.id}', '${g.guardianName}')" style="width: auto; padding: 8px 18px; font-size: 13px;">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Permissions
+                  </button>
+                </div>
+              </div>
+
+              <!-- Permission Items -->
+              <div>
+                <!-- SOS Alerts -->
+                <div class="perm-item-row">
+                  <div class="perm-item-info">
+                    <div class="perm-item-icon" style="background:#fee2e2; color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="perm-item-text">
+                      <h4>SOS Alerts ${requests.includes('sosAlerts') ? '<span class="perm-request-badge"><i class="fa-solid fa-bell"></i> Guardian Requested</span>' : ''}</h4>
+                      <p>Receive high-priority emergency distress dispatches when trigger occurs.</p>
+                    </div>
+                  </div>
+                  <label class="portal-switch">
+                    <input type="checkbox" id="perm-sos-${g.id}" ${p.sosAlerts ? 'checked' : ''}>
+                    <span class="slider-round"></span>
+                  </label>
+                </div>
+
+                <!-- Location -->
+                <div class="perm-item-row">
+                  <div class="perm-item-info">
+                    <div class="perm-item-icon" style="background:#e0f2fe; color:#0284c7;"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="perm-item-text">
+                      <h4>Location ${requests.includes('location') ? '<span class="perm-request-badge"><i class="fa-solid fa-bell"></i> Guardian Requested</span>' : ''}</h4>
+                      <p>View real-time safe corridors, geofences, and live GPS coordinates.</p>
+                    </div>
+                  </div>
+                  <label class="portal-switch">
+                    <input type="checkbox" id="perm-loc-${g.id}" ${p.location ? 'checked' : ''}>
+                    <span class="slider-round"></span>
+                  </label>
+                </div>
+
+                <!-- Incident History -->
+                <div class="perm-item-row">
+                  <div class="perm-item-info">
+                    <div class="perm-item-icon" style="background:#fef3c7; color:#d97706;"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div class="perm-item-text">
+                      <h4>Incident History ${requests.includes('incidentHistory') ? '<span class="perm-request-badge"><i class="fa-solid fa-bell"></i> Guardian Requested</span>' : ''}</h4>
+                      <p>Access forensic event logs, past emergency records, and resolution notes.</p>
+                    </div>
+                  </div>
+                  <label class="portal-switch">
+                    <input type="checkbox" id="perm-inc-${g.id}" ${p.incidentHistory ? 'checked' : ''}>
+                    <span class="slider-round"></span>
+                  </label>
+                </div>
+
+                <!-- Insights -->
+                <div class="perm-item-row">
+                  <div class="perm-item-info">
+                    <div class="perm-item-icon" style="background:#f3e8ff; color:#9333ea;"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="perm-item-text">
+                      <h4>Insights ${requests.includes('insights') ? '<span class="perm-request-badge"><i class="fa-solid fa-bell"></i> Guardian Requested</span>' : ''}</h4>
+                      <p>View weekly route safety ratings, high-risk hour advisories, and trend patterns.</p>
+                    </div>
+                  </div>
+                  <label class="portal-switch">
+                    <input type="checkbox" id="perm-ins-${g.id}" ${p.insights ? 'checked' : ''}>
+                    <span class="slider-round"></span>
+                  </label>
+                </div>
+
+                <!-- Audio -->
+                <div class="perm-item-row">
+                  <div class="perm-item-info">
+                    <div class="perm-item-icon" style="background:#ecfdf5; color:#059669;"><i class="fa-solid fa-microphone"></i></div>
+                    <div class="perm-item-text">
+                      <h4>Audio ${requests.includes('audio') ? '<span class="perm-request-badge"><i class="fa-solid fa-bell"></i> Guardian Requested</span>' : ''}</h4>
+                      <p>Permit one-way acoustic triage listen-in during active panic alarms.</p>
+                    </div>
+                  </div>
+                  <label class="portal-switch">
+                    <input type="checkbox" id="perm-aud-${g.id}" ${p.audio ? 'checked' : ''}>
+                    <span class="slider-round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      window.savePermissionsForLink = (linkId, guardianName) => {
+        const sos = document.getElementById(`perm-sos-${linkId}`).checked;
+        const loc = document.getElementById(`perm-loc-${linkId}`).checked;
+        const inc = document.getElementById(`perm-inc-${linkId}`).checked;
+        const ins = document.getElementById(`perm-ins-${linkId}`).checked;
+        const aud = document.getElementById(`perm-aud-${linkId}`).checked;
+
+        const newPermissions = {
+          sosAlerts: sos,
+          location: loc,
+          incidentHistory: inc,
+          insights: ins,
+          audio: aud
+        };
+
+        try {
+          GuardianCore.updatePermissions(linkId, newPermissions);
+          GuardianCore.showToast(`Permissions updated for ${guardianName}!`, 'success');
+          renderPermissions();
+        } catch (err) {
+          GuardianCore.showToast(err.message, 'danger');
+        }
+      };
+
+      renderPermissions();
+
+      // Logout handler
+      document.getElementById('btn-sidebar-logout').addEventListener('click', () => {
+        GuardianCore.confirmModal({
+          title: 'Sign Out',
+          message: 'Are you sure you want to end your current session?',
+          confirmText: 'Sign Out',
+          onConfirm: () => GuardianCore.logout('/user/login')
+        });
+      });
+    });
+  </script>
+</body>
+</html>

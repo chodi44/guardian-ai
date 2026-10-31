@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration — Guardian AI Safety Sentinel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../css/portal.css">
+  <style>
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #475569;
+    }
+    .checkbox-row input {
+      margin-top: 3px;
+    }
+    .alert-error-banner {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: var(--portal-radius-sm);
+      padding: 12px 14px;
+      color: #b91c1c;
+      font-size: 13px;
+      margin-bottom: 18px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert-error-banner.active {
+      display: flex;
+    }
+  </style>
+</head>
+<body class="portal-body">
+  <div class="portal-auth-container">
+    <div class="portal-auth-card">
+      <div class="portal-auth-header">
+        <div class="portal-brand-badge">
+          <div class="portal-brand-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <span class="portal-brand-text">Guardian AI</span>
+        </div>
+        <h1 class="portal-auth-title">Create User Account</h1>
+        <p class="portal-auth-subtitle">Join the safety network to protect yourself and stay linked with trusted guardians.</p>
+      </div>
+
+      <!-- Server / API Error Alert Box -->
+      <div id="api-error-banner" class="alert-error-banner">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="api-error-message">Error message</span>
+      </div>
+
+      <form id="form-user-register" novalidate>
+        <!-- Full Name -->
+        <div class="portal-form-group">
+          <label class="portal-label" for="reg-name">Full Name <span class="required-mark">*</span></label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-user leading-icon"></i>
+            <input type="text" id="reg-name" class="portal-input" placeholder="e.g. Ananya Sharma" required>
+          </div>
+          <div class="portal-field-error" id="err-name">Please provide your full legal or preferred name.</div>
+        </div>
+
+        <!-- Email & Phone Grid -->
+        <div class="form-grid-2">
+          <div class="portal-form-group">
+            <label class="portal-label" for="reg-email">Email Address <span class="required-mark">*</span></label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-envelope leading-icon"></i>
+              <input type="email" id="reg-email" class="portal-input" placeholder="name@example.com" required>
+            </div>
+            <div class="portal-field-error" id="err-email">Valid email is required.</div>
+          </div>
+
+          <div class="portal-form-group">
+            <label class="portal-label" for="reg-phone">Phone Number <span class="required-mark">*</span></label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-phone leading-icon"></i>
+              <input type="tel" id="reg-phone" class="portal-input" placeholder="+91 98480 23145" required>
+            </div>
+            <div class="portal-field-error" id="err-phone">Valid 10-digit phone number is required.</div>
+          </div>
+        </div>
+
+        <!-- Optional DOB & Gender Grid -->
+        <div class="form-grid-2">
+          <div class="portal-form-group">
+            <label class="portal-label" for="reg-dob">Date of Birth <span class="optional-mark">(Optional)</span></label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-calendar leading-icon"></i>
+              <input type="date" id="reg-dob" class="portal-input">
+            </div>
+          </div>
+
+          <div class="portal-form-group">
+            <label class="portal-label" for="reg-gender">Gender <span class="optional-mark">(Optional)</span></label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-venus-mars leading-icon"></i>
+              <select id="reg-gender" class="portal-select">
+                <option value="">Select gender</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Non-binary">Non-binary</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="portal-form-group">
+          <label class="portal-label" for="reg-password">Password <span class="required-mark">*</span></label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-lock leading-icon"></i>
+            <input type="password" id="reg-password" class="portal-input" placeholder="Minimum 8 characters" required minlength="8">
+            <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Toggle password visibility">
+              <i class="fa-solid fa-eye" id="toggle-password-icon"></i>
+            </button>
+          </div>
+          <div class="password-meter-wrap">
+            <div class="password-meter-bars">
+              <div class="meter-bar" id="meter-bar-1"></div>
+              <div class="meter-bar" id="meter-bar-2"></div>
+              <div class="meter-bar" id="meter-bar-3"></div>
+            </div>
+            <div class="password-meter-text">
+              <span>Strength: <strong id="strength-label">Too short</strong></span>
+              <span>Min. 8 characters</span>
+            </div>
+          </div>
+          <div class="portal-field-error" id="err-password">Password must be at least 8 characters long.</div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="portal-form-group">
+          <label class="portal-label" for="reg-confirm-password">Confirm Password <span class="required-mark">*</span></label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-lock-check leading-icon"></i>
+            <input type="password" id="reg-confirm-password" class="portal-input" placeholder="Re-enter your password" required>
+            <button type="button" class="password-toggle-btn" id="toggle-confirm-password" aria-label="Toggle confirm password visibility">
+              <i class="fa-solid fa-eye" id="toggle-confirm-icon"></i>
+            </button>
+          </div>
+          <div class="portal-field-error" id="err-confirm-password">Passwords do not match.</div>
+        </div>
+
+        <!-- Checkboxes -->
+        <div class="checkbox-row">
+          <input type="checkbox" id="terms-agree" required>
+          <label for="terms-agree">I agree to the <a href="#" style="color:var(--portal-primary); text-decoration:none;">Terms and Conditions</a> for Guardian AI sentinel protection. <span class="required-mark">*</span></label>
+        </div>
+        <div class="portal-field-error" id="err-terms" style="margin-bottom: 10px;">You must accept the Terms and Conditions.</div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="privacy-agree" required>
+          <label for="privacy-agree">I consent to the <a href="#" style="color:var(--portal-primary); text-decoration:none;">Privacy Policy</a> governing sensitive safety telemetry and emergency sharing. <span class="required-mark">*</span></label>
+        </div>
+        <div class="portal-field-error" id="err-privacy" style="margin-bottom: 16px;">You must accept the Privacy Policy.</div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="btn-submit-register" class="btn-portal-primary" style="margin-top: 10px;">
+          <span id="btn-text">Create User Account</span>
+          <i class="fa-solid fa-arrow-right" id="btn-icon"></i>
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 24px; font-size: 13px; color: #64748b;">
+        Already have a User account? <a href="/user/login/index.html" style="color:var(--portal-primary); font-weight: 600; text-decoration: none;">Sign In</a>
+      </div>
+
+      <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--portal-border); text-align: center; font-size: 13px; color: #64748b;">
+        Looking to connect as a protector? <a href="/guardian/register/index.html" style="color:#0284c7; font-weight: 700; text-decoration: none;">Create Guardian Account <i class="fa-solid fa-shield"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="../../js/guardian-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('form-user-register');
+      const nameInput = document.getElementById('reg-name');
+      const emailInput = document.getElementById('reg-email');
+      const phoneInput = document.getElementById('reg-phone');
+      const dobInput = document.getElementById('reg-dob');
+      const genderInput = document.getElementById('reg-gender');
+      const passwordInput = document.getElementById('reg-password');
+      const confirmInput = document.getElementById('reg-confirm-password');
+      const termsCheck = document.getElementById('terms-agree');
+      const privacyCheck = document.getElementById('privacy-agree');
+      const submitBtn = document.getElementById('btn-submit-register');
+      const btnText = document.getElementById('btn-text');
+      const btnIcon = document.getElementById('btn-icon');
+      const apiErrorBanner = document.getElementById('api-error-banner');
+      const apiErrorMessage = document.getElementById('api-error-message');
+
+      // Password visibility toggles
+      document.getElementById('toggle-password').addEventListener('click', () => {
+        const isPwd = passwordInput.type === 'password';
+        passwordInput.type = isPwd ? 'text' : 'password';
+        document.getElementById('toggle-password-icon').className = isPwd ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+      });
+
+      document.getElementById('toggle-confirm-password').addEventListener('click', () => {
+        const isPwd = confirmInput.type === 'password';
+        confirmInput.type = isPwd ? 'text' : 'password';
+        document.getElementById('toggle-confirm-icon').className = isPwd ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+      });
+
+      // Password strength calculation
+      passwordInput.addEventListener('input', () => {
+        const val = passwordInput.value;
+        const b1 = document.getElementById('meter-bar-1');
+        const b2 = document.getElementById('meter-bar-2');
+        const b3 = document.getElementById('meter-bar-3');
+        const label = document.getElementById('strength-label');
+
+        b1.className = 'meter-bar';
+        b2.className = 'meter-bar';
+        b3.className = 'meter-bar';
+
+        if (val.length === 0) {
+          label.textContent = 'Too short';
+          return;
+        }
+
+        let score = 0;
+        if (val.length >= 8) score++;
+        if (/[0-9]/.test(val) && /[a-zA-Z]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val) || val.length >= 12) score++;
+
+        if (score === 1) {
+          b1.classList.add('active-weak');
+          label.textContent = 'Weak';
+          label.style.color = '#ef4444';
+        } else if (score === 2) {
+          b1.classList.add('active-medium');
+          b2.classList.add('active-medium');
+          label.textContent = 'Medium';
+          label.style.color = '#f59e0b';
+        } else if (score >= 3) {
+          b1.classList.add('active-strong');
+          b2.classList.add('active-strong');
+          b3.classList.add('active-strong');
+          label.textContent = 'Strong';
+          label.style.color = '#10b981';
+        }
+      });
+
+      // Submission validation
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        apiErrorBanner.classList.remove('active');
+
+        let isValid = true;
+
+        // Reset errors
+        document.querySelectorAll('.portal-field-error').forEach(el => el.classList.remove('active'));
+
+        // Name
+        if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
+          document.getElementById('err-name').classList.add('active');
+          isValid = false;
+        }
+
+        // Email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value.trim())) {
+          document.getElementById('err-email').classList.add('active');
+          isValid = false;
+        }
+
+        // Phone
+        const cleanPhone = phoneInput.value.replace(/[\s\-\(\)]/g, '');
+        if (cleanPhone.length < 8) {
+          document.getElementById('err-phone').classList.add('active');
+          isValid = false;
+        }
+
+        // Password
+        if (passwordInput.value.length < 8) {
+          document.getElementById('err-password').classList.add('active');
+          isValid = false;
+        }
+
+        // Confirm
+        if (passwordInput.value !== confirmInput.value) {
+          document.getElementById('err-confirm-password').classList.add('active');
+          isValid = false;
+        }
+
+        // Terms & Privacy
+        if (!termsCheck.checked) {
+          document.getElementById('err-terms').classList.add('active');
+          isValid = false;
+        }
+        if (!privacyCheck.checked) {
+          document.getElementById('err-privacy').classList.add('active');
+          isValid = false;
+        }
+
+        if (!isValid) return;
+
+        // Loading state
+        submitBtn.disabled = true;
+        btnText.textContent = 'Creating Account...';
+        btnIcon.className = 'fa-solid fa-spinner fa-spin';
+
+        (async () => {
+          try {
+            const user = await GuardianCore.registerUser({
+              fullName: nameInput.value,
+              email: emailInput.value,
+              phone: phoneInput.value,
+              dob: dobInput.value,
+              gender: genderInput.value,
+              password: passwordInput.value
+            });
+
+            GuardianCore.showToast('Account created successfully! Opening User Dashboard...', 'success');
+            setTimeout(() => {
+              window.location.href = '/user/dashboard/index.html';
+            }, 600);
+          } catch (err) {
+            submitBtn.disabled = false;
+            btnText.textContent = 'Create User Account';
+            btnIcon.className = 'fa-solid fa-arrow-right';
+            apiErrorMessage.textContent = err.message;
+            apiErrorBanner.classList.add('active');
+            GuardianCore.showToast(err.message, 'danger');
+          }
+        })();
+      });
+    });
+  </script>
+</body>
+</html>

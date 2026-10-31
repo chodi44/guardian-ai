@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function() {
+      try {
+        const sess = JSON.parse(localStorage.getItem('gdn_portal_session') || '{}');
+        const role = sess.role === 'guardian' ? 'guardian' : 'user';
+        window.location.replace('/' + role + '/dashboard/index.html#alerts');
+      } catch(e) {
+        window.location.replace('/user/dashboard/index.html#alerts');
+      }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alerts & Incident Registry — Guardian AI</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/alerts.css">
+</head>
+<body class="theme-light">
+
+  <div id="app-container" class="app-layout">
+
+    <aside id="main-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="/guardian/dashboard/index.html" class="brand-logo" style="text-decoration: none;">
+          <div class="logo-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="brand-text">
+            <span class="brand-name">Guardian AI</span>
+            <span class="brand-hub-pill">GUARDIAN</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="user-profile-chip">
+        <div class="avatar-box">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma" class="user-avatar">
+          <span class="online-indicator"></span>
+        </div>
+        <div class="user-info">
+          <span class="user-name">Ravi Sharma</span>
+          <span class="user-id">GDN-7A92K4 <i class="fa-regular fa-circle-check verified-badge"></i></span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Telemetry & Safety</div>
+        <ul>
+          <li><a href="home.html" class="nav-link" data-view="home"><i class="fa-solid fa-house"></i><span>Monitoring Console</span></a></li>
+          <li><a href="location.html" class="nav-link" data-view="live-location"><i class="fa-solid fa-location-arrow"></i><span>Live Location</span></a></li>
+          <li><a href="journeys.html" class="nav-link" data-view="journeys"><i class="fa-solid fa-route"></i><span>Safe Corridors</span></a></li>
+          <li><a href="alerts.html" class="nav-link active" data-view="alerts"><i class="fa-solid fa-bell"></i><span>Alerts & Logs</span><span class="badge-count badge-warning">3</span></a></li>
+          <li><a href="insights.html" class="nav-link" data-view="insights"><i class="fa-solid fa-chart-line"></i><span>Risk Insights</span></a></li>
+          <li><a href="band.html" class="nav-link" data-view="band"><i class="fa-solid fa-stopwatch"></i><span>Guardian Band</span></a></li>
+          <li><a href="voice-mails.html" class="nav-link" data-view="voice-mails"><i class="fa-solid fa-microphone"></i><span>Acoustic Triage</span></a></li>
+        </ul>
+
+        <div class="nav-section-title">Guardian Supervision</div>
+        <ul>
+          <li><a href="/guardian/dashboard/index.html" class="nav-link" data-view="guardian-dashboard"><i class="fa-solid fa-shield-halved"></i><span>Protector Dashboard</span></a></li>
+          <li><a href="/guardian/linked-users/index.html" class="nav-link" data-view="linked-users"><i class="fa-solid fa-users"></i><span>Linked Users</span></a></li>
+          <li><a href="/guardian/connect-user/index.html" class="nav-link" data-view="connect-user"><i class="fa-solid fa-link"></i><span>Connect to User</span></a></li>
+          <li><a href="/guardian/permissions/index.html" class="nav-link" data-view="permissions"><i class="fa-solid fa-sliders"></i><span>Access Permissions</span></a></li>
+        </ul>
+
+        <div class="nav-divider"></div>
+        <ul>
+          <li><a href="profile.html" class="nav-link" data-view="profile"><i class="fa-solid fa-user"></i><span>Profile</span></a></li>
+          <li><a href="settings.html" class="nav-link" data-view="settings"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
+        </ul>
+        <div class="nav-divider"></div>
+        <div class="sos-trigger-box">
+          <a href="sos-alert.html" class="btn-sos-launch" style="text-decoration: none;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-dependent-card">
+        <div class="dependent-status-header">
+          <span class="dep-name">Ananya</span>
+          <span class="pill-badge pill-safe">● Safe • Normal</span>
+        </div>
+        <div class="dependent-status-details">
+          <i class="fa-solid fa-shield-heart text-safe"></i>
+          <span>Safe Geofence • GPS Lock</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-wrapper">
+      <header id="top-header" class="top-header">
+        <div class="header-breadcrumbs">
+          <span class="breadcrumb-root">Guardian System</span>
+          <i class="fa-solid fa-chevron-right breadcrumb-sep"></i>
+          <span class="breadcrumb-active">Alerts & Incident Registry</span>
+        </div>
+
+        <div class="header-right-controls">
+          <div class="dependent-selector-dropdown">
+            <button class="selector-btn">
+              <span class="dot-online"></span>
+              <span class="selected-person">Ananya (Daughter)</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+          <div class="sync-status-chip">
+            <span class="dot-pulse-green"></span>
+            <span class="sync-text">Synced <span id="sync-timer-sec">10</span> sec ago</span>
+          </div>
+          <a href="alerts.html" class="notification-icon-wrapper notification-button" aria-label="View alerts" style="text-decoration:none; color:inherit;">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge"></span>
+          </a>
+          <div class="header-user-avatar">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma">
+          </div>
+        </div>
+      </header>
+
+      <div class="views-container">
+        <section id="view-alerts" class="app-view">
+          <div class="alerts-hero-header">
+            <div>
+              <h1 class="page-main-title">Alerts & Incident Registry</h1>
+              <p class="page-subtitle">Real-Time Threat Diagnostics & Incident Log</p>
+            </div>
+            <div class="header-action-buttons">
+              <button class="btn-secondary" id="btn-threshold-config"><i class="fa-solid fa-sliders"></i> Threshold Config</button>
+              <button class="btn-primary" id="btn-export-forensic-log"><i class="fa-solid fa-download"></i> Export Forensic Log</button>
+            </div>
+          </div>
+
+          <div class="grid-4col-row">
+            <div class="card card-overview-tile">
+              <span class="o-lbl">ACTIVE ALERTS</span>
+              <span class="pill-badge pill-safe">● All Clear</span>
+              <div class="o-val">0</div>
+              <p class="o-sub text-safe"><i class="fa-solid fa-circle-check"></i> No unresolved active alerts</p>
+            </div>
+
+            <div class="card card-overview-tile">
+              <span class="o-lbl">RESOLVED TODAY</span>
+              <span class="pill-badge pill-info">Handled</span>
+              <div class="o-val">3 <span class="unit">Events</span></div>
+              <p class="o-sub"><i class="fa-solid fa-wand-magic-sparkles"></i> Auto-remediated by Safe Corridor</p>
+            </div>
+
+            <div class="card card-overview-tile">
+              <span class="o-lbl">30-DAY TOTAL</span>
+              <span class="pill-badge pill-secondary">-18%</span>
+              <div class="o-val">14 <span class="unit">Flagged</span></div>
+              <p class="o-sub">92.8% low-severity events resolved</p>
+            </div>
+
+            <div class="card card-overview-tile">
+              <span class="o-lbl">PROTECTION STATUS</span>
+              <i class="fa-solid fa-shield text-primary"></i>
+              <h3 class="o-val-sm">Normal Guard</h3>
+              <p class="o-sub text-safe">Neural telemetry active • 99.9% Uptime</p>
+            </div>
+          </div>
+
+          <div class="grid-2col-row alerts-main-grid">
+            <div class="alerts-feed-col">
+              <div class="alerts-filter-bar">
+                <div class="filter-tabs">
+                  <button class="tab-btn active" data-tab="all">All<span class="hide-mobile"> Alerts</span> (14)</button>
+                  <button class="tab-btn" data-tab="critical">Critical (0)</button>
+                  <button class="tab-btn" data-tab="high">High<span class="hide-mobile"> Risk</span> (1) ●</button>
+                  <button class="tab-btn" data-tab="attention">Attention (3) ●</button>
+                  <button class="tab-btn" data-tab="resolved">Resolved (10)</button>
+                </div>
+
+                <div class="search-filter-row">
+                  <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search by event, location, or tag..." id="input-search-alerts">
+                  </div>
+                  <select class="select-timefilter" id="select-alerts-time">
+                    <option value="7days">Past 7 Days</option>
+                    <option value="30days">Past 30 Days</option>
+                  </select>
+                  <button class="btn-icon-filter"><i class="fa-solid fa-filter"></i></button>
+                </div>
+              </div>
+
+              <div class="alerts-list">
+                <div class="card alert-card">
+                  <div class="a-header">
+                    <div class="a-title-left">
+                      <div class="a-icon icon-amber"><i class="fa-solid fa-route"></i></div>
+                      <div>
+                        <h3 class="a-heading">Route deviation detected</h3>
+                        <div class="a-tags-row">
+                          <span class="pill-badge pill-warning">● Attention</span>
+                          <span class="risk-score-pill">Risk Index: 38/100</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="pill-badge pill-safe">Auto-Resolved</span>
+                  </div>
+
+                  <div class="a-meta-row">
+                    <span><i class="fa-regular fa-clock"></i> 6:54 PM (26m ago)</span>
+                    <span><i class="fa-solid fa-location-dot"></i> Near Rajahmundry Main Rd (Corridor #4)</span>
+                  </div>
+
+                  <p class="a-body-text">Protected person Ananya veered 35m off primary corridor along pedestrian arcade. Biometrics remained baseline (78 BPM, normal skin conductance). Trajectory re-synced within 90s.</p>
+
+                  <div class="a-specs-pills">
+                    <span>Walking pace: 3.4 km/h</span>
+                    <span>Watch Band: 84%</span>
+                    <span>High Ambient Illuminance (850 lux)</span>
+                  </div>
+
+                  <div class="a-footer">
+                    <span class="ai-tag"><i class="fa-solid fa-robot"></i> Safe Corridor #4 automated closure</span>
+                    <button class="btn-link-action btn-open-audit" data-id="ALT-8921">View Audit Log <i class="fa-solid fa-arrow-right"></i></button>
+                  </div>
+                </div>
+
+                <div class="card alert-card">
+                  <div class="a-header">
+                    <div class="a-title-left">
+                      <div class="a-icon icon-danger"><i class="fa-solid fa-bus"></i></div>
+                      <div>
+                        <h3 class="a-heading">Rapid Transit Deceleration & Out-of-Corridor Stop</h3>
+                        <div class="a-tags-row">
+                          <span class="pill-badge pill-crit">High Risk</span>
+                          <span class="risk-score-pill text-danger">Risk Index: 78/100</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="pill-badge pill-safe">Resolved</span>
+                  </div>
+
+                  <div class="a-meta-row">
+                    <span><i class="fa-regular fa-clock"></i> 2:15 PM (Today)</span>
+                    <span><i class="fa-solid fa-location-dot"></i> GSL Medical Junction</span>
+                  </div>
+
+                  <p class="a-body-text">Bus transit halted unexpectedly outside designated safe haven zone. Voice ping handshake initiated; audio classifier confirmed routine municipal transit bottleneck. Zero distress triggers logged.</p>
+
+                  <div class="a-specs-pills">
+                    <span>Voice ping response: Verified "Normal"</span>
+                    <span class="text-danger">-24 km/h in 2.1s</span>
+                    <span>Crowd Density: Low Risk</span>
+                  </div>
+
+                  <div class="a-footer">
+                    <span class="ai-tag-2way">2-WAY HANDSHAKE: Escalation bypassed &bull; Biometric confirmation OK</span>
+                    <button class="btn-link-action btn-open-audit" data-id="ALT-7740">View Audit Log <i class="fa-solid fa-arrow-right"></i></button>
+                  </div>
+                </div>
+
+                <div class="card alert-card">
+                  <div class="a-header">
+                    <div class="a-title-left">
+                      <div class="a-icon icon-amber"><i class="fa-solid fa-moon"></i></div>
+                      <div>
+                        <h3 class="a-heading">Unscheduled Pause (&gt;10m) in Low-Lumen Area</h3>
+                        <div class="a-tags-row">
+                          <span class="pill-badge pill-warning">Attention</span>
+                          <span class="risk-score-pill">Risk Index: 42/100</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="pill-badge pill-secondary">Auto-Cleared</span>
+                  </div>
+
+                  <div class="a-meta-row">
+                    <span><i class="fa-regular fa-clock"></i> Yesterday, 8:40 PM</span>
+                    <span><i class="fa-solid fa-location-dot"></i> East Park Promenade</span>
+                  </div>
+
+                  <p class="a-body-text">Companion AI escort activated discreet ambient listen-in; verified conversing with known peer (Contact: Priya S.). Streetlight lux dropped to 18 lm/m²; escort status sustained until illuminated path re-entered.</p>
+
+                  <div class="a-specs-pills">
+                    <span>Ambient Sound: Conversational (52 dB)</span>
+                    <span>HRV stable (72 ms)</span>
+                  </div>
+
+                  <div class="a-footer">
+                    <span class="ai-tag"><i class="fa-solid fa-robot"></i> Cleared automatically upon departure</span>
+                    <button class="btn-link-action btn-open-audit" data-id="ALT-6612">View Audit Log <i class="fa-solid fa-arrow-right"></i></button>
+                  </div>
+                </div>
+
+                <div class="card alert-card">
+                  <div class="a-header">
+                    <div class="a-title-left">
+                      <div class="a-icon icon-safe"><i class="fa-solid fa-shield-check"></i></div>
+                      <div>
+                        <h3 class="a-heading">Safe Corridor #2 Entry Handshake</h3>
+                        <div class="a-tags-row">
+                          <span class="pill-badge pill-safe">Resolved</span>
+                          <span class="risk-score-pill">Risk Index: 18/100</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="pill-badge pill-info">Routine Check-in</span>
+                  </div>
+
+                  <div class="a-meta-row">
+                    <span><i class="fa-regular fa-clock"></i> 3 Days ago, 5:10 PM</span>
+                    <span><i class="fa-solid fa-location-dot"></i> Campus North Terminal</span>
+                  </div>
+
+                  <p class="a-body-text">Automated geofence transit initialized with 99.8% sensor confidence. Multi-frequency beacons cross-referenced campus Wi-Fi SSID and cellular cell ID with GPS lock.</p>
+
+                  <div class="a-footer">
+                    <span class="ai-tag text-safe"><i class="fa-solid fa-circle-check"></i> Scheduled Transit Verification Completed</span>
+                    <button class="btn-link-action btn-open-audit" data-id="ALT-5501">View Details <i class="fa-solid fa-arrow-right"></i></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pagination-bar">
+                <span>Showing 4 of 14 logged incidents</span>
+                <div class="page-btns">
+                  <button class="btn-page-arrow" disabled>Previous</button>
+                  <button class="btn-page-num active">1</button>
+                  <button class="btn-page-num">2</button>
+                  <button class="btn-page-arrow">Next</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="alerts-rules-col">
+              <div class="card card-panel-tile">
+                <div class="tile-header-bar">
+                  <span class="panel-tag"><i class="fa-solid fa-sliders"></i> Notification Rules</span>
+                  <a href="#" class="btn-link-sm">Edit Rules</a>
+                </div>
+                <p class="panel-sub hide-mobile">Automated dispatcher routes severity tiers to pre-authorized guardian devices and priority hotlines.</p>
+
+                <div class="toggles-list">
+                  <div class="toggle-row">
+                    <div>
+                      <strong>SMS Instant Dispatch</strong>
+                      <p>Triggers on High Risk <span class="hide-mobile">(&gt;70) </span>& Critical</p>
+                      <span class="phone-link-tag">+91 98480 ••••• (Ravi)</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                  </div>
+
+                  <div class="toggle-row">
+                    <div>
+                      <strong>Push Notifications</strong>
+                      <p>All alerts<span class="hide-mobile"> (Low, Attention, High, Critical)</span></p>
+                      <span class="phone-link-tag">2 Registered Guardian Devices</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                  </div>
+
+                  <div class="toggle-row">
+                    <div>
+                      <strong>Emergency Auto-Escalation</strong>
+                      <p>Auto-dials secondary contact<span class="hide-mobile"> if unread for 3 mins</span></p>
+                      <span class="phone-link-tag">Tier 1: Ravi | Tier 2:<span class="hide-mobile"> Dr.</span> Sunita</span>
+                    </div>
+                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                  </div>
+                </div>
+
+                <span class="subtext-caption mt-10"><i class="fa-solid fa-satellite-dish"></i> Last ping verified on carrier network: 12 sec ago</span>
+              </div>
+
+              <div class="card card-panel-tile">
+                <div class="tile-header-bar">
+                  <span class="panel-tag"><i class="fa-solid fa-brain"></i> Safety Neural Confidence</span>
+                  <span class="conf-large-val text-safe">99.4% Safe</span>
+                </div>
+
+                <div class="conf-bar-segmented">
+                  <div class="seg seg-routine" style="width: 88%;"></div>
+                  <div class="seg seg-caution" style="width: 9%;"></div>
+                  <div class="seg seg-high" style="width: 3%;"></div>
+                </div>
+
+                <div class="conf-legend">
+                  <span>● Routine (88%)</span>
+                  <span>● Caution (9%)</span>
+                  <span>● High (3%)</span>
+                </div>
+
+                <div class="conf-details-list">
+                  <div class="c-row"><span>Geofence Boundary Pings</span> <strong>1,240 pkts/hr</strong></div>
+                  <div class="c-row"><span>Biometric Pulse Integrity</span> <strong class="text-safe">Nominal</strong></div>
+                  <div class="c-row"><span>Companion AI Escort Mode</span> <strong>Standby Auto</strong></div>
+                </div>
+
+                <button class="btn-secondary btn-full-width mt-10" id="btn-run-corridor-diag">Run Corridor Diagnostics</button>
+              </div>
+
+              <div class="card card-support-desk">
+                <div class="desk-top">
+                  <i class="fa-solid fa-headset icon-desk"></i>
+                  <div>
+                    <strong>24/7 Rapid Response Desk</strong>
+                    <p class="hide-mobile">Need immediate human tele-intervention or emergency dispatch assistance?</p>
+                  </div>
+                </div>
+                <a href="#" class="btn-link-action text-white">Connect with Operations Desk <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal-audit-drawer">
+    <div class="drawer-card">
+      <div class="drawer-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div>
+          <span class="pill-badge pill-info" id="audit-badge-id">ALT-8921</span>
+          <h3 class="drawer-title" id="audit-title" style="font-size:18px;font-weight:800;color:var(--slate-900);margin-top:4px;">Forensic Incident Audit Log</h3>
+        </div>
+        <button class="btn-close-modal" id="btn-close-audit">&times;</button>
+      </div>
+      <div class="drawer-body" id="audit-body-content"></div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="js/guardian-core.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/alerts.js"></script>
+</body>
+</html>

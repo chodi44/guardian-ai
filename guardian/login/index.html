@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardian Login — Guardian AI Safety Sentinel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../css/portal.css">
+  <style>
+    .demo-box {
+      background: #f0fdf4;
+      border: 1px dashed #86efac;
+      border-radius: var(--portal-radius-sm);
+      padding: 12px 14px;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .demo-box-text {
+      font-size: 12px;
+      color: #166534;
+    }
+    .demo-box-btn {
+      background: #16a34a;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .demo-box-btn:hover {
+      background: #15803d;
+    }
+    .forgot-link-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+    .forgot-link {
+      font-size: 13px;
+      color: #0284c7;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+    .user-switch-box {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--portal-border);
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .alert-error-banner {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: var(--portal-radius-sm);
+      padding: 12px 14px;
+      color: #b91c1c;
+      font-size: 13px;
+      margin-bottom: 18px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert-error-banner.active {
+      display: flex;
+    }
+  </style>
+</head>
+<body class="portal-body">
+  <div class="portal-auth-container">
+    <div class="portal-auth-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <a href="/" style="display: inline-flex; align-items: center; gap: 6px; color: #64748b; font-size: 13px; font-weight: 600; text-decoration: none;">
+          <i class="fa-solid fa-arrow-left"></i> <span>Back to Home</span>
+        </a>
+      </div>
+      <div class="portal-auth-header">
+        <div class="portal-brand-badge">
+          <div class="portal-brand-icon" style="background: linear-gradient(135deg, #059669, #047857);"><i class="fa-solid fa-user-shield"></i></div>
+          <span class="portal-brand-text">Guardian AI</span>
+        </div>
+        <div style="margin-top: 8px;">
+          <span class="portal-sub-badge guardian-badge">GUARDIAN PORTAL</span>
+        </div>
+        <h1 class="portal-auth-title" style="margin-top: 10px;">Guardian Protector Sign In</h1>
+        <p class="portal-auth-subtitle">Sign in to supervise active wards, monitor live GPS coordinates, and manage emergency alerts.</p>
+      </div>
+
+      <!-- Error Banner -->
+      <div id="api-error-banner" class="alert-error-banner">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="api-error-message">Error</span>
+      </div>
+
+      <form id="form-guardian-login" novalidate>
+        <div class="portal-form-group">
+          <label class="portal-label" for="login-email">Email Address <span class="required-mark">*</span></label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-envelope leading-icon"></i>
+            <input type="email" id="login-email" class="portal-input" placeholder="e.g. yourname@example.com" required autocomplete="username">
+          </div>
+          <div class="portal-field-error" id="err-login-email">Please enter a valid guardian email.</div>
+        </div>
+
+        <div class="portal-form-group">
+          <label class="portal-label" for="login-password">Password <span class="required-mark">*</span></label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-lock leading-icon"></i>
+            <input type="password" id="login-password" class="portal-input" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Toggle password visibility">
+              <i class="fa-solid fa-eye" id="toggle-password-icon"></i>
+            </button>
+          </div>
+          <div class="portal-field-error" id="err-login-password">Password is required.</div>
+        </div>
+
+        <div class="forgot-link-wrap">
+          <a class="forgot-link" id="btn-forgot-password">Forgot Password?</a>
+        </div>
+
+        <button type="submit" id="btn-submit-login" class="btn-portal-primary" style="background:#0284c7; cursor: pointer;">
+          <span id="btn-text">Login to Guardian Console</span>
+          <i class="fa-solid fa-right-to-bracket" id="btn-icon"></i>
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 20px; font-size: 13px; color: #64748b;">
+        Don't have a Guardian account? <a href="/guardian/register/index.html" style="color:#0284c7; font-weight: 700; text-decoration: none;">Create Guardian Account</a>
+      </div>
+
+      <div class="user-switch-box">
+        <span>Are you a User?</span>
+        <div style="margin-top: 8px;">
+          <a href="/user/login/index.html" class="btn-portal-secondary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <i class="fa-solid fa-user text-primary"></i>
+            <span>User Login</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="../../js/guardian-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('form-guardian-login');
+      const emailInput = document.getElementById('login-email');
+      const passwordInput = document.getElementById('login-password');
+      const submitBtn = document.getElementById('btn-submit-login');
+      const btnText = document.getElementById('btn-text');
+      const btnIcon = document.getElementById('btn-icon');
+      const apiErrorBanner = document.getElementById('api-error-banner');
+      const apiErrorMessage = document.getElementById('api-error-message');
+
+      // Password visibility toggle
+      document.getElementById('toggle-password').addEventListener('click', () => {
+        const isPwd = passwordInput.type === 'password';
+        passwordInput.type = isPwd ? 'text' : 'password';
+        document.getElementById('toggle-password-icon').className = isPwd ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+      });
+
+      // Forgot Password Modal
+      document.getElementById('btn-forgot-password')?.addEventListener('click', () => {
+        GuardianCore.confirmModal({
+          title: 'Reset Password',
+          message: 'A password recovery link will be sent to your registered guardian email address.',
+          confirmText: 'Dispatch Reset',
+          onConfirm: () => GuardianCore.showToast('Password reset link sent to guardian email.', 'info')
+        });
+      });
+
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        apiErrorBanner.classList.remove('active');
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        let hasError = false;
+        if (!email) {
+          document.getElementById('err-login-email').style.display = 'block';
+          hasError = true;
+        } else {
+          document.getElementById('err-login-email').style.display = 'none';
+        }
+
+        if (!password) {
+          document.getElementById('err-login-password').style.display = 'block';
+          hasError = true;
+        } else {
+          document.getElementById('err-login-password').style.display = 'none';
+        }
+
+        if (hasError) return;
+
+        submitBtn.disabled = true;
+        btnText.textContent = 'Verifying Account...';
+        btnIcon.className = 'fa-solid fa-spinner fa-spin';
+
+        try {
+          const guardian = await GuardianCore.loginGuardian(email, password);
+          GuardianCore.showToast('Login successful! Redirecting...', 'success');
+          setTimeout(() => {
+            window.location.href = '/guardian/dashboard/index.html';
+          }, 400);
+        } catch (err) {
+          submitBtn.disabled = false;
+          btnText.textContent = 'Login to Guardian Console';
+          btnIcon.className = 'fa-solid fa-right-to-bracket';
+          apiErrorMessage.textContent = err.message || 'Invalid email or password.';
+          apiErrorBanner.classList.add('active');
+          GuardianCore.showToast(err.message || 'Login failed', 'danger');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

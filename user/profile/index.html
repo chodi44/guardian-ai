@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    window.location.replace('/user/dashboard/index.html#profile');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile — Guardian AI Safety Sentinel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../css/portal.css">
+  <style>
+    .profile-hero-card {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #ffffff;
+      border-radius: var(--portal-radius);
+      padding: 28px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .profile-hero-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .profile-large-avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+    .profile-hero-details h2 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .profile-hero-details p {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+    .avatar-picker-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .avatar-picker-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .verification-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+    .chip-verified {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    .chip-unverified {
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+  </style>
+</head>
+<body class="portal-body">
+  <div class="portal-app-wrapper">
+    <!-- Sidebar -->
+    <aside class="portal-sidebar">
+      <div class="portal-sidebar-header">
+        <a href="/user/dashboard/index.html" class="sidebar-brand">
+          <div class="portal-brand-icon"><i class="fa-solid fa-shield-heart"></i></div>
+          <div class="portal-brand-text-wrap">
+            <span class="sidebar-brand-name">Guardian AI</span>
+            <span class="portal-sub-badge user-badge">USER PORTAL</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="portal-nav-menu">
+        <div class="portal-nav-heading">My Safety</div>
+        <a href="/user/dashboard/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Overview</span>
+        </a>
+        <a href="/location.html" class="portal-nav-item">
+          <i class="fa-solid fa-location-arrow"></i>
+          <span>Live Location</span>
+        </a>
+        <a href="/journeys.html" class="portal-nav-item">
+          <i class="fa-solid fa-route"></i>
+          <span>Safe Journeys</span>
+        </a>
+        <a href="/alerts.html" class="portal-nav-item">
+          <i class="fa-solid fa-bell"></i>
+          <span>Alerts Center</span>
+        </a>
+        <a href="/insights.html" class="portal-nav-item">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Safety Insights</span>
+        </a>
+        <a href="/band.html" class="portal-nav-item">
+          <i class="fa-solid fa-stopwatch"></i>
+          <span>Guardian Band</span>
+        </a>
+
+        <div class="portal-nav-heading">My Guardians</div>
+        <a href="/user/guardians/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-users"></i>
+          <span>My Guardians</span>
+        </a>
+        <a href="/user/guardian-requests/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-user-clock"></i>
+          <span>Guardian Requests</span>
+          <span class="badge-pill" id="nav-requests-badge" style="display: none;">0</span>
+        </a>
+        <a href="/user/guardian-id/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-id-badge"></i>
+          <span>Your Guardian ID</span>
+        </a>
+        <a href="/user/permissions/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Access Permissions</span>
+        </a>
+
+        <div class="portal-nav-heading">Account</div>
+        <a href="/user/profile/index.html" class="portal-nav-item active">
+          <i class="fa-solid fa-user"></i>
+          <span>User Profile</span>
+        </a>
+        <a href="/user/settings/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+
+        <div style="margin-top: 14px; padding: 0 4px;">
+          <a href="/sos-alert.html" class="btn-portal-primary btn-portal-danger" style="text-decoration:none; padding: 10px 14px; font-size: 13px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="portal-sidebar-footer">
+        <div class="sidebar-user-card">
+          <img src="" alt="Avatar" class="sidebar-user-avatar" id="sidebar-user-img">
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="sidebar-user-name">User</div>
+            <div class="sidebar-user-role">Protected User</div>
+          </div>
+          <button class="btn-sidebar-logout" id="btn-sidebar-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+      <header class="portal-topbar">
+        <div class="topbar-greeting-wrap">
+          <h1>User Profile</h1>
+          <p>Manage personal details, emergency health directives, and verification</p>
+        </div>
+        <div class="topbar-actions">
+          <a href="/user/settings/index.html" class="topbar-icon-btn" title="Settings"><i class="fa-solid fa-gear"></i></a>
+          <a href="/user/profile/index.html" class="topbar-avatar-link"><img src="" alt="Avatar" class="topbar-avatar" id="topbar-avatar-img"></a>
+        </div>
+      </header>
+
+      <div class="portal-content">
+        <!-- Hero Header -->
+        <div class="profile-hero-card">
+          <div class="profile-hero-left">
+            <img src="" alt="User Avatar" class="profile-large-avatar" id="hero-user-avatar">
+            <div class="profile-hero-details">
+              <h2 id="hero-user-name">Loading...</h2>
+              <p><i class="fa-regular fa-envelope"></i> <span id="hero-user-email">email</span> &nbsp;•&nbsp; <i class="fa-solid fa-phone"></i> <span id="hero-user-phone">phone</span></p>
+              <button class="avatar-picker-btn" id="btn-cycle-avatar">
+                <i class="fa-solid fa-camera"></i> Change Photo
+              </button>
+            </div>
+          </div>
+          <div>
+            <span class="status-badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4);">
+              <i class="fa-solid fa-id-badge"></i> <span id="hero-user-gdn-id">GDN-CODE</span>
+            </span>
+          </div>
+        </div>
+
+        <form id="form-user-profile">
+          <!-- Top Action Controls -->
+          <div style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 20px;">
+            <button type="button" class="btn-portal-secondary" id="btn-cancel-edit" style="display: none;">Cancel</button>
+            <button type="button" class="btn-portal-secondary" id="btn-edit-toggle">
+              <i class="fa-solid fa-pen-to-square"></i> Edit Profile
+            </button>
+            <button type="submit" class="btn-portal-primary" id="btn-save-profile" style="width: auto; display: none;">
+              <i class="fa-solid fa-floppy-disk"></i> Save Changes
+            </button>
+          </div>
+
+          <!-- Section 1: PERSONAL INFORMATION -->
+          <div class="portal-card" style="margin-bottom: 24px;">
+            <div class="portal-card-header">
+              <span class="portal-card-title"><i class="fa-solid fa-user text-primary"></i> Personal Information</span>
+              <span class="portal-card-subtitle">Primary account identity</span>
+            </div>
+
+            <div class="portal-grid-2">
+              <div class="portal-form-group">
+                <label class="portal-label" for="prof-fullname">Full Name</label>
+                <input type="text" id="prof-fullname" class="portal-input no-icon" disabled required>
+              </div>
+
+              <div class="portal-form-group">
+                <label class="portal-label" for="prof-email">Email Address</label>
+                <input type="email" id="prof-email" class="portal-input no-icon" disabled required>
+              </div>
+
+              <div class="portal-form-group">
+                <label class="portal-label" for="prof-phone">Phone Number</label>
+                <input type="tel" id="prof-phone" class="portal-input no-icon" disabled required>
+              </div>
+
+              <div class="portal-form-group">
+                <label class="portal-label" for="prof-dob">Date of Birth</label>
+                <input type="date" id="prof-dob" class="portal-input no-icon" disabled>
+              </div>
+
+              <div class="portal-form-group">
+                <label class="portal-label" for="prof-gender">Gender</label>
+                <select id="prof-gender" class="portal-select no-icon" disabled>
+                  <option value="">Not specified</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Non-binary">Non-binary</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: EMERGENCY & MEDICAL PROFILE -->
+          <div class="portal-card" style="margin-bottom: 24px;">
+            <div class="portal-card-header">
+              <div>
+                <span class="portal-card-title"><i class="fa-solid fa-heart-pulse" style="color: #ef4444;"></i> Emergency & Medical Profile</span>
+                <p class="portal-card-subtitle">Critical medical directives shared with authorized guardians during distress triggers</p>
+              </div>
+            </div>
+
+            <div class="portal-grid-2">
+              <div class="portal-form-group">
+                <label class="portal-label" for="prof-blood">Blood Group</label>
+                <select id="prof-blood" class="portal-select no-icon" disabled>
+                  <option value="">Select blood group</option>
+                  <option value="O+">O Positive (O+)</option>
+                  <option value="O-">O Negative (O-)</option>
+                  <option value="A+">A Positive (A+)</option>
+                  <option value="A-">A Negative (A-)</option>
+                  <option value="B+">B Positive (B+)</option>
+                  <option value="B-">B Negative (B-)</option>
+                  <option value="AB+">AB Positive (AB+)</option>
+                  <option value="AB-">AB Negative (AB-)</option>
+                </select>
+              </div>
+
+              <div class="portal-form-group">
+                <label class="portal-label" for="prof-address">Residential Address</label>
+                <input type="text" id="prof-address" class="portal-input no-icon" placeholder="Street, Apartment, or Landmark" disabled>
+              </div>
+
+              <div class="portal-form-group">
+                <label class="portal-label" for="prof-city">City</label>
+                <input type="text" id="prof-city" class="portal-input no-icon" placeholder="e.g. Rajahmundry" disabled>
+              </div>
+
+              <div class="portal-form-group">
+                <label class="portal-label" for="prof-state">State</label>
+                <input type="text" id="prof-state" class="portal-input no-icon" placeholder="e.g. Andhra Pradesh" disabled>
+              </div>
+            </div>
+
+            <div class="portal-form-group" style="margin-bottom: 0;">
+              <label class="portal-label" for="prof-notes">Emergency Notes & Medical Allergies</label>
+              <textarea id="prof-notes" class="portal-textarea" rows="3" placeholder="e.g. Inhaler location, diabetic precautions, drug allergies..." disabled></textarea>
+            </div>
+          </div>
+
+          <!-- Section 3: ACCOUNT INFORMATION -->
+          <div class="portal-card">
+            <div class="portal-card-header">
+              <span class="portal-card-title"><i class="fa-solid fa-shield" style="color: #6366f1;"></i> Account Information</span>
+              <span class="portal-card-subtitle">Verification status and identifiers</span>
+            </div>
+
+            <div class="portal-grid-2">
+              <div class="portal-form-group">
+                <label class="portal-label">Account Creation Date</label>
+                <div class="portal-input no-icon" style="background:#f8fafc; color:#64748b;" id="account-created-date">—</div>
+              </div>
+
+              <div class="portal-form-group">
+                <label class="portal-label">Your Unique Guardian ID</label>
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid var(--portal-border); border-radius: var(--portal-radius-sm); padding: 9px 14px;">
+                  <span style="font-family: monospace; font-size: 15px; font-weight: 700; color: #0284c7;" id="account-guardian-id">—</span>
+                  <a href="/user/guardian-id/index.html" style="font-size: 12px; color: var(--portal-primary); text-decoration: none; font-weight: 600;">View & Share</a>
+                </div>
+              </div>
+
+              <div class="portal-form-group">
+                <label class="portal-label">Email Verification Status</label>
+                <div style="margin-top: 6px;">
+                  <span class="verification-chip chip-verified" id="badge-email-verified">
+                    <i class="fa-solid fa-circle-check"></i> Verified
+                  </span>
+                </div>
+              </div>
+
+              <div class="portal-form-group">
+                <label class="portal-label">Phone Verification Status</label>
+                <div style="margin-top: 6px;">
+                  <span class="verification-chip chip-verified" id="badge-phone-verified">
+                    <i class="fa-solid fa-circle-check"></i> Phone Verified
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="../../js/guardian-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let currentUser = GuardianCore.requireAuth('user');
+      if (!currentUser) return;
+
+      const editBtn = document.getElementById('btn-edit-toggle');
+      const saveBtn = document.getElementById('btn-save-profile');
+      const cancelBtn = document.getElementById('btn-cancel-edit');
+      const form = document.getElementById('form-user-profile');
+
+      // Inputs
+      const fullnameInput = document.getElementById('prof-fullname');
+      const emailInput = document.getElementById('prof-email');
+      const phoneInput = document.getElementById('prof-phone');
+      const dobInput = document.getElementById('prof-dob');
+      const genderInput = document.getElementById('prof-gender');
+      const bloodInput = document.getElementById('prof-blood');
+      const addressInput = document.getElementById('prof-address');
+      const cityInput = document.getElementById('prof-city');
+      const stateInput = document.getElementById('prof-state');
+      const notesInput = document.getElementById('prof-notes');
+
+      const inputs = [fullnameInput, emailInput, phoneInput, dobInput, genderInput, bloodInput, addressInput, cityInput, stateInput, notesInput];
+
+      function populateFields(user) {
+        fullnameInput.value = user.fullName || '';
+        emailInput.value = user.email || '';
+        phoneInput.value = user.phone || '';
+        dobInput.value = user.dob || '';
+        genderInput.value = user.gender || '';
+
+        const ep = user.emergencyProfile || {};
+        bloodInput.value = ep.bloodGroup || '';
+        addressInput.value = ep.address || '';
+        cityInput.value = ep.city || '';
+        stateInput.value = ep.state || '';
+        notesInput.value = ep.emergencyNotes || '';
+
+        // Hero
+        document.getElementById('hero-user-name').textContent = user.fullName;
+        document.getElementById('hero-user-email').textContent = user.email;
+        document.getElementById('hero-user-phone').textContent = user.phone;
+        document.getElementById('hero-user-gdn-id').textContent = user.guardianId;
+
+        const avatar = user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&h=240&q=80';
+        document.getElementById('hero-user-avatar').src = avatar;
+        document.getElementById('sidebar-user-img').src = avatar;
+        document.getElementById('topbar-avatar-img').src = avatar;
+        document.getElementById('sidebar-user-name').textContent = user.fullName;
+
+        // Account info
+        document.getElementById('account-created-date').textContent = new Date(user.createdAt || Date.now()).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('account-guardian-id').textContent = user.guardianId;
+      }
+
+      populateFields(currentUser);
+
+      let isEditing = false;
+      function setEditingState(active) {
+        isEditing = active;
+        inputs.forEach(inp => inp.disabled = !active);
+        editBtn.style.display = active ? 'none' : 'inline-flex';
+        saveBtn.style.display = active ? 'inline-flex' : 'none';
+        cancelBtn.style.display = active ? 'inline-flex' : 'none';
+      }
+
+      editBtn.addEventListener('click', () => {
+        setEditingState(true);
+        fullnameInput.focus();
+      });
+
+      cancelBtn.addEventListener('click', () => {
+        populateFields(currentUser);
+        setEditingState(false);
+        GuardianCore.showToast('Profile editing cancelled.');
+      });
+
+      // Photo cycle demo
+      const presetAvatars = [
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&h=240&q=80',
+        'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&h=240&q=80',
+        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&h=240&q=80',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&h=240&q=80'
+      ];
+      let avatarIdx = 0;
+      document.getElementById('btn-cycle-avatar').addEventListener('click', async () => {
+        avatarIdx = (avatarIdx + 1) % presetAvatars.length;
+        const newAvatar = presetAvatars[avatarIdx];
+        currentUser = await GuardianCore.updateUserProfile(currentUser.id, { avatar: newAvatar });
+        populateFields(currentUser);
+        GuardianCore.showToast('Profile photo updated!', 'success');
+      });
+
+      // Save changes
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          currentUser = await GuardianCore.updateUserProfile(currentUser.id, {
+            fullName: fullnameInput.value.trim(),
+            email: emailInput.value.trim(),
+            phone: phoneInput.value.trim(),
+            dob: dobInput.value,
+            gender: genderInput.value,
+            emergencyProfile: {
+              bloodGroup: bloodInput.value,
+              address: addressInput.value.trim(),
+              city: cityInput.value.trim(),
+              state: stateInput.value.trim(),
+              emergencyNotes: notesInput.value.trim()
+            }
+          });
+
+          populateFields(currentUser);
+          setEditingState(false);
+          GuardianCore.showToast('Profile updated successfully!', 'success');
+        } catch (err) {
+          GuardianCore.showToast(err.message, 'danger');
+        }
+      });
+
+      // Logout handler
+      document.getElementById('btn-sidebar-logout').addEventListener('click', () => {
+        GuardianCore.confirmModal({
+          title: 'Sign Out',
+          message: 'Are you sure you want to end your current session?',
+          confirmText: 'Sign Out',
+          onConfirm: () => GuardianCore.logout('/user/login')
+        });
+      });
+    });
+  </script>
+</body>
+</html>

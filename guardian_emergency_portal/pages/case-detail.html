@@ -1,0 +1,405 @@
+<div class="case-detail-container">
+  <!-- Top Header -->
+  <div class="case-header">
+    <a href="/dashboard" class="back-link">
+      <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Return to Emergency Operations Dashboard
+    </a>
+    <div class="header-right-meta">
+      <span class="secure-channel"><span class="dot bg-error"></span> SECURE CHANNEL 04</span>
+      <span class="node-id">• NODE ID: TX-DISPATCH-8492</span>
+    </div>
+  </div>
+
+  <div class="case-title-row">
+    <div>
+      <h1 class="case-title" id="cd-title">CASE #GA-1024 — EMILY JOHNSON</h1>
+      <div class="case-badges">
+        <span class="badge badge-error-solid"><span class="dot bg-white"></span> CRITICAL (87/100)</span>
+        <span class="badge badge-primary-solid"><i data-lucide="zap" style="width: 12px; height: 12px;"></i> AUTOMATICALLY ESCALATED</span>
+        <span class="badge badge-outline">0.6m 4.9G</span>
+      </div>
+      <p class="case-description">
+        Kinetic deceleration alert with acute physiological shock triggered on public transit sector. Primary guardian SLA elapsed.
+      </p>
+    </div>
+    <div class="case-header-actions">
+      <button id="cd-btn-ack" class="btn-outline-blue"><i data-lucide="check-circle" style="width: 16px; height: 16px;"></i> ACKNOWLEDGE CASE</button>
+      <button id="cd-btn-dispatch" class="btn-solid-blue"><i data-lucide="shield-alert" style="width: 16px; height: 16px;"></i> BEGIN RESPONSE & DISPATCH</button>
+      <button id="cd-btn-resolve" class="btn-outline-gray"><i data-lucide="check-circle" style="width: 16px; height: 16px;"></i> RESOLVE CASE</button>
+    </div>
+  </div>
+
+  <div class="case-grid">
+    <!-- Column 1: Subject Telemetry -->
+    <div class="col-telemetry">
+      <div class="card section-card">
+        <div class="section-header">
+          <span class="section-title"><i data-lucide="user" style="width: 14px; height: 14px;"></i> PROTECTED PERSON TELEMETRY</span>
+          <span class="badge badge-error-light">CRITICAL</span>
+        </div>
+        
+        <div class="subject-profile">
+          <div class="profile-avatar bg-gray">
+            <i data-lucide="user" class="text-secondary" style="width: 32px; height: 32px;"></i>
+            <div class="online-indicator"></div>
+          </div>
+          <div class="profile-info">
+            <div class="profile-name">Emily Johnson</div>
+            <div class="profile-sub">22 yrs • Student</div>
+            <div class="profile-id">ID: CIV-EM-8819</div>
+          </div>
+        </div>
+
+        <div class="guardian-box error-state">
+          <div class="guardian-box-header">
+            <div class="guardian-label">PRIMARY GUARDIAN</div>
+            <div class="guardian-badge">NO RESPONSE</div>
+          </div>
+          <div class="guardian-details">
+            <div>
+              <div class="guardian-name">David Johnson (Father)</div>
+            </div>
+            <div class="timeout-text text-error">5m Timeout</div>
+          </div>
+          <p class="guardian-desc">
+            Automated direct dispatch initiated upon secondary unanswered notification ping.
+          </p>
+          
+          <div class="guardian-actions">
+            <button onclick="window.showToast('Calling Guardian', 'Initiating secure VoIP call to David Johnson...', 'info')" class="btn-outline-full"><i data-lucide="phone" style="width: 14px; height: 14px;"></i> CONTACT GUARDIAN</button>
+            <button onclick="window.showToast('Calling Secondary', 'Initiating secure VoIP call to Mother...', 'info')" class="btn-outline-full"><i data-lucide="phone" style="width: 14px; height: 14px;"></i> CONTACT EMERGENCY CONTACT (MOTHER)</button>
+          </div>
+        </div>
+
+        <div class="device-telemetry mt-section">
+          <div class="section-header border-none">
+            <span class="section-title"><i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> DEVICE TELEMETRY</span>
+            <span class="badge badge-success-light"><span class="dot dot-success"></span> CONNECTED LINK</span>
+          </div>
+          
+          <div class="device-info mb-4">
+            <div class="fw-semibold">Guardian Band Pro v2.4.1</div>
+            <div class="text-xs text-secondary">SN: GB-99420-AP6 • Mesh/5G Ultra</div>
+          </div>
+
+          <div class="grid-2 gap-2 mb-4">
+            <div class="stat-box">
+              <div class="stat-label">BATTERY</div>
+              <div class="stat-value">
+                94% <i data-lucide="battery" class="text-success" style="width: 16px; height: 16px;"></i>
+              </div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">GPS STATUS</div>
+              <div class="stat-value text-primary">
+                Active <i data-lucide="navigation" style="width: 16px; height: 16px;"></i>
+              </div>
+              <div class="text-xs text-secondary mt-1">Dual L1/L5</div>
+            </div>
+          </div>
+
+          <div class="grid-2 gap-2">
+            <div class="stat-box error-border">
+              <div class="stat-label text-error">HEART RATE</div>
+              <div class="stat-value text-error">
+                112 BPM <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+              </div>
+              <div class="text-xs text-error fw-semibold mt-1">+38 BPM delta</div>
+            </div>
+            <div class="stat-box error-border">
+              <div class="stat-label text-error">KINETIC MOTION</div>
+              <div class="stat-value text-error">
+                4.8G <i data-lucide="zap" style="width: 16px; height: 16px;"></i>
+              </div>
+              <div class="text-xs text-error fw-semibold mt-1">Peak Shock registered</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="medical-deck mt-section">
+          <div class="section-header border-none">
+            <span class="section-title"><i data-lucide="activity" style="width: 14px; height: 14px;"></i> MEDICAL TRIAGE DECK</span>
+            <span class="badge badge-primary-light">CONFIDENTIAL</span>
+          </div>
+          
+          <div class="medical-row">
+            <span class="text-sm fw-semibold">Blood Type</span>
+            <span class="badge-outline text-primary">O+ Positive</span>
+          </div>
+          
+          <div class="medical-row">
+            <span class="medical-label">KNOWN CONDITIONS</span>
+            <span class="text-sm fw-semibold">Mild Asthmatic</span> <span class="text-sm text-secondary">(Carries Ventolin Inhaler)</span>
+          </div>
+          
+          <div class="medical-row">
+            <span class="medical-label">SEVERE ALLERGIES</span>
+            <div class="allergy-alert">
+              <i data-lucide="alert-triangle" class="text-error" style="width: 14px; height: 14px;"></i> 
+              <span class="text-error fw-semibold text-sm">Penicillin Allergy (High Anaphylaxis Risk)</span>
+            </div>
+          </div>
+          
+          <div class="medical-row no-border">
+            <span class="medical-label">EMERGENCY FIELD NOTE</span>
+            <div class="field-note">
+              "Commutes daily along Rajahmundry arterial bypass; wears medical wrist tag."
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 2: AI Matrix & Map -->
+    <div class="col-matrix">
+      <div class="card section-card">
+        <div class="matrix-header">
+          <div class="section-title text-sm"><i data-lucide="activity" style="width: 14px; height: 14px;"></i> AI RISK MATRIX & ESCALATION RATIONALE</div>
+          <div class="matrix-model-meta">Model:<br/>GuardianNeural v4.18</div>
+        </div>
+
+        <div class="composite-risk-box">
+          <div class="score-circle">
+            <div class="score-val text-error">87</div>
+            <div class="score-max">/100</div>
+          </div>
+          <div class="composite-risk-info">
+            <div class="composite-risk-title">
+              <span class="fw-semibold text-lg">Composite Risk Index</span>
+              <span class="badge-error-solid">CRITICAL</span>
+            </div>
+            <div class="text-sm text-secondary">Neural Confidence Score: <strong>92% congruent</strong></div>
+          </div>
+          <div class="triage-class-box">
+            <div class="triage-label">TRIAGE CLASS</div>
+            <div class="triage-value">Tier 1 Rescue</div>
+          </div>
+        </div>
+
+        <div class="risk-factors">
+          <div class="risk-factors-title">CONTRIBUTING RISK FACTORS</div>
+          
+          <div class="factor-item">
+            <div class="factor-header">
+              <span>Impact Detection (4.8G abrupt deceleration force)</span>
+              <span class="text-error fw-semibold">HIGH</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill bg-error" style="width: 90%;"></div></div>
+          </div>
+          
+          <div class="factor-item">
+            <div class="factor-header">
+              <span>Cardiovascular Stress (112 BPM, +38 BPM baseline)</span>
+              <span class="text-error fw-semibold">HIGH</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill bg-error" style="width: 85%;"></div></div>
+          </div>
+          
+          <div class="factor-item">
+            <div class="factor-header">
+              <span>Motion Anomaly (Zero movement recorded for 3m 40s)</span>
+              <span class="text-error fw-semibold">HIGH</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill bg-error" style="width: 80%;"></div></div>
+          </div>
+          
+          <div class="factor-item">
+            <div class="factor-header">
+              <span>Location Context (High-speed arterial bypass corridor)</span>
+              <span class="text-warning fw-semibold">MEDIUM</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill bg-warning" style="width: 60%;"></div></div>
+          </div>
+
+          <div class="factor-item">
+            <div class="factor-header">
+              <span>Sensor Redundancy Confidence (3 congruent IMU channels)</span>
+              <span class="text-primary fw-semibold">HIGH</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill bg-primary" style="width: 95%;"></div></div>
+          </div>
+        </div>
+
+        <div class="escalation-rationale-box">
+          <div class="rationale-header">
+            <i data-lucide="check-circle" class="text-secondary" style="width: 16px; height: 16px;"></i> Why This Case Was Escalated
+          </div>
+          <p class="rationale-text">
+            System detected rapid deceleration and acute kinetic shock. When the registered Guardian did not respond within the 5:00 safety window, Guardian AI automated escalation protocol routed telemetry directly to emergency services to prevent unassisted medical crisis.
+          </p>
+        </div>
+      </div>
+
+      <div class="card section-card mt-section">
+        <div class="map-context-header">
+          <div class="section-title"><i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> SPATIAL INCIDENT CONTEXT</div>
+          <div class="map-context-coords">
+            16.9890° N, 81.7840° E<br/>(±8m)
+          </div>
+        </div>
+        
+        <div class="map-view-mini">
+          <div class="map-view-bg"></div>
+          
+          <div class="map-view-center">
+            <div class="pin-target">
+              <i data-lucide="shield" style="width: 12px; height: 12px;"></i> Unit 01 (1.2 km away)
+            </div>
+            <div class="pin-subject">
+              Protected Person: Emily (Current)
+            </div>
+          </div>
+          
+          <div class="map-eta-overlay">
+            <i data-lucide="navigation" class="text-secondary" style="width: 12px; height: 12px;"></i> ETA to Intercept: ~2.4 mins via Bypass
+          </div>
+        </div>
+        
+        <div class="location-details-box">
+          <div class="location-text">
+            <strong>Rajahmundry Main Rd (Arterial Bypass)</strong><br/>
+            <span class="text-secondary">Opposite South Fuel Hub, Sector 4</span>
+          </div>
+          <button onclick="window.router.navigate('/map')" class="btn-solid-blue btn-sm">
+            VIEW FULL LIVE LOCATION <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 3: Timeline -->
+    <div class="col-timeline">
+      <div class="card section-card flex-col flex-1">
+        <div class="timeline-header">
+          <div class="section-title"><i data-lucide="activity" style="width: 14px; height: 14px;"></i> INCIDENT TIMELINE</div>
+          <span class="badge badge-success-light"><span class="dot dot-success"></span> SYNC LIVE</span>
+        </div>
+
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          
+          <div class="timeline-item">
+            <div class="timeline-dot bg-error"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="fw-semibold text-error">15:21:03</span>
+                <span class="text-secondary">T+00:00</span>
+              </div>
+              <div class="fw-semibold text-sm">SOS Request triggered</div>
+              <div class="timeline-sub">Impact sensor kinetic shock + double-press hardware trigger on Guardian Band.</div>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-dot bg-warning"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="fw-semibold">15:21:05</span>
+                <span class="text-secondary">T+00:02</span>
+              </div>
+              <div class="fw-semibold text-sm">Guardian David Johnson notified</div>
+              <div class="timeline-sub">High-priority push notification dispatched & automated interactive voice call placed.</div>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-dot bg-warning"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="fw-semibold">15:22:00</span>
+                <span class="text-secondary">T+00:57</span>
+              </div>
+              <div class="fw-semibold text-sm">Guardian response pending (01:00 elapsed)</div>
+              <div class="timeline-sub">Device acoustic feedback pulse active.</div>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-dot bg-warning"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="fw-semibold">15:24:30</span>
+                <span class="text-secondary">T+03:27</span>
+              </div>
+              <div class="fw-semibold text-sm">Response pending (03:30 warning sent)</div>
+              <div class="timeline-sub">Secondary high-urgency SMS broadcast.</div>
+            </div>
+          </div>
+          
+          <div class="timeline-item escalation-alert">
+            <div class="timeline-dot bg-error"></div>
+            <div class="timeline-content-alert">
+              <div class="timeline-meta">
+                <span class="fw-semibold text-error">15:26:05</span>
+                <span class="text-error fw-semibold">5m DEADLINE</span>
+              </div>
+              <div class="fw-semibold text-sm text-error">5-minute threshold reached: NO GUARDIAN RESPONSE</div>
+              <div class="timeline-sub text-error">Auto-escalation protocol initiated automatically by system daemon.</div>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-dot bg-primary"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="fw-semibold text-primary">15:26:05</span>
+                <span class="text-secondary">T+05:02</span>
+              </div>
+              <div class="fw-semibold text-sm">Case created in Municipal Emergency Portal</div>
+              <div class="timeline-sub">Assigned ID #GA-1024 with CRITICAL priority index.</div>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-dot bg-primary"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="fw-semibold text-primary">15:26:07</span>
+                <span class="text-secondary">T+05:04</span>
+              </div>
+              <div class="fw-semibold text-sm">Emergency service notified via Secure WebSocket</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot bg-primary"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="fw-semibold text-primary">15:26:12</span>
+                <span class="text-secondary">T+05:09</span>
+              </div>
+              <div class="fw-semibold text-sm">Operator Sarah Connor received case at console</div>
+              <div class="timeline-sub">Terminal ID OP-8492 session lock established.</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot bg-success"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="fw-semibold text-success">15:27:10</span>
+                <span class="badge badge-gray">Latest</span>
+              </div>
+              <div class="fw-semibold text-sm">Telemetry continuous: Heart rate at 112 BPM</div>
+              <div class="timeline-sub">Zero voluntary locomotion detected.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tactical-actions mt-section-large border-t">
+          <div class="tactical-actions-header">
+            <div class="section-title text-sm"><i data-lucide="settings-2" style="width: 14px; height: 14px;"></i> QUICK TACTICAL ACTIONS</div>
+            <span class="badge bg-gray-200">COMMAND LVL</span>
+          </div>
+          <div class="tactical-btn-group">
+            <button id="cd-tactical-ack" class="btn-tactical"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> ACKNOWLEDGE CASE <i data-lucide="chevron-right" style="width: 14px; height: 14px;" class="ml-auto"></i></button>
+            <button id="cd-tactical-dispatch" class="btn-tactical primary"><i data-lucide="shield" style="width: 14px; height: 14px;"></i> ASSIGN RESPONDER UNIT <span class="tactical-badge">Unit 01 (1.2km)</span></button>
+            <button onclick="window.showToast('Beacon Triggered', '105dB acoustic pulse active', 'warning')" class="btn-tactical error"><i data-lucide="volume-2" style="width: 14px; height: 14px;"></i> TRIGGER REMOTE BEACON (105 dB) <i data-lucide="chevron-right" style="width: 14px; height: 14px;" class="ml-auto"></i></button>
+            <button onclick="window.showToast('Status Updated', 'Dispatch CAD refreshed', 'success')" class="btn-tactical"><i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i> UPDATE DISPATCH STATUS <i data-lucide="chevron-right" style="width: 14px; height: 14px;" class="ml-auto"></i></button>
+            <button id="cd-tactical-resolve" class="btn-tactical"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> RESOLVE CASE <i data-lucide="chevron-right" style="width: 14px; height: 14px;" class="ml-auto"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

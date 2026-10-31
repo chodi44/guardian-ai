@@ -1,0 +1,294 @@
+<div class="incoming-case-container">
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <span>ACTIVE CASES</span>
+    <span class="separator">›</span>
+    <span class="text-secondary font-semibold">INCOMING ESCALATION INGRESS</span>
+    <span class="separator">›</span>
+    <span>NODE-INGRESS-04</span>
+  </div>
+
+  <!-- Header -->
+  <div class="case-header-row">
+    <div>
+      <h1 class="case-title uppercase" id="inc-case-title">NEW EMERGENCY CASE: #GA-1024</h1>
+      <div class="case-badges mt-2">
+        <span class="badge badge-error-outline" id="inc-threat-badge"><span class="dot dot-error mr-1"></span> CRITICAL (89/100)</span>
+        <span class="badge badge-primary-solid">AUTOMATICALLY ESCALATED (1-MIN TIMEOUT)</span>
+        <span class="badge badge-primary-solid">PRIORITY 01</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="btn-ack-incoming" class="btn-solid-primary"><i data-lucide="check-circle" style="width: 16px; height: 16px;"></i> ACKNOWLEDGE INCOMING CASE</button>
+      <button id="btn-open-full-case" class="btn-solid-secondary"><i data-lucide="external-link" style="width: 16px; height: 16px;"></i> OPEN FULL CASE</button>
+    </div>
+  </div>
+
+  <!-- Audit Trail Card -->
+  <div class="audit-trail-card">
+    <div class="audit-header">
+      <div class="flex items-start gap-3">
+        <div class="icon-wrapper error-light-bg text-error p-2 rounded">
+          <i data-lucide="shield-alert" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div>
+          <h2 class="audit-title">Automated 1-Minute Escalation Audit Trail</h2>
+          <p class="audit-desc">Failover protocol enforced by Autonomous Safeguard Rule Engine (Zero-Human Delay)</p>
+        </div>
+      </div>
+      <div class="audit-meta flex gap-4 text-xs font-semibold text-secondary">
+        <div class="flex items-center gap-1"><i data-lucide="shield" style="width: 12px; height: 12px;"></i> Ingress Latency: <span class="text-primary">0.82s</span></div>
+        <div class="flex items-center gap-1">• Protocol: POLICE-FAILSAFE-60S</div>
+      </div>
+    </div>
+
+    <div class="timeline-horizontal">
+      <div class="timeline-line-bg"></div>
+      
+      <div class="tl-step">
+        <div class="tl-dot bg-primary"></div>
+        <div class="tl-time">Step 01</div>
+        <div class="tl-title">SOS Triggered</div>
+        <div class="tl-desc">Panic SOS beacon tripped from user portal.</div>
+        <div class="tl-num text-secondary mt-2">STEP 01 • USER SOS</div>
+      </div>
+      
+      <div class="tl-step">
+        <div class="tl-dot bg-primary"></div>
+        <div class="tl-time">Step 02</div>
+        <div class="tl-title">Guardian Alerted</div>
+        <div class="tl-desc">Simultaneous SMS, Alarm & 60s timer dispatched.</div>
+        <div class="tl-num text-secondary mt-2">STEP 02 • MULTI-CHANNEL</div>
+      </div>
+      
+      <div class="tl-step error-step">
+        <div class="tl-dot bg-error"></div>
+        <div class="tl-time">60s Window</div>
+        <div class="tl-title">1-Min Response Window</div>
+        <div class="tl-desc">Countdown expired. 0 guardian replies in 60s.</div>
+        <div class="tl-num mt-2">STEP 03 • ZERO RESPONSE</div>
+      </div>
+      
+      <div class="tl-step">
+        <div class="tl-dot bg-error"></div>
+        <div class="tl-time">01:00 Expired</div>
+        <div class="tl-title">Response Timeout</div>
+        <div class="tl-desc">60-second threshold exceeded without response.</div>
+        <div class="tl-num text-error mt-2">STEP 04 • TRIGGERED</div>
+      </div>
+      
+      <div class="tl-step active-step bg-primary">
+        <div class="tl-dot bg-white"></div>
+        <div class="tl-time text-white">Failover</div>
+        <div class="tl-title text-white">Municipal Escalation</div>
+        <div class="tl-desc text-white opacity-80">Failover engaged. Incident routed to Police Dispatch.</div>
+        <div class="tl-num text-white mt-2">STEP 05 • AUTONOMOUS</div>
+      </div>
+      
+      <div class="tl-step">
+        <div class="tl-dot bg-success"></div>
+        <div class="tl-time">Live Feed</div>
+        <div class="tl-title">Console Delivery</div>
+        <div class="tl-desc">Encrypted telemetry packet placed on live EOC desk.</div>
+        <div class="tl-num text-success mt-2">STEP 06 • ARRIVAL</div>
+      </div>
+    </div>
+
+    <div class="justification-banner">
+      <div class="justification-icon"><i data-lucide="shield-alert" style="width: 16px; height: 16px;"></i></div>
+      <div class="justification-content">
+        <div class="just-label">AUTONOMOUS ESCALATION JUSTIFICATION: <span class="text-secondary font-normal" id="inc-log-ref">LOG-REF #AE-9938</span></div>
+        <div class="just-text" id="inc-justification-text">
+          "Guardian did not acknowledge, dismiss, or respond to emergency request within the configured 5-minute (300s) response window. Telemetry confirmed sustained distress; Guardian AI automatically escalated incident to Police Emergency Operations Command."
+        </div>
+      </div>
+      <button onclick="window.showToast('Audit Signed Off', 'Escalation justification formally approved.', 'success')" class="btn-audit-signoff">Audit Signoff</button>
+    </div>
+  </div>
+
+  <div class="main-content-grid">
+    <!-- Left Column: Protected Person -->
+    <div class="col-card">
+      <div class="card-header flex justify-between items-center mb-4">
+        <h3 class="card-title flex items-center gap-2"><i data-lucide="activity" class="text-secondary" style="width: 18px; height: 18px;"></i> Protected Person & Live Telemetry</h3>
+        <span class="badge-gray-outline" id="inc-ward-id">ID: #EJ-9021</span>
+      </div>
+
+      <div class="profile-section flex gap-4 mb-6">
+        <div class="profile-img-lg bg-gray">
+          <i data-lucide="user" class="text-tertiary" style="width: 40px; height: 40px;"></i>
+          <div class="online-indicator"></div>
+        </div>
+        <div class="flex-1">
+          <h4 class="font-semibold text-lg" id="inc-ward-name">Emily Johnson <span class="font-normal text-secondary text-sm">Ward</span></h4>
+          <p class="text-xs text-secondary mb-2" id="inc-ward-meta">Emergency Contact: +91 98765 43210 • GPS Active</p>
+          <div class="device-tag flex items-center gap-2">
+            <span class="badge-blue-light">Guardian Band V3</span>
+            <span class="text-xs font-semibold text-success flex items-center gap-1"><span class="dot dot-success"></span> CONNECTED</span>
+            <span class="text-xs font-semibold text-secondary ml-2 flex items-center gap-1"><i data-lucide="battery" style="width: 14px; height: 14px;"></i> Battery 94%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="guardian-status-box mb-6">
+        <div class="guardian-header">
+          <div class="flex items-center gap-2 text-sm font-semibold text-error" id="inc-guardian-name">
+            <i data-lucide="phone-off" style="width: 16px; height: 16px;"></i> Primary Guardian: UNRESPONSIVE (60s Window Expired)
+          </div>
+          <span class="badge badge-error-solid uppercase text-[10px] tracking-wide">No Response</span>
+        </div>
+        <div class="guardian-info">
+          <div class="text-xs text-secondary" id="inc-guardian-info">
+            Guardian did not respond within 60 seconds. Municipal failover engaged automatically.
+          </div>
+          <button onclick="window.showToast('Calling Guardian', 'Initiating secure VoIP call...', 'info')" class="btn-call-guardian"><i data-lucide="phone" style="width: 14px; height: 14px;"></i> CALL GUARDIAN</button>
+        </div>
+      </div>
+
+      <div class="telemetry-stats-grid mb-6">
+        <div class="stat-item">
+          <div class="stat-label">COMPOSITE RISK</div>
+          <div class="stat-value text-error" id="inc-stat-risk">89 <span class="stat-unit">/100</span></div>
+          <div class="stat-sub">Severity: Critical</div>
+        </div>
+        <div class="stat-item border-l pl-4 border-light">
+          <div class="stat-label">RESPONSE TIMEOUT</div>
+          <div class="stat-value text-primary">60 <span class="stat-unit">sec</span></div>
+          <div class="stat-sub">1-Min Protocol</div>
+        </div>
+        <div class="stat-item border-l pl-4 border-light">
+          <div class="stat-label">HEART RHYTHM</div>
+          <div class="stat-value text-error" id="inc-heart-rate">148 <span class="stat-unit">BPM</span></div>
+          <div class="stat-sub text-error font-semibold">Tachycardia Alert</div>
+        </div>
+      </div>
+
+      <div class="threat-score-row mb-6">
+        <div class="text-xs font-semibold text-secondary">CURRENT DYNAMIC THREAT SCORE</div>
+        <div class="text-error font-bold" id="inc-threat-score">89 / 100 — CRITICAL LIFE SAFETY</div>
+      </div>
+
+      <div class="location-box mb-6">
+        <div class="flex justify-between items-center mb-1">
+          <div class="text-xs font-semibold text-secondary">LOCATION TELEMETRY</div>
+          <div class="text-xs font-semibold text-success flex items-center gap-1"><span class="dot dot-success"></span> LIVE REFRESH (1.2s)</div>
+        </div>
+        <div class="font-semibold text-lg" id="inc-location-address">Sector 4 Metro, Main Rd</div>
+        <div class="text-xs text-secondary mt-1" id="inc-location-coords">Coordinates: 17.3850° N, 78.4866° E &nbsp; GPS Accuracy: <span class="text-secondary font-semibold">±8m</span></div>
+      </div>
+
+      <div class="beacon-alert">
+        <div class="flex items-center gap-3">
+          <i data-lucide="volume-2" class="text-white" style="width: 24px; height: 24px;"></i>
+          <div>
+            <div class="text-sm font-bold text-white tracking-wide">AUDIO BEACON ALERT</div>
+            <div class="text-xs text-white opacity-90 mt-0.5">Wrist Beacon: ARMED</div>
+          </div>
+        </div>
+        <button onclick="window.showToast('Beacon Triggered', '105dB acoustic pulse active', 'warning')" class="btn-beacon">TRIGGER 105 DB</button>
+      </div>
+    </div>
+
+    <!-- Right Column: Routing & Units -->
+    <div class="col-card">
+      <div class="card-header flex justify-between items-center mb-4">
+        <h3 class="card-title flex items-center gap-2"><i data-lucide="navigation" class="text-secondary" style="width: 18px; height: 18px;"></i> Emergency Service Routing & Units</h3>
+        <span class="badge-blue-solid text-[10px] tracking-wide px-2 py-1">GEOFENCE PROXIMITY ACTIVE</span>
+      </div>
+
+      <div class="node-assignment mb-6 p-4 bg-gray-light rounded-lg border border-light">
+        <div class="text-xs font-semibold text-secondary mb-1">ASSIGNED COMMAND NODE</div>
+        <div class="flex justify-between items-start">
+          <div>
+            <div class="font-semibold text-lg text-primary">Central Tactical Dispatch</div>
+            <div class="text-sm text-secondary">Sector 4 • Intercept Desk</div>
+          </div>
+          <div class="text-right">
+            <div class="font-bold text-lg">2.4 km</div>
+            <div class="text-xs text-secondary">from incident</div>
+          </div>
+        </div>
+        <div class="flex justify-between items-center mt-3 pt-3 border-t border-light text-xs font-semibold">
+          <div class="text-primary flex items-center gap-1"><span class="dot bg-primary"></span> MESH ACTIVE</div>
+          <div class="text-secondary">Channel: CH-44 TAC</div>
+        </div>
+      </div>
+
+      <div class="map-embed relative rounded-lg overflow-hidden border border-light mb-6 h-[140px] bg-dark flex items-center justify-center">
+        <!-- Map Placeholder -->
+        <div class="absolute inset-0 opacity-80 bg-[url('https://maps.wikimedia.org/osm-intl/14/11797/7542.png')] bg-cover bg-center filter grayscale contrast-125"></div>
+        <div class="absolute top-2 left-2 bg-white/90 px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1">
+          <span class="dot dot-error"></span> INCIDENT EPICENTER: RAJAHMUNDRY SEC 4
+        </div>
+        <div class="absolute bottom-2 right-2 bg-primary text-white px-3 py-1.5 rounded font-bold text-xs">
+          ETA INTERCEPT: 03m 15s
+        </div>
+      </div>
+
+      <div class="units-list flex flex-col gap-3">
+        <div class="text-xs font-bold text-secondary tracking-wide mb-1">AVAILABLE MUNICIPAL UNITS WITHIN 3KM</div>
+        
+        <!-- Unit 01 -->
+        <div class="unit-card active">
+          <div class="unit-id bg-primary text-white">01</div>
+          <div class="unit-details flex-1">
+            <div class="flex justify-between items-center mb-1">
+              <span class="font-bold text-primary">Unit 01 (Officer K. Sharma)</span>
+              <span class="text-success text-[10px] font-bold uppercase tracking-wider">Available</span>
+            </div>
+            <div class="flex justify-between items-end">
+              <span class="text-xs text-secondary w-24 leading-tight">Fast Intercept<br/>Patrol</span>
+              <div class="text-center">
+                <span class="block text-xs font-bold text-primary">1.2 km</span>
+              </div>
+              <div class="text-center">
+                <span class="block text-xs font-bold text-primary">ETA: ~3 min</span>
+              </div>
+            </div>
+          </div>
+          <div class="unit-recommendation">RECOMMENDED</div>
+        </div>
+
+        <!-- Unit 03 -->
+        <div class="unit-card">
+          <div class="unit-id bg-gray-300 text-secondary">03</div>
+          <div class="unit-details flex-1">
+            <div class="flex justify-between items-center mb-1">
+              <span class="font-bold text-primary">Unit 03 (Officer D. Rao)</span>
+              <span class="text-success text-[10px] font-bold uppercase tracking-wider">Available</span>
+            </div>
+            <div class="flex justify-between items-end">
+              <span class="text-xs text-secondary w-24 leading-tight">Tactical EMS<br/>Support</span>
+              <div class="text-center">
+                <span class="block text-xs font-bold text-secondary">2.4 km</span>
+              </div>
+              <div class="text-center">
+                <span class="block text-xs font-bold text-secondary">ETA: ~5 min</span>
+              </div>
+            </div>
+          </div>
+          <div class="unit-queue-badge">RESERVE</div>
+        </div>
+      </div>
+
+      <button id="btn-dispatch" class="btn-dispatch mt-6"><i data-lucide="shield" style="width: 18px; height: 18px;"></i> ASSIGN UNIT 01 & DISPATCH NOW</button>
+      
+      <div class="flex justify-between text-[10px] text-secondary mt-3 px-2 font-semibold">
+        <span class="flex items-center gap-1"><i data-lucide="zap" style="width: 10px; height: 10px;"></i> CAD relay ready</span>
+        <span class="flex items-center gap-1">Auth: Operator Sarah Connor</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Bar -->
+  <div class="protocol-footer">
+    <div class="flex items-center gap-3 text-sm">
+      <div class="protocol-icon bg-primary-light p-1.5 rounded"><i data-lucide="shield" class="text-primary" style="width: 16px; height: 16px;"></i></div>
+      <div>
+        <strong class="text-primary font-bold text-xs tracking-wider mr-2">OPERATIONAL PROTOCOL 411-ALPHA:</strong>
+        <span class="text-secondary text-xs">Case state auto-locks to Municipal EOC console until primary officer checks in on scene.</span>
+      </div>
+    </div>
+    <button class="btn-audit-logs bg-white border border-light px-4 py-2 rounded font-bold text-xs text-primary shadow-sm">View Dispatch Audit Logs</button>
+  </div>
+</div>

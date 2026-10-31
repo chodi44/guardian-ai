@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    window.location.replace('/guardian/dashboard/index.html#acoustic');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoring Console — Guardian AI</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/voice-mails.css">
+</head>
+<body class="theme-light">
+
+  <div id="app-container" class="app-layout">
+
+    <!-- PERSISTENT SIDEBAR NAVIGATION -->
+    <aside id="main-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="/guardian/dashboard/index.html" class="brand-logo" style="text-decoration: none;">
+          <div class="logo-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="brand-text">
+            <span class="brand-name">Guardian AI</span>
+            <span class="brand-hub-pill">GUARDIAN</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- User Info Chip -->
+      <div class="user-profile-chip">
+        <div class="avatar-box">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma" class="user-avatar" id="sidebar-user-avatar">
+          <span class="online-indicator"></span>
+        </div>
+        <div class="user-info">
+          <span class="user-name" id="sidebar-user-name">Ravi Sharma</span>
+          <span class="user-id">GDN-7A92K4 <i class="fa-regular fa-circle-check verified-badge"></i></span>
+        </div>
+      </div>
+
+      <!-- Main Navigation Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Telemetry & Safety</div>
+        <ul>
+          <li>
+            <a href="home.html" class="nav-link" data-view="home">
+              <i class="fa-solid fa-house"></i>
+              <span>Monitoring Console</span>
+            </a>
+          </li>
+          <li>
+            <a href="location.html" class="nav-link" data-view="live-location">
+              <i class="fa-solid fa-location-arrow"></i>
+              <span>Live Location</span>
+            </a>
+          </li>
+          <li>
+            <a href="journeys.html" class="nav-link" data-view="journeys">
+              <i class="fa-solid fa-route"></i>
+              <span>Safe Corridors</span>
+            </a>
+          </li>
+          <li>
+            <a href="alerts.html" class="nav-link" data-view="alerts">
+              <i class="fa-solid fa-bell"></i>
+              <span>Alerts & Logs</span>
+              <span class="badge-count badge-warning" id="alerts-count-badge">3</span>
+            </a>
+          </li>
+          <li>
+            <a href="insights.html" class="nav-link" data-view="insights">
+              <i class="fa-solid fa-chart-line"></i>
+              <span>Risk Insights</span>
+            </a>
+          </li>
+          <li>
+            <a href="band.html" class="nav-link" data-view="band">
+              <i class="fa-solid fa-stopwatch"></i>
+              <span>Guardian Band</span>
+            </a>
+          </li>
+          <li>
+            <a href="voice-mails.html" class="nav-link active" data-view="voice-mails">
+              <i class="fa-solid fa-microphone"></i>
+              <span>Acoustic Triage</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title">Guardian Supervision</div>
+        <ul>
+          <li>
+            <a href="/guardian/dashboard/index.html" class="nav-link" data-view="guardian-dashboard">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>Protector Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="/guardian/linked-users/index.html" class="nav-link" data-view="linked-users">
+              <i class="fa-solid fa-users"></i>
+              <span>Linked Users</span>
+            </a>
+          </li>
+          <li>
+            <a href="/guardian/connect-user/index.html" class="nav-link" data-view="connect-user">
+              <i class="fa-solid fa-link"></i>
+              <span>Connect to User</span>
+            </a>
+          </li>
+          <li>
+            <a href="/guardian/permissions/index.html" class="nav-link" data-view="permissions">
+              <i class="fa-solid fa-sliders"></i>
+              <span>Access Permissions</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="nav-divider"></div>
+
+        <ul>
+          <li>
+            <a href="profile.html" class="nav-link" data-view="profile">
+              <i class="fa-solid fa-user"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+          <li>
+            <a href="settings.html" class="nav-link" data-view="settings">
+              <i class="fa-solid fa-gear"></i>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="nav-divider"></div>
+
+        <div class="sos-trigger-box">
+          <a href="sos-alert.html" class="btn-sos-launch" style="text-decoration: none;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-dependent-card">
+        <div class="dependent-status-header">
+          <span class="dep-name">Ananya</span>
+          <span class="pill-badge pill-safe">● Safe • Normal</span>
+        </div>
+        <div class="dependent-status-details">
+          <i class="fa-solid fa-shield-heart text-safe"></i>
+          <span>Safe Geofence • GPS Lock</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-wrapper">
+
+      <!-- TOP HEADER BAR -->
+      <header id="top-header" class="top-header">
+        <div class="header-breadcrumbs">
+          <span class="breadcrumb-root">Guardian System</span>
+          <i class="fa-solid fa-chevron-right breadcrumb-sep"></i>
+          <span class="breadcrumb-active">Voice Mails Dashboard</span>
+        </div>
+
+        <div class="header-right-controls">
+          <div class="dependent-selector-dropdown">
+            <button class="selector-btn">
+              <span class="dot-online"></span>
+              <span class="selected-person">Ananya (Daughter)</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+
+          <div class="sync-status-chip">
+            <span class="dot-pulse-green"></span>
+            <span class="sync-text">Synced <span id="sync-timer-sec">10</span> sec ago</span>
+          </div>
+
+          <a href="alerts.html" class="notification-icon-wrapper notification-button" aria-label="View alerts" style="text-decoration:none; color:inherit;">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge"></span>
+          </a>
+
+          <div class="header-user-avatar">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma">
+          </div>
+        </div>
+      </header>
+
+      <!-- VIEW CONTENT -->
+      <div class="views-container">
+
+        <section id="view-voice-mails" class="app-view active">
+          <div class="voice-mails-header">
+            <h1>Voice Mails</h1>
+            <p>Listen to recent guardian and safety-related messages.</p>
+          </div>
+
+          <div class="voice-mail-list">
+            <!-- Message 1 -->
+            <div class="card voice-mail-card">
+              <div class="vm-header">
+                <div class="vm-icon unread">
+                  <i class="fa-solid fa-microphone"></i>
+                </div>
+                <div class="vm-info">
+                  <div class="vm-sender">Ravi</div>
+                  <div class="vm-meta">
+                    <span>10:42 AM</span>
+                    <span class="vm-dot">&bull;</span>
+                    <span>"Are you reaching home?"</span>
+                  </div>
+                </div>
+              </div>
+              <div class="vm-message-type">Voice message</div>
+              <div class="vm-player">
+                <button class="vm-play-btn" aria-label="Play">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+                <div class="vm-progress-track">
+                  <div class="vm-progress-fill" style="width: 0%;"></div>
+                </div>
+                <span class="vm-duration">0:24</span>
+              </div>
+            </div>
+
+            <!-- Message 2 -->
+            <div class="card voice-mail-card">
+              <div class="vm-header">
+                <div class="vm-icon">
+                  <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="vm-info">
+                  <div class="vm-sender">Guardian</div>
+                  <div class="vm-meta">
+                    <span>09:18 AM</span>
+                  </div>
+                </div>
+              </div>
+              <div class="vm-message-type">Voice message</div>
+              <div class="vm-player">
+                <button class="vm-play-btn" aria-label="Play">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+                <div class="vm-progress-track">
+                  <div class="vm-progress-fill" style="width: 100%;"></div>
+                </div>
+                <span class="vm-duration">0:42</span>
+              </div>
+            </div>
+
+            <!-- Message 3 -->
+            <div class="card voice-mail-card">
+              <div class="vm-header">
+                <div class="vm-icon" style="color: var(--danger-red); background: #fee2e2;">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="vm-info">
+                  <div class="vm-sender">Safety System</div>
+                  <div class="vm-meta">
+                    <span>Yesterday</span>
+                  </div>
+                </div>
+              </div>
+              <div class="vm-message-type">Emergency voice note</div>
+              <div class="vm-player">
+                <button class="vm-play-btn" aria-label="Play">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+                <div class="vm-progress-track">
+                  <div class="vm-progress-fill" style="width: 100%;"></div>
+                </div>
+                <span class="vm-duration">0:18</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+</main>
+  </div>
+
+  <!-- Shared Voice Call Modal -->
+  <div class="modal-backdrop" id="modal-voice-call">
+    <div class="modal-card modal-call-card">
+      <button class="btn-close-modal" id="btn-close-call-modal">&times;</button>
+      <div class="call-avatar-pulse">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&h=150&q=80" alt="Ananya">
+        <span class="call-ripple-ring"></span>
+      </div>
+      <h3 class="call-person-name">Ananya Sharma</h3>
+      <p class="call-status-text" id="call-status-label">Encrypted Guardian Voice Link Connecting...</p>
+      <span class="call-timer" id="call-timer">00:04</span>
+
+      <div class="call-actions-row">
+        <button class="btn-round-action btn-mute"><i class="fa-solid fa-microphone-slash"></i></button>
+        <button class="btn-round-action btn-speaker"><i class="fa-solid fa-volume-high"></i></button>
+        <button class="btn-round-action btn-hangup" id="btn-hangup-call"><i class="fa-solid fa-phone-slash"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="js/guardian-core.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

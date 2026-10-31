@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function() {
+      try {
+        const sess = JSON.parse(localStorage.getItem('gdn_portal_session') || '{}');
+        const role = sess.role === 'guardian' ? 'guardian' : 'user';
+        window.location.replace('/' + role + '/dashboard/index.html#insights');
+      } catch(e) {
+        window.location.replace('/user/dashboard/index.html#insights');
+      }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safety Insights — Guardian AI</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Leaflet & Chart.js -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/insights.css">
+</head>
+<body class="theme-light">
+
+  <div id="app-container" class="app-layout">
+
+    <aside id="main-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="/guardian/dashboard/index.html" class="brand-logo" style="text-decoration: none;">
+          <div class="logo-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="brand-text">
+            <span class="brand-name">Guardian AI</span>
+            <span class="brand-hub-pill">GUARDIAN</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="user-profile-chip">
+        <div class="avatar-box">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma" class="user-avatar">
+          <span class="online-indicator"></span>
+        </div>
+        <div class="user-info">
+          <span class="user-name">Ravi Sharma</span>
+          <span class="user-id">GDN-7A92K4 <i class="fa-regular fa-circle-check verified-badge"></i></span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Telemetry & Safety</div>
+        <ul>
+          <li><a href="home.html" class="nav-link" data-view="home"><i class="fa-solid fa-house"></i><span>Monitoring Console</span></a></li>
+          <li><a href="location.html" class="nav-link" data-view="live-location"><i class="fa-solid fa-location-arrow"></i><span>Live Location</span></a></li>
+          <li><a href="journeys.html" class="nav-link" data-view="journeys"><i class="fa-solid fa-route"></i><span>Safe Corridors</span></a></li>
+          <li><a href="alerts.html" class="nav-link" data-view="alerts"><i class="fa-solid fa-bell"></i><span>Alerts & Logs</span><span class="badge-count badge-warning">3</span></a></li>
+          <li><a href="insights.html" class="nav-link active" data-view="insights"><i class="fa-solid fa-chart-line"></i><span>Risk Insights</span></a></li>
+          <li><a href="band.html" class="nav-link" data-view="band"><i class="fa-solid fa-stopwatch"></i><span>Guardian Band</span></a></li>
+          <li><a href="voice-mails.html" class="nav-link" data-view="voice-mails"><i class="fa-solid fa-microphone"></i><span>Acoustic Triage</span></a></li>
+        </ul>
+
+        <div class="nav-section-title">Guardian Supervision</div>
+        <ul>
+          <li><a href="/guardian/dashboard/index.html" class="nav-link" data-view="guardian-dashboard"><i class="fa-solid fa-shield-halved"></i><span>Protector Dashboard</span></a></li>
+          <li><a href="/guardian/linked-users/index.html" class="nav-link" data-view="linked-users"><i class="fa-solid fa-users"></i><span>Linked Users</span></a></li>
+          <li><a href="/guardian/connect-user/index.html" class="nav-link" data-view="connect-user"><i class="fa-solid fa-link"></i><span>Connect to User</span></a></li>
+          <li><a href="/guardian/permissions/index.html" class="nav-link" data-view="permissions"><i class="fa-solid fa-sliders"></i><span>Access Permissions</span></a></li>
+        </ul>
+
+        <div class="nav-divider"></div>
+        <ul>
+          <li><a href="profile.html" class="nav-link" data-view="profile"><i class="fa-solid fa-user"></i><span>Profile</span></a></li>
+          <li><a href="settings.html" class="nav-link" data-view="settings"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
+        </ul>
+        <div class="nav-divider"></div>
+        <div class="sos-trigger-box">
+          <a href="sos-alert.html" class="btn-sos-launch" style="text-decoration: none;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-dependent-card">
+        <div class="dependent-status-header">
+          <span class="dep-name">Ananya</span>
+          <span class="pill-badge pill-safe">● Safe • Normal</span>
+        </div>
+        <div class="dependent-status-details">
+          <i class="fa-solid fa-shield-heart text-safe"></i>
+          <span>Safe Geofence • GPS Lock</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-wrapper">
+      <header id="top-header" class="top-header">
+        <div class="header-breadcrumbs">
+          <span class="breadcrumb-root">Guardian System</span>
+          <i class="fa-solid fa-chevron-right breadcrumb-sep"></i>
+          <span class="breadcrumb-active">Safety Insights & Telemetry</span>
+        </div>
+
+        <div class="header-right-controls">
+          <div class="dependent-selector-dropdown">
+            <button class="selector-btn">
+              <span class="dot-online"></span>
+              <span class="selected-person">Ananya (Daughter)</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+          <div class="sync-status-chip">
+            <span class="dot-pulse-green"></span>
+            <span class="sync-text">Synced <span id="sync-timer-sec">10</span> sec ago</span>
+          </div>
+          <a href="alerts.html" class="notification-icon-wrapper notification-button" aria-label="View alerts" style="text-decoration:none; color:inherit;">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge"></span>
+          </a>
+          <div class="header-user-avatar">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma">
+          </div>
+        </div>
+      </header>
+
+      <div class="views-container">
+        <section id="view-insights" class="app-view">
+          <div class="insights-hero-header">
+            <div>
+              <span class="pill-brand-tag">● TELEMETRY & BIOMETRICS INTELLIGENCE</span>
+              <h1 class="page-main-title">Safety Insights</h1>
+              <p class="page-subtitle">Understand safety patterns, safe corridor compliance, and predictive risk trends across recent journeys.</p>
+            </div>
+            <div class="header-action-buttons">
+              <div class="date-filter-group">
+                <button class="date-btn active">Past 7 Days</button>
+                <button class="date-btn">Past 30 Days</button>
+                <button class="date-btn">Semester</button>
+              </div>
+              <button class="btn-primary" id="btn-export-dossier"><i class="fa-solid fa-download"></i> Export Dossier</button>
+            </div>
+          </div>
+
+          <div class="grid-4col-row">
+            <div class="card card-insights-metric">
+              <div class="m-top"><span class="m-lbl">Total Volume</span> <i class="fa-solid fa-person-walking text-primary"></i></div>
+              <div class="m-val">12 <span class="unit">Journeys</span></div>
+              <span class="m-sub text-safe"><i class="fa-solid fa-circle-check"></i> 100% completed safely</span>
+              <span class="subtext-caption"><span class="hide-mobile">Monitored window: </span>Past 7 Days</span>
+            </div>
+
+            <div class="card card-insights-metric">
+              <div class="m-top"><span class="m-lbl">Corridor Compliance</span> <i class="fa-solid fa-shield-check text-safe"></i></div>
+              <div class="m-val">83% <span class="unit">Verified</span></div>
+              <span class="m-sub"><span class="hide-mobile">10 of 12 journeys </span>in high-lux corridors</span>
+              <div class="compliance-track"><div class="compliance-fill" style="width: 83%;"></div></div>
+            </div>
+
+            <div class="card card-insights-metric">
+              <div class="m-top"><span class="m-lbl">Aggregate Risk Index</span> <span class="pill-badge pill-safe">● Optimal</span></div>
+              <div class="m-val">22 <span class="unit">/ 100</span></div>
+              <span class="m-sub text-safe"><i class="fa-solid fa-arrow-down"></i> 13 points below caution threshold<span class="hide-mobile"> (35)</span></span>
+              <span class="subtext-caption"><span class="hide-mobile">Low-risk environmental </span>baseline</span>
+            </div>
+
+            <div class="card card-insights-metric">
+              <div class="m-top"><span class="m-lbl">Sensor & Mesh Lock</span> <i class="fa-solid fa-tower-broadcast text-info"></i></div>
+              <div class="m-val">99.4% <span class="unit">Valid</span></div>
+              <span class="m-sub"><span class="hide-mobile">Continuous </span>satellite + BLE mesh</span>
+              <div class="dual-sub-tags">
+                <span>Zero telemetry blackouts</span>
+                <span class="text-primary fw-600">32ms Latency</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2col-row insights-middle-grid">
+            <div class="card card-chart-large">
+              <div class="card-header-row">
+                <div>
+                  <h3 class="card-title">Weekly Risk Trend <span class="pill-badge pill-info">Live Model v4.2</span></h3>
+                  <p class="card-subtitle">Calculated from lux index, route familiarity, biometric heart-rate spikes, and incident reports.</p>
+                </div>
+                <div class="chart-legend-row">
+                  <span>● Daily Risk Score</span>
+                  <span class="text-warning">-- Caution Threshold (35)</span>
+                </div>
+              </div>
+
+              <div class="chart-canvas-container">
+                <canvas id="insights-weekly-chart" height="180"></canvas>
+              </div>
+
+              <div class="chart-bottom-summary">
+                <span class="pill-badge pill-info"><i class="fa-solid fa-circle-check"></i> Weekly Variance: ±5.5 pts <span class="hide-mobile">(Highly Stable Corridor Consistency)</span></span>
+                <span class="text-safe fw-600">● Zero excursions beyond safe baseline</span>
+              </div>
+            </div>
+
+            <div class="card card-anomalies">
+              <div class="card-header-row">
+                <h3 class="card-title">Route Anomalies</h3>
+                <span class="pill-badge pill-info">3 Total Logs</span>
+              </div>
+              <p class="panel-sub">Automated trigger incidents</p>
+
+              <div class="anomalies-list">
+                <div class="anomaly-item">
+                  <div class="anom-top">
+                    <span class="anom-name"><i class="fa-solid fa-person-walking-arrow-loop-left text-warning"></i> Minor Route Detours</span>
+                    <span class="pill-badge pill-warning">2 events</span>
+                  </div>
+                  <p class="hide-mobile">Brief pedestrian departures from mapped perimeter.</p>
+                  <span class="anom-sub">Avg Resolution: <strong>75 seconds</strong></span>
+                </div>
+
+                <div class="anomaly-item">
+                  <div class="anom-top">
+                    <span class="anom-name"><i class="fa-solid fa-moon text-warning"></i> Low-Lumen Segments</span>
+                    <span class="pill-badge pill-warning">1 event</span>
+                  </div>
+                  <p class="hide-mobile">Luminary sensors flagged under-lit stretch along Oak Lane.</p>
+                  <span class="anom-sub">Resolution Status: <strong class="text-safe">✓ Flagged & Rerouted</strong></span>
+                </div>
+
+                <div class="anomaly-item">
+                  <div class="anom-top">
+                    <span class="anom-name"><i class="fa-solid fa-shield-heart text-primary"></i> Safe Haven Proximity</span>
+                    <span class="pill-badge pill-info">94%</span>
+                  </div>
+                  <p class="hide-mobile">Transit occurred within 400m of a verified safe emergency post, 24/7 store, or security desk.</p>
+                  <div class="progress-bar-track mt-5"><div class="progress-bar-fill" style="width: 94%;"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2col-row insights-bottom-grid">
+            <div class="card card-corridors-breakdown">
+              <div class="card-header-row">
+                <div>
+                  <h3 class="card-title">Transit Corridor Usage Breakdown</h3>
+                  <p class="card-subtitle hide-mobile">Real-time telemetry distribution across designated primary & alternative thoroughfares</p>
+                </div>
+                <button class="btn-icon-filter"><i class="fa-solid fa-sliders"></i></button>
+              </div>
+
+              <div class="corridors-list">
+                <div class="corridor-row">
+                  <div class="c-badge-num">#4</div>
+                  <div class="c-details">
+                    <div class="c-top">
+                      <strong>Campus-to-Home Main Highway</strong>
+                      <span class="pill-badge pill-safe">Primary<span class="hide-mobile"> Safe Corridor</span></span>
+                    </div>
+                    <p class="c-specs hide-mobile">Active smart LED canopy • High foot traffic • 8 Safe Havens</p>
+                    <div class="c-progress-bar"><div class="c-fill" style="width: 68%;"></div></div>
+                  </div>
+                  <div class="c-stats">
+                    <span class="c-pct">68%</span>
+                    <span class="c-lbl">Frequency</span>
+                    <span class="c-rating text-safe">✓ 99.1% Safety Rating</span>
+                  </div>
+                </div>
+
+                <div class="corridor-row">
+                  <div class="c-badge-num num-blue">#1</div>
+                  <div class="c-details">
+                    <div class="c-top">
+                      <strong>Library Loop Transit</strong>
+                      <span class="pill-badge pill-info">Secondary<span class="hide-mobile"> Protected</span></span>
+                    </div>
+                    <p class="c-specs hide-mobile">Dedicated security shuttle link • Campus emergency kiosks every 150m</p>
+                    <div class="c-progress-bar"><div class="c-fill bg-blue" style="width: 22%;"></div></div>
+                  </div>
+                  <div class="c-stats">
+                    <span class="c-pct">22%</span>
+                    <span class="c-lbl">Frequency</span>
+                    <span class="c-rating text-safe">✓ 98.5% Safety Rating</span>
+                  </div>
+                </div>
+
+                <div class="corridor-row">
+                  <div class="c-badge-num num-amber">#3</div>
+                  <div class="c-details">
+                    <div class="c-top">
+                      <strong>Commercial Arcade Route</strong>
+                      <span class="pill-badge pill-warning">Alternate<span class="hide-mobile"> Path</span></span>
+                    </div>
+                    <p class="c-specs hide-mobile">Shops close past 9:30 PM • Moderate street lighting</p>
+                    <div class="c-progress-bar"><div class="c-fill bg-amber" style="width: 10%;"></div></div>
+                  </div>
+                  <div class="c-stats">
+                    <span class="c-pct">10%</span>
+                    <span class="c-lbl">Frequency</span>
+                    <span class="c-rating text-warning">● 91.2% Safety Rating</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-ai-recs">
+              <div class="card-header-row">
+                <div class="card-title-group">
+                  <div class="icon-circle icon-blue"><i class="fa-solid fa-robot"></i></div>
+                  <div>
+                    <h3 class="card-title">AI Escort Recommendations</h3>
+                    <span class="subtext-caption">Predictive Engine Guidance</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="recs-list">
+                <div class="rec-item">
+                  <i class="fa-solid fa-lightbulb text-primary"></i>
+                  <div>
+                    <strong>Optimal Lighting Advisory</strong>
+                    <p>Central Ave streetlights operate at full intensity until <strong class="text-primary">11:00 PM</strong>. Journeys scheduled past this window will auto-reroute to Corridor #4.</p>
+                    <span class="subtext-caption"><i class="fa-solid fa-rotate"></i> Updated automatically via municipal IoT feed</span>
+                  </div>
+                </div>
+
+                <div class="rec-item">
+                  <i class="fa-solid fa-shield-heart text-safe"></i>
+                  <div>
+                    <strong>Corridor Safety Profile</strong>
+                    <p>Wednesday evening transit recorded lowest environmental risk score <strong class="text-safe">(16/100)</strong>. Recommending this departure window for future late-class commutes.</p>
+                    <div class="rec-actions">
+                      <span class="subtext-caption">Recommended Action:</span>
+                      <a href="#" class="btn-link-sm">Save to Schedule <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="toggle-setting-row">
+                  <div>
+                    <strong>Band Haptic Prompts</strong>
+                    <p>Auto-nudge on corridor deviations</p>
+                  </div>
+                  <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-topology-map">
+            <div class="card-header-row">
+              <div>
+                <h3 class="card-title"><i class="fa-solid fa-map-location-dot text-primary"></i> Safe Corridor<span class="hide-mobile"> Visual</span> Topology</h3>
+                <p class="card-subtitle hide-mobile">Geospatial coverage map displaying verified safe corridors, verified emergency kiosks, and real-time safe havens along Ananya's route.</p>
+              </div>
+              <div class="map-actions-top">
+                <span class="pill-badge pill-safe">● All 8 Safe Havens Operational</span>
+                <button class="btn-secondary-sm" id="btn-expand-topology-map"><i class="fa-solid fa-expand"></i><span class="hide-mobile"> Expand Map</span></button>
+              </div>
+            </div>
+
+            <div class="topology-map-viewport">
+              <div id="insights-topology-map" class="leaflet-map-topology"></div>
+              <div class="topology-floating-badge">
+                <span class="pill-badge pill-info">ACTIVE GEOFENCE<span class="hide-mobile"> ACTIVE</span></span>
+                <strong>Corridor #4 <span class="hide-mobile">(Main Arterial)</span></strong>
+                <p class="hide-mobile">High-definition telemetry active: 100% path coverage with sub-meter accuracy.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal-voice-call">
+    <div class="modal-card modal-call-card">
+      <button class="btn-close-modal" id="btn-close-call-modal">&times;</button>
+      <div class="call-avatar-pulse">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&h=150&q=80" alt="Ananya">
+        <span class="call-ripple-ring"></span>
+      </div>
+      <h3 class="call-person-name">Ananya Sharma</h3>
+      <p class="call-status-text" id="call-status-label">Encrypted Guardian Voice Link Connecting...</p>
+      <span class="call-timer" id="call-timer">00:04</span>
+
+      <div class="call-actions-row">
+        <button class="btn-round-action btn-mute"><i class="fa-solid fa-microphone-slash"></i></button>
+        <button class="btn-round-action btn-speaker"><i class="fa-solid fa-volume-high"></i></button>
+        <button class="btn-round-action btn-hangup" id="btn-hangup-call"><i class="fa-solid fa-phone-slash"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="js/guardian-core.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/insights.js"></script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+/* history.css */
+.history-container {
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.history-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.history-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.history-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+}
+
+.search-input {
+  padding: 0.5rem 1rem 0.5rem 2.25rem;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  width: 280px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--color-primary);
+}
+
+.btn-outline-gray {
+  background: white;
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.btn-outline-gray:hover {
+  background-color: #F8FAFC;
+}
+
+.history-card {
+  background-color: white;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.table-scroll-area {
+  overflow-x: auto;
+  flex: 1;
+}
+
+.history-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.history-table thead tr {
+  background-color: #F8FAFC;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.history-table th {
+  padding: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.history-table tbody tr {
+  border-bottom: 1px solid var(--border-light);
+  transition: background-color 0.2s;
+}
+
+.history-table tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+.history-table td {
+  padding: 1rem;
+}
+
+.cell-id { font-weight: 700; color: var(--color-primary); }
+.cell-time { font-size: 0.85rem; }
+.cell-name { font-weight: 600; }
+.cell-reason { font-size: 0.85rem; }
+.cell-resolution { font-size: 0.85rem; }
+
+.badge-warning-solid { background-color: var(--color-warning); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; }
+.badge-yellow-solid { background-color: #F59E0B; color: white; padding: 0.2rem 0.5rem; border-radius: 4px; }
+.badge-error-solid { background-color: var(--color-error); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; }
+.badge-gray-solid { background-color: #94A3B8; color: white; padding: 0.2rem 0.5rem; border-radius: 4px; }
+
+.text-tiny { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; }
+.text-right { text-align: right; }
+
+.btn-view {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-view:hover {
+  color: var(--color-primary-dark);
+}
+
+.history-pagination {
+  padding: 1rem;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  background-color: white;
+}
+
+.pagination-text {
+  font-weight: 600;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-page {
+  padding: 0.25rem;
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-page:hover:not(:disabled) {
+  background-color: #F8FAFC;
+}
+
+.btn-page:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

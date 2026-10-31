@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Setup (Step 1) — Guardian AI System</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/onboarding-step1.css">
+</head>
+<body class="theme-light">
+
+  <div id="app-container" class="app-layout">
+    <main class="main-wrapper" style="margin-left: 0;">
+      <div class="views-container">
+        <section id="view-onboarding-step1" class="app-view">
+          <div class="onboarding-container">
+            <div class="onboarding-progress-header">
+              <span class="step-label">STEP 1 OF 2</span>
+              <span class="step-percent">50% Completed</span>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" style="width: 50%;"></div>
+              </div>
+            </div>
+
+            <h1 class="page-main-title" style="font-size: 24px; font-weight: 800; color: var(--slate-900);">Set Up Guardian Profile</h1>
+            <p class="page-subtitle" style="font-size: 13.5px; color: var(--slate-500); margin-top: 4px;">Complete your profile to establish your secure Guardian network.</p>
+
+            <div class="onboarding-card">
+              <!-- Avatar Upload Box -->
+              <div class="profile-upload-card">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80" alt="Avatar" class="upload-avatar-img">
+                <div class="upload-actions">
+                  <button class="btn-secondary"><i class="fa-solid fa-upload"></i> Upload Photo</button>
+                  <span class="pill-badge pill-safe">✓ Identity Ready</span>
+                  <p class="upload-help-text">Recommended: 500×500px, clear facial portrait for emergency responder verification.</p>
+                </div>
+              </div>
+
+              <!-- Form Fields -->
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Full Legal Name <span class="req">*</span> <span class="field-status"><i class="fa-solid fa-circle-check"></i> KYC Name Match</span></label>
+                  <input type="text" class="form-input" value="Ravi Sharma" id="input-full-name">
+                </div>
+                <div class="form-group">
+                  <label>Emergency Phone <span class="req">*</span> <span class="field-status"><i class="fa-solid fa-lock"></i> Verified Link</span></label>
+                  <input type="text" class="form-input" value="+91 98480 •••••" id="input-emergency-phone">
+                </div>
+                <div class="form-group">
+                  <label>Official Email Address <span class="req">*</span> <span class="field-status"><i class="fa-solid fa-envelope"></i> Alert Escalation</span></label>
+                  <input type="email" class="form-input" value="ravi.guardian@sentinel.io" id="input-email">
+                </div>
+                <div class="form-group">
+                  <label>Relationship with Protected Person <span class="req">*</span></label>
+                  <select class="form-select" id="select-relationship">
+                    <option value="Parent" selected>Parent</option>
+                    <option value="Guardian">Legal Guardian</option>
+                    <option value="Spouse">Spouse</option>
+                    <option value="Sibling">Sibling</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Assigned ID Box -->
+              <div class="assigned-id-banner">
+                <div class="id-info">
+                  <span class="id-title">ASSIGNED GUARDIAN ID ● Securely Generated</span>
+                  <p class="id-desc">Your Guardian ID is cryptographically generated and anchored to your emergency escalation chain.</p>
+                </div>
+                <div class="id-code-box">
+                  <span class="code-value">GDN-7A92K4</span>
+                  <button class="btn-copy" title="Copy ID"><i class="fa-regular fa-copy"></i></button>
+                </div>
+              </div>
+
+              <div class="signature-validation-bar">
+                <i class="fa-solid fa-shield-check"></i>
+                <span>All fields verified & cryptographic signature valid</span>
+                <span class="hash-tag">HASH: SHA256-ED25519</span>
+              </div>
+
+              <div class="onboarding-actions">
+                <button class="btn-secondary" id="btn-back-to-welcome"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                <button class="btn-primary" id="btn-goto-step2">Continue to Link Protected Person <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </div>
+
+            <p class="footer-security-note"><i class="fa-solid fa-lock"></i> 256-bit AES encrypted profile data. Only shared with dispatch in critical emergencies.</p>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="js/common.js"></script>
+  <script src="js/onboarding-step1.js"></script>
+</body>
+</html>

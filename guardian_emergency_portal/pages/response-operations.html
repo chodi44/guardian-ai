@@ -1,0 +1,209 @@
+<div class="response-ops-container">
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <span>ACTIVE DISPATCHES</span>
+    <span class="text-light">›</span>
+    <span class="text-primary">UNIT 01 (EMILY JOHNSON CASE)</span>
+  </div>
+
+  <h1 class="page-title-with-icon">
+    <i data-lucide="radio" style="width: 24px; height: 24px;"></i> RESPONSE OPERATIONS & DISPATCH
+  </h1>
+
+  <div class="ops-grid">
+    
+    <!-- Left Column: Dispatch Control -->
+    <div class="ops-col-left">
+      
+      <!-- Active Dispatch Card -->
+      <div class="ops-card">
+        <div class="ops-card-header bg-primary text-white">
+          <div class="ops-header-title">
+            <i data-lucide="shield" style="width: 20px; height: 20px;"></i>
+            <h2>ACTIVE DISPATCH: UNIT 01</h2>
+          </div>
+          <span class="badge-white">EN ROUTE</span>
+        </div>
+        
+        <div class="ops-card-body">
+          <div class="dispatch-info-row">
+            <div>
+              <h3 class="officer-name">Officer K. Sharma</h3>
+              <p class="officer-role">Intercept Patrol • Sector 4</p>
+            </div>
+            <div class="target-box text-right">
+              <p class="target-label">Current Target</p>
+              <p class="target-value">Case #GA-1024 (Emily Johnson)</p>
+            </div>
+          </div>
+
+          <div class="eta-section">
+            <div class="eta-header">
+              <div>
+                <p class="eta-label">Estimated Time of Arrival</p>
+                <p class="eta-value">1.8 mins <span class="eta-sub">(0.8 km remaining)</span></p>
+              </div>
+              <div class="arriving-badge">
+                <i data-lucide="zap" style="width: 14px; height: 14px;"></i> Arriving Fast
+              </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" style="width: 70%;">
+                <div class="progress-bar-anim"></div>
+              </div>
+            </div>
+            <div class="progress-labels">
+              <span>DISPATCHED (15:26)</span>
+              <span>ON SCENE (EST 15:29)</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="comms-section">
+          <h4 class="comms-title">
+            <i data-lucide="activity" style="width: 14px; height: 14px;"></i> COMMUNICATIONS & TELEMETRY LINK
+          </h4>
+          
+          <div class="comms-grid">
+            <div class="comms-box">
+              <span class="comms-label">Voice Channel</span>
+              <span class="comms-value text-success">
+                <span class="dot-pulse-success"></span> SEC-CH44 (Open)
+              </span>
+            </div>
+            <div class="comms-box">
+              <span class="comms-label">Vehicle Telemetry</span>
+              <span class="comms-value-bold">Speed 68 km/h</span>
+              <span class="comms-status text-error">
+                <i data-lucide="alert-circle" style="width: 12px; height: 12px;"></i> Lights/Sirens ACTIVE
+              </span>
+            </div>
+          </div>
+
+          <div class="comms-actions">
+            <button onclick="window.showToast('Radio Channel Opened', 'Voice comms active with Unit 01', 'success')" class="btn-comms-primary">
+              <i data-lucide="radio" style="width: 16px; height: 16px;"></i> OPEN RADIO CHANNEL
+            </button>
+            <button onclick="window.showToast('Directive Sent', 'Text directive transmitted to unit CAD', 'info')" class="btn-comms-secondary">
+              <i data-lucide="file-text" style="width: 16px; height: 16px;"></i> SEND TEXT DIRECTIVE
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assignment History -->
+      <div class="ops-card padded">
+        <h3 class="history-title">
+          <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i> UNIT ASSIGNMENT HISTORY (SHIFT)
+        </h3>
+        
+        <div class="history-list">
+          <div class="history-item">
+            <div class="history-left">
+              <span class="history-time">14:10</span>
+              <div class="history-details">
+                <p class="history-case">Case #GA-1019 (Medical)</p>
+                <p class="history-location">Rajahmundry South Transit</p>
+              </div>
+            </div>
+            <span class="badge-success-outline">RESOLVED</span>
+          </div>
+          
+          <div class="history-item">
+            <div class="history-left">
+              <span class="history-time">12:45</span>
+              <div class="history-details">
+                <p class="history-case">Case #GA-1012 (Distress)</p>
+                <p class="history-location">Sector 3 Commercial Zone</p>
+              </div>
+            </div>
+            <span class="badge-success-outline">RESOLVED</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Live Feed & Scene -->
+    <div class="ops-col-right">
+      
+      <!-- Dashcam Feed -->
+      <div class="ops-card padded-slim">
+        <div class="dashcam-header">
+          <h3 class="dashcam-title">
+            <i data-lucide="video" style="width: 14px; height: 14px;"></i> LIVE DASHCAM FEED (UNIT 01)
+          </h3>
+          <span class="dashcam-live-badge">
+            <span class="dot-pulse-error"></span> LIVE (ENCRYPTED)
+          </span>
+        </div>
+        
+        <div class="video-player">
+          <div class="video-bg"></div>
+          
+          <div class="video-center">
+            <i data-lucide="video" class="video-icon" style="width: 48px; height: 48px;"></i>
+            <p class="video-text-main">ENCRYPTED VEHICLE STREAM</p>
+            <p class="video-text-sub">Awaiting scene arrival for visual unlock</p>
+          </div>
+
+          <div class="video-overlay-tl">REC 15:27:42 | UNIT 01</div>
+          <div class="video-overlay-br">68 KM/H | GPS LOCK</div>
+        </div>
+      </div>
+
+      <!-- Scene Management -->
+      <div class="ops-card flex-col flex-1">
+        <div class="scene-header">
+          <h3 class="scene-title">
+            <i data-lucide="map-pin" style="width: 16px; height: 16px;"></i> SCENE MANAGEMENT (POST-ARRIVAL)
+          </h3>
+        </div>
+        
+        <div class="scene-body">
+          <button onclick="window.showToast('Unit On Scene', 'Unit 01 marked as on scene', 'success')" class="scene-action-btn">
+            <div class="scene-action-text">
+              <p class="scene-action-main">MARK UNIT ON SCENE</p>
+              <p class="scene-action-sub">Logs exact arrival time and locks location</p>
+            </div>
+            <i data-lucide="check-circle" class="scene-action-icon" style="width: 20px; height: 20px;"></i>
+          </button>
+          
+          <button onclick="window.showToast('EMS Requested', 'Medical backup unit dispatched to scene', 'success')" class="scene-action-btn">
+            <div class="scene-action-text">
+              <p class="scene-action-main">REQUEST MEDICAL BACKUP (EMS)</p>
+              <p class="scene-action-sub">Dispatches nearest ambulance to this site</p>
+            </div>
+            <i data-lucide="plus" class="scene-action-icon" style="width: 20px; height: 20px;"></i>
+          </button>
+          
+          <button onclick="window.showToast('Backup Requested', 'Additional patrol unit assigned', 'success')" class="scene-action-btn">
+            <div class="scene-action-text">
+              <p class="scene-action-main">REQUEST ADDITIONAL PATROL</p>
+              <p class="scene-action-sub">Calls for backup unit for scene control</p>
+            </div>
+            <i data-lucide="shield" class="scene-action-icon" style="width: 20px; height: 20px;"></i>
+          </button>
+          
+          <button onclick="window.showToast('Interaction Logged', 'Draft report generated', 'info')" class="scene-action-btn">
+            <div class="scene-action-text">
+              <p class="scene-action-main">LOG INTERACTION REPORT</p>
+              <p class="scene-action-sub">Opens standard post-incident form</p>
+            </div>
+            <i data-lucide="file-text" class="scene-action-icon" style="width: 20px; height: 20px;"></i>
+          </button>
+
+          <div class="scene-footer">
+            <button id="btn-ro-resolve" class="btn-resolve">
+              <i data-lucide="shield-alert" style="width: 16px; height: 16px;"></i> RESOLVE DISPATCH (STAND DOWN)
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

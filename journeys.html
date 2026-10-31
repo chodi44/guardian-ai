@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function() {
+      try {
+        const sess = JSON.parse(localStorage.getItem('gdn_portal_session') || '{}');
+        const role = sess.role === 'guardian' ? 'guardian' : 'user';
+        window.location.replace('/' + role + '/dashboard/index.html#journeys');
+      } catch(e) {
+        window.location.replace('/user/dashboard/index.html#journeys');
+      }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journeys — Guardian AI</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/journeys.css">
+</head>
+<body class="theme-light">
+
+  <div id="app-container" class="app-layout">
+
+    <aside id="main-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="/guardian/dashboard/index.html" class="brand-logo" style="text-decoration: none;">
+          <div class="logo-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="brand-text">
+            <span class="brand-name">Guardian AI</span>
+            <span class="brand-hub-pill">GUARDIAN</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="user-profile-chip">
+        <div class="avatar-box">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma" class="user-avatar">
+          <span class="online-indicator"></span>
+        </div>
+        <div class="user-info">
+          <span class="user-name">Ravi Sharma</span>
+          <span class="user-id">GDN-7A92K4 <i class="fa-regular fa-circle-check verified-badge"></i></span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Telemetry & Safety</div>
+        <ul>
+          <li><a href="home.html" class="nav-link" data-view="home"><i class="fa-solid fa-house"></i><span>Monitoring Console</span></a></li>
+          <li><a href="location.html" class="nav-link" data-view="live-location"><i class="fa-solid fa-location-arrow"></i><span>Live Location</span></a></li>
+          <li><a href="journeys.html" class="nav-link active" data-view="journeys"><i class="fa-solid fa-route"></i><span>Safe Corridors</span></a></li>
+          <li><a href="alerts.html" class="nav-link" data-view="alerts"><i class="fa-solid fa-bell"></i><span>Alerts & Logs</span><span class="badge-count badge-warning">3</span></a></li>
+          <li><a href="insights.html" class="nav-link" data-view="insights"><i class="fa-solid fa-chart-line"></i><span>Risk Insights</span></a></li>
+          <li><a href="band.html" class="nav-link" data-view="band"><i class="fa-solid fa-stopwatch"></i><span>Guardian Band</span></a></li>
+          <li><a href="voice-mails.html" class="nav-link" data-view="voice-mails"><i class="fa-solid fa-microphone"></i><span>Acoustic Triage</span></a></li>
+        </ul>
+
+        <div class="nav-section-title">Guardian Supervision</div>
+        <ul>
+          <li><a href="/guardian/dashboard/index.html" class="nav-link" data-view="guardian-dashboard"><i class="fa-solid fa-shield-halved"></i><span>Protector Dashboard</span></a></li>
+          <li><a href="/guardian/linked-users/index.html" class="nav-link" data-view="linked-users"><i class="fa-solid fa-users"></i><span>Linked Users</span></a></li>
+          <li><a href="/guardian/connect-user/index.html" class="nav-link" data-view="connect-user"><i class="fa-solid fa-link"></i><span>Connect to User</span></a></li>
+          <li><a href="/guardian/permissions/index.html" class="nav-link" data-view="permissions"><i class="fa-solid fa-sliders"></i><span>Access Permissions</span></a></li>
+        </ul>
+
+        <div class="nav-divider"></div>
+        <ul>
+          <li><a href="profile.html" class="nav-link" data-view="profile"><i class="fa-solid fa-user"></i><span>Profile</span></a></li>
+          <li><a href="settings.html" class="nav-link" data-view="settings"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
+        </ul>
+        <div class="nav-divider"></div>
+        <div class="sos-trigger-box">
+          <a href="sos-alert.html" class="btn-sos-launch" style="text-decoration: none;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-dependent-card">
+        <div class="dependent-status-header">
+          <span class="dep-name">Ananya</span>
+          <span class="pill-badge pill-safe">● Safe • Normal</span>
+        </div>
+        <div class="dependent-status-details">
+          <i class="fa-solid fa-shield-heart text-safe"></i>
+          <span>Safe Geofence • GPS Lock</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-wrapper">
+      <header id="top-header" class="top-header">
+        <div class="header-breadcrumbs">
+          <span class="breadcrumb-root">Guardian System</span>
+          <i class="fa-solid fa-chevron-right breadcrumb-sep"></i>
+          <span class="breadcrumb-active">Transit Corridor & Journey Log</span>
+        </div>
+
+        <div class="header-right-controls">
+          <div class="dependent-selector-dropdown">
+            <button class="selector-btn">
+              <span class="dot-online"></span>
+              <span class="selected-person">Ananya (Daughter)</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+          <div class="sync-status-chip">
+            <span class="dot-pulse-green"></span>
+            <span class="sync-text">Synced <span id="sync-timer-sec">10</span> sec ago</span>
+          </div>
+          <a href="alerts.html" class="notification-icon-wrapper notification-button" aria-label="View alerts" style="text-decoration:none; color:inherit;">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge"></span>
+          </a>
+          <div class="header-user-avatar">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma">
+          </div>
+        </div>
+      </header>
+
+      <div class="views-container">
+        <section id="view-journeys" class="app-view">
+          <div class="journeys-hero-header">
+            <div>
+              <div class="hero-top-tags">
+                <span class="pill-badge pill-info">ACTIVE MONITORING</span>
+                <span class="id-tag">ID: JRN-4820</span>
+              </div>
+              <h1 class="page-main-title">Campus → Home <span class="sub-via">via Central Ave Safe Corridor</span></h1>
+            </div>
+            <div class="hero-right-pills">
+              <span class="pill-badge pill-info">● In Progress (68% complete)</span>
+              <span class="pill-badge pill-safe">✓ Risk: 18 / 100 • On Safe Corridor</span>
+            </div>
+          </div>
+
+          <div class="grid-4col-row">
+            <div class="card card-metric-tile">
+              <div class="tile-top">
+                <span class="m-lbl">DEPARTURE POINT</span>
+                <i class="fa-solid fa-school text-primary"></i>
+              </div>
+              <h3 class="m-title">Campus East Gate</h3>
+              <p class="m-sub">Departed 6:20 PM</p>
+            </div>
+
+            <div class="card card-metric-tile">
+              <div class="tile-top">
+                <span class="m-lbl">CURRENT SEGMENT</span>
+                <i class="fa-solid fa-route text-info"></i>
+              </div>
+              <h3 class="m-title">Trunk Corridor #4</h3>
+              <p class="m-sub text-safe">Ping logged 6:58 PM (Active)</p>
+            </div>
+
+            <div class="card card-metric-tile">
+              <div class="tile-top">
+                <span class="m-lbl">ESTIMATED ARRIVAL</span>
+                <i class="fa-solid fa-flag-checkered text-warning"></i>
+              </div>
+              <h3 class="m-title">Home (Green Acres)</h3>
+              <p class="m-sub">7:15 PM <span class="text-safe">(~15m left)</span></p>
+            </div>
+
+            <div class="card card-metric-tile">
+              <div class="tile-top">
+                <span class="m-lbl">TRANSIT SAFETY INDEX</span>
+                <i class="fa-solid fa-shield-check text-safe"></i>
+              </div>
+              <div class="m-title-score">18 <span class="denom">/ 100 Risk</span></div>
+              <p class="m-sub text-safe">Safe Profile Established</p>
+            </div>
+          </div>
+
+          <div class="grid-2col-row journeys-main-grid">
+            <div class="left-journey-col">
+              <div class="card card-route-map">
+                <div class="map-top-bar">
+                  <span class="pill-badge pill-safe">● Safe Corridor #4 Protected</span>
+                  <span class="detour-pill"><i class="fa-solid fa-circle-exclamation text-warning"></i> Detour (+40m)</span>
+                </div>
+                <div id="journey-route-map" class="leaflet-map-journey"></div>
+                <div class="map-legend-row">
+                  <span>● Active Track (68%)</span>
+                  <span class="text-safe">● Verified Corridor</span>
+                  <span class="text-warning">● Resolved Detour</span>
+                  <span class="sync-text">Satellite Sync: 12 Sats • HDOP 0.8m</span>
+                </div>
+              </div>
+
+              <div class="card card-event-log">
+                <div class="card-header-row">
+                  <div class="card-title-group">
+                    <i class="fa-solid fa-clock-rotate-left icon-blue-sm"></i>
+                    <h3 class="card-title">Journey Event Log</h3>
+                  </div>
+                  <span class="pill-badge pill-safe">Automatic Check-in Active</span>
+                </div>
+
+                <div class="timeline-log-list">
+                  <div class="log-item">
+                    <span class="log-icon icon-check"><i class="fa-solid fa-check"></i></span>
+                    <div class="log-body">
+                      <div class="log-title-row">
+                        <strong>Journey Started</strong>
+                        <span class="log-time">6:20 PM</span>
+                      </div>
+                      <p>Campus departure detected automatically via geofence trigger at East Gate.</p>
+                    </div>
+                  </div>
+
+                  <div class="log-item">
+                    <span class="log-icon icon-check"><i class="fa-solid fa-check"></i></span>
+                    <div class="log-body">
+                      <div class="log-title-row">
+                        <strong>Safe Corridor #4 Entered</strong>
+                        <span class="log-time">6:35 PM</span>
+                      </div>
+                      <p>Joined monitored high-density transit artery with municipal CCTV coverage.</p>
+                    </div>
+                  </div>
+
+                  <div class="log-item warning-log">
+                    <span class="log-icon icon-warning"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                    <div class="log-body">
+                      <div class="log-title-row">
+                        <strong>Minor Deviation Flagged <span class="detour-tag">+40m offset</span></strong>
+                        <span class="log-time">6:54 PM</span>
+                      </div>
+                      <p>User walked along parallel pedestrian promenade avoiding sidewalk work. Verified safe.</p>
+                    </div>
+                  </div>
+
+                  <div class="log-item">
+                    <span class="log-icon icon-check"><i class="fa-solid fa-check"></i></span>
+                    <div class="log-body">
+                      <div class="log-title-row">
+                        <strong>Back on Safe Route</strong>
+                        <span class="log-time">6:56 PM</span>
+                      </div>
+                      <p>Automatically re-synced with Safe Corridor #4 backbone without guardian intervention.</p>
+                    </div>
+                  </div>
+
+                  <div class="log-item future-log">
+                    <span class="log-icon icon-future"><i class="fa-regular fa-clock"></i></span>
+                    <div class="log-body">
+                      <div class="log-title-row">
+                        <strong>Home Geofence Arrival</strong>
+                        <span class="log-time">7:15 PM (Est.)</span>
+                      </div>
+                      <p>Predicted entry at Green Acres North Gate. Door sensor auto-handshake armed.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="right-journey-col">
+              <div class="card card-panel-tile">
+                <div class="tile-header-bar">
+                  <span class="panel-tag"><i class="fa-solid fa-compass"></i> Route Intelligence</span>
+                  <span class="subtext-caption">Live AI</span>
+                </div>
+
+                <div class="lighting-quality-meter">
+                  <div class="m-top">
+                    <span><i class="fa-solid fa-sun text-warning"></i> Lighting Quality</span>
+                    <strong>94%</strong>
+                  </div>
+                  <div class="m-bar"><div class="m-fill bg-safe" style="width: 94%;"></div></div>
+                  <p class="meter-sub font-12">Central Ave municipal lumens meet maximum night safety standards.</p>
+                </div>
+
+                <div class="safe-havens-mini-list">
+                  <div class="haven-item">
+                    <i class="fa-solid fa-shield-heart text-primary"></i>
+                    <div>
+                      <strong>Emergency Havens</strong>
+                      <span>Metro Transit Kiosk 140m • Staffed</span>
+                      <span>Apollo 24/7 Pharmacy 316m • Verified Haven</span>
+                      <span>Traffic Police Outpost #2 488m • Patrolled</span>
+                    </div>
+                    <span class="pill-badge pill-safe">3 within 500m</span>
+                  </div>
+                </div>
+
+                <div class="ai-passive-guard-box">
+                  <i class="fa-solid fa-robot text-primary"></i>
+                  <div>
+                    <strong>AI Passive Guard</strong>
+                    <p>Continuous trajectory model</p>
+                  </div>
+                  <span class="dot-online"></span>
+                </div>
+              </div>
+
+              <div class="card card-panel-tile">
+                <div class="tile-header-bar">
+                  <span class="panel-tag"><i class="fa-solid fa-heart-pulse"></i> Guardian Band Biometrics</span>
+                  <span class="sync-text">Synced 10s ago</span>
+                </div>
+
+                <div class="biometrics-dual-metrics">
+                  <div class="b-box">
+                    <span class="b-lbl">Heart Rate <i class="fa-solid fa-heart text-danger"></i></span>
+                    <div class="b-num">76 <span class="unit">BPM</span></div>
+                    <span class="b-sub text-safe">No stress spikes</span>
+                  </div>
+                  <div class="b-box">
+                    <span class="b-lbl">Walking Pace <i class="fa-solid fa-person-walking text-primary"></i></span>
+                    <div class="b-num">4.8 <span class="unit">km/h</span></div>
+                    <span class="b-sub">Steady cadence</span>
+                  </div>
+                </div>
+
+                <div class="hr-stability-graph">
+                  <span class="b-lbl">HR Stability Profile (Past 40 min) <span class="subtext-caption">Normal (68-82 BPM)</span></span>
+                  <canvas id="journey-hr-canvas" height="40"></canvas>
+                </div>
+              </div>
+
+              <div class="card card-panel-tile">
+                <span class="panel-tag">GUARDIAN DIRECT ACTIONS</span>
+                <div class="actions-vertical-stack mt-10">
+                  <button class="btn-primary-large btn-full-width" id="btn-call-ananya-journey">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>Call Ananya</span>
+                  </button>
+                  <button class="btn-secondary btn-full-width" id="btn-share-journey-link">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>Share Live Journey Link</span>
+                  </button>
+                  <button class="btn-secondary btn-full-width" id="btn-trigger-guard-checkin">
+                    <i class="fa-solid fa-bell"></i>
+                    <span>Trigger Guard Check-in</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal-voice-call">
+    <div class="modal-card modal-call-card">
+      <button class="btn-close-modal" id="btn-close-call-modal">&times;</button>
+      <div class="call-avatar-pulse">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&h=150&q=80" alt="Ananya">
+        <span class="call-ripple-ring"></span>
+      </div>
+      <h3 class="call-person-name">Ananya Sharma</h3>
+      <p class="call-status-text" id="call-status-label">Encrypted Guardian Voice Link Connecting...</p>
+      <span class="call-timer" id="call-timer">00:04</span>
+
+      <div class="call-actions-row">
+        <button class="btn-round-action btn-mute"><i class="fa-solid fa-microphone-slash"></i></button>
+        <button class="btn-round-action btn-speaker"><i class="fa-solid fa-volume-high"></i></button>
+        <button class="btn-round-action btn-hangup" id="btn-hangup-call"><i class="fa-solid fa-phone-slash"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="js/guardian-core.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/journeys.js"></script>
+</body>
+</html>

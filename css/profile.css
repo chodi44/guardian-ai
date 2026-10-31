@@ -1,0 +1,209 @@
+/* GUARDIAN PROFILE PAGE STYLES */
+.profile-hero-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* Session / Role Bar Banner */
+.role-status-banner {
+  background: linear-gradient(90deg, #1e293b, #0f172a);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+}
+
+.role-info-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-badge-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.2);
+  color: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.role-info-text strong {
+  font-size: 14px;
+  display: block;
+  color: #ffffff;
+}
+
+.role-info-text span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.role-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-user-header { padding: 24px; }
+.user-header-flex { display: flex; align-items: center; gap: 24px; }
+.u-avatar-wrapper { position: relative; width: 90px; height: 90px; flex-shrink: 0; }
+.u-avatar-wrapper img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-600); }
+.verified-overlap { position: absolute; bottom: 0; right: 0; padding: 4px 6px; }
+
+.u-info-meta { flex: 1; }
+.u-name-row { display: flex; align-items: center; gap: 12px; }
+.u-name-row h2 { font-size: 22px; font-weight: 800; color: var(--slate-900); }
+.u-role { font-size: 13px; color: var(--slate-600); margin-top: 4px; font-weight: 600; }
+.u-key-row { display: flex; gap: 16px; margin-top: 8px; font-size: 11.5px; color: var(--slate-500); }
+
+.u-action-btns { display: flex; gap: 10px; }
+
+.profile-dual-grid { grid-template-columns: 1fr 1fr; }
+.contact-details-list { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+.c-field { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 10px; border-bottom: 1px solid var(--slate-100); font-size: 13px; }
+.c-lbl { font-size: 11.5px; color: var(--slate-500); font-weight: 600; }
+.c-val { color: var(--slate-900); font-weight: 700; text-align: right; }
+
+.escalation-status-box { display: flex; align-items: center; gap: 12px; background: rgba(37, 99, 235, 0.08); padding: 12px; border-radius: var(--radius-md); margin-top: 16px; font-size: 12px; }
+.escalation-status-box div { flex: 1; }
+.escalation-status-box strong { color: var(--slate-900); display: block; }
+.escalation-status-box p { font-size: 11px; color: var(--slate-500); }
+
+.connected-person-box { margin-top: 14px; }
+.p-header-row { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.p-avatar-circle { width: 48px; height: 48px; border-radius: 50%; background: rgba(124, 58, 237, 0.12); color: #7c3aed; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.p-header-row h3 { font-size: 16px; font-weight: 800; color: var(--slate-900); }
+.p-header-row p { font-size: 12px; color: var(--slate-500); }
+
+.p-specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.p-spec-tile { padding: 12px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); }
+.s-lbl { font-size: 10.5px; color: var(--slate-500); font-weight: 700; display: block; }
+.s-val { font-size: 14px; font-weight: 800; display: block; margin: 2px 0; }
+
+.band-status-strip { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); margin-bottom: 16px; }
+.strip-info { flex: 1; font-size: 12px; }
+.strip-info strong { display: block; color: var(--slate-900); }
+.strip-info span { font-size: 11px; color: var(--slate-500); }
+
+.card-action-bar:hover { background: var(--slate-100); border-color: var(--slate-300); }
+.card-action-bar i { color: var(--slate-400); font-size: 14px; }
+.card-action-bar strong { font-size: 13px; color: var(--slate-900); display: block; }
+.card-action-bar p { font-size: 11px; color: var(--slate-500); }
+
+/* Responsive adjustments for Profile Page */
+@media (max-width: 767px) {
+  .profile-dual-grid, .p-specs-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  
+  .profile-hero-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .profile-hero-header .btn-danger {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .role-status-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .role-banner-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .role-banner-actions .btn-outline,
+  .role-banner-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .user-header-flex {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .u-name-row {
+    flex-wrap: wrap;
+  }
+
+  .u-name-row h2 {
+    font-size: 20px;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  .u-action-btns {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  
+  .u-action-btns .btn-secondary,
+  .u-action-btns .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .p-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .card-user-header {
+    padding: 20px;
+  }
+}
+
+.card-master-pass { background: #ffffff; border: 1px solid var(--slate-200); border-radius: var(--radius-lg); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; }
+.pass-left { display: flex; align-items: center; gap: 16px; }
+.pass-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(37, 99, 235, 0.08); color: var(--primary-600); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.pass-title-row { display: flex; align-items: center; gap: 10px; }
+.pass-title-row h3 { font-size: 16px; font-weight: 800; color: var(--slate-900); }
+.pass-left p { font-size: 12px; color: var(--slate-500); margin-top: 2px; }
+.pass-actions { display: flex; gap: 10px; }
+
+/* Edit Modals */
+.modal-edit-card {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.modal-edit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--slate-200);
+  padding-bottom: 12px;
+}
+
+.modal-edit-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--slate-900);
+}

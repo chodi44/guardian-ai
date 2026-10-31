@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Guardian Console — Guardian AI Safety Sentinel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  
+  <!-- Leaflet CSS & JS for Live Location Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+  <!-- Socket.IO & Guardian System Scripts -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="../../js/config.js"></script>
+  <script src="../../js/guardian-core.js"></script>
+  <script src="../../js/bluetooth_gateway.js"></script>
+
+  <link rel="stylesheet" href="../../css/portal.css">
+  <style>
+    .guardian-theme-topbar {
+      border-top: 3px solid #0284c7;
+    }
+    .user-overview-card {
+      background: #ffffff;
+      border: 1px solid var(--portal-border);
+      border-radius: var(--portal-radius);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+    }
+    .user-overview-card:hover {
+      box-shadow: var(--portal-shadow);
+      border-color: #cbd5e1;
+    }
+    .user-profile-sub {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .u-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #e2e8f0;
+    }
+    .u-meta h4 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--portal-text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .u-meta p {
+      font-size: 13px;
+      color: var(--portal-text-muted);
+      margin-top: 3px;
+    }
+    .telemetry-mini-pills {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: var(--portal-radius-sm);
+      border: 1px solid var(--portal-border);
+    }
+    .t-pill {
+      font-size: 12px;
+    }
+    .t-pill span {
+      color: #64748b;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .t-pill strong {
+      color: var(--portal-text-main);
+      font-size: 13px;
+    }
+    .pending-conn-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .pending-conn-table th {
+      text-align: left;
+      padding: 12px 14px;
+      background: #f8fafc;
+      color: #64748b;
+      font-weight: 600;
+      border-bottom: 1px solid var(--portal-border);
+    }
+    .pending-conn-table td {
+      padding: 14px;
+      border-bottom: 1px solid #f1f5f9;
+      color: var(--portal-text-main);
+    }
+    .full-map-box {
+      width: 100%;
+      height: 480px;
+      border-radius: var(--portal-radius);
+      border: 1px solid var(--portal-border);
+      margin: 16px 0;
+      position: relative;
+      z-index: 10;
+    }
+    .ecg-canvas-large {
+      width: 100%;
+      height: 80px;
+      background: #0f172a;
+      border-radius: var(--portal-radius-sm);
+      margin: 14px 0;
+    }
+    .audio-player-box {
+      background: #f8fafc;
+      border: 1px solid var(--portal-border);
+      border-radius: var(--portal-radius);
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .waveform-visualizer {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 48px;
+      margin: 14px 0;
+      padding: 0 10px;
+      background: #0f172a;
+      border-radius: 8px;
+    }
+    .wave-bar {
+      flex: 1;
+      background: #38bdf8;
+      border-radius: 2px;
+      height: 20%;
+      transition: height 0.1s ease;
+    }
+    .pulse-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #0284c7;
+      box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7);
+      animation: pulseDotGdn 1.5s infinite;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    @keyframes pulseDotGdn {
+      0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7); }
+      70% { box-shadow: 0 0 0 9px rgba(2, 132, 199, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
+    }
+
+    /* CRITICAL EMERGENCY SOS MODAL WITH 1-MINUTE TIMER */
+    .emergency-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: modalFadeIn 0.3s ease;
+    }
+    .emergency-modal-card {
+      background: #ffffff;
+      border: 3px solid #ef4444;
+      box-shadow: 0 25px 60px -15px rgba(239, 68, 68, 0.5), 0 0 0 1px rgba(239, 68, 68, 0.2);
+      border-radius: 16px;
+      max-width: 580px;
+      width: 100%;
+      padding: 28px;
+      position: relative;
+      animation: modalPopIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .emergency-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .emergency-siren-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #fee2e2;
+      color: #dc2626;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+      animation: pulseSiren 1s infinite alternate;
+    }
+    @keyframes pulseSiren {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+      100% { transform: scale(1.1); box-shadow: 0 0 25px 8px rgba(239, 68, 68, 0.3); }
+    }
+    .emergency-tag {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #dc2626;
+      background: #fef2f2;
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+    .emergency-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0;
+    }
+    .emergency-timer-box {
+      background: #fff1f2;
+      border: 2px solid #fecdd3;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .timer-headline {
+      font-size: 13px;
+      font-weight: 700;
+      color: #9f1239;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .timer-countdown-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 48px;
+      font-weight: 900;
+      color: #e11d48;
+      letter-spacing: 2px;
+      line-height: 1;
+      margin: 8px 0;
+      text-shadow: 0 2px 4px rgba(225, 29, 72, 0.2);
+    }
+    .timer-progress-track {
+      width: 100%;
+      height: 8px;
+      background: #fecdd3;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .timer-progress-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #f43f5e, #e11d48);
+      border-radius: 999px;
+      transition: width 1s linear;
+    }
+    .timer-subtext {
+      font-size: 12px;
+      color: #881337;
+      margin: 0;
+      line-height: 1.4;
+    }
+    .emergency-ward-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 20px;
+    }
+    .ward-item {
+      font-size: 12px;
+    }
+    .ward-label {
+      color: #64748b;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .ward-value {
+      color: #0f172a;
+      font-size: 13px;
+    }
+    .escalated-notice {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #fef2f2;
+      border: 2px dashed #f87171;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 13px;
+      color: #991b1b;
+      margin-bottom: 18px;
+    }
+    .emergency-actions {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 12px;
+    }
+    .btn-em-respond {
+      background: #059669;
+      color: #ffffff;
+      border: none;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-em-respond:hover {
+      background: #047857;
+      transform: translateY(-1px);
+    }
+    .btn-em-escalate {
+      background: #dc2626;
+      color: #ffffff;
+      border: none;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-em-escalate:hover {
+      background: #b91c1c;
+      transform: translateY(-1px);
+    }
+    @media (max-width: 640px) {
+      .telemetry-mini-pills {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .emergency-ward-grid {
+        grid-template-columns: 1fr;
+      }
+      .emergency-actions {
+        grid-template-columns: 1fr;
+      }
+      .full-map-box {
+        height: 320px;
+      }
+      .user-profile-sub {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .user-profile-sub > div:last-child {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+      }
+      .user-profile-sub > div:last-child a {
+        flex: 1;
+        justify-content: center;
+        text-align: center;
+      }
+      .user-overview-card {
+        padding: 16px;
+      }
+      .pending-conn-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  </style>
+</head>
+<body class="portal-body">
+  <div class="portal-app-wrapper">
+    <!-- Integrated Guardian Sidebar -->
+    <aside class="portal-sidebar">
+      <div class="portal-sidebar-header">
+        <a href="#overview" class="sidebar-brand spa-nav-link" data-view="overview">
+          <div class="portal-brand-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-user-shield"></i></div>
+          <div class="portal-brand-text-wrap">
+            <span class="sidebar-brand-name">Guardian AI</span>
+            <span class="portal-sub-badge guardian-badge">GUARDIAN</span>
+          </div>
+        </a>
+        <button type="button" class="portal-sidebar-close-btn" id="mobile-sidebar-close-btn" aria-label="Close navigation">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <nav class="portal-nav-menu">
+        <a href="/index.html" class="portal-nav-item" style="color: #10b981; font-weight: 700; margin-bottom: 8px;">
+          <i class="fa-solid fa-house"></i>
+          <span>Landing Page</span>
+        </a>
+
+        <div class="portal-nav-heading">Protector Hub</div>
+        <a href="#overview" class="portal-nav-item spa-nav-link active" data-view="overview">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#connect" class="portal-nav-item spa-nav-link" data-view="connect">
+          <i class="fa-solid fa-link"></i>
+          <span>Connect to User</span>
+        </a>
+        <a href="#linked-users" class="portal-nav-item spa-nav-link" data-view="linked-users">
+          <i class="fa-solid fa-users"></i>
+          <span>Linked Users</span>
+          <span class="badge-pill" id="nav-linked-badge" style="background:#0284c7; color:#fff; display:none;">0</span>
+        </a>
+        <a href="#permissions" class="portal-nav-item spa-nav-link" data-view="permissions">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>View Permissions</span>
+        </a>
+
+        <div class="portal-nav-heading">Live Telemetry & Safety</div>
+        <a href="#location" class="portal-nav-item spa-nav-link" data-view="location">
+          <i class="fa-solid fa-location-arrow"></i>
+          <span>Track Live Location</span>
+        </a>
+        <a href="#journeys" class="portal-nav-item spa-nav-link" data-view="journeys">
+          <i class="fa-solid fa-route"></i>
+          <span>Safe Corridors</span>
+        </a>
+        <a href="#alerts" class="portal-nav-item spa-nav-link" data-view="alerts">
+          <i class="fa-solid fa-bell"></i>
+          <span>Alerts & Audit Logs</span>
+          <span class="badge-pill" style="background:#f59e0b; color:#fff;">3</span>
+        </a>
+        <a href="#band" class="portal-nav-item spa-nav-link" data-view="band">
+          <i class="fa-solid fa-stopwatch"></i>
+          <span>Guardian Band Telemetry</span>
+        </a>
+        <a href="#insights" class="portal-nav-item spa-nav-link" data-view="insights">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Risk Insights</span>
+        </a>
+        <a href="#acoustic" class="portal-nav-item spa-nav-link" data-view="acoustic">
+          <i class="fa-solid fa-microphone"></i>
+          <span>Acoustic Triage</span>
+        </a>
+
+        <div class="portal-nav-heading">System</div>
+        <a href="#settings" class="portal-nav-item spa-nav-link" data-view="settings">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings & Profile</span>
+        </a>
+
+        <div style="margin-top: 14px; padding: 0 4px;">
+          <a href="#sos" class="btn-portal-primary btn-portal-danger spa-nav-link" data-view="sos" style="text-decoration:none; padding: 10px 14px; font-size: 13px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="portal-sidebar-footer">
+        <div class="sidebar-user-card">
+          <img src="" alt="Avatar" class="sidebar-user-avatar" id="sidebar-guardian-img">
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="sidebar-guardian-name">Guardian</div>
+            <div class="sidebar-user-role">Primary Protector</div>
+          </div>
+          <button class="btn-sidebar-logout" id="btn-sidebar-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+    <div class="portal-sidebar-overlay" id="portal-sidebar-overlay"></div>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+      <header class="portal-topbar guardian-theme-topbar">
+        <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+          <button type="button" class="portal-mobile-menu-btn" id="mobile-sidebar-toggle-btn" aria-label="Open navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="topbar-greeting-wrap">
+            <h1 id="guardian-header-greeting">Welcome back</h1>
+            <p>Guardian Safety Telemetry, Live Tracking & Link Supervision</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div class="portal-switcher-wrap">
+            <a href="/user" class="portal-switch-pill" title="User Safety Portal"><i class="fa-solid fa-user-shield"></i> <span>User</span></a>
+            <a href="/guardian" class="portal-switch-pill active-guardian" title="Family Guardian Portal"><i class="fa-solid fa-users"></i> <span>Guardian</span></a>
+            <a href="/emergency" class="portal-switch-pill" title="Police / Emergency Operations Center"><i class="fa-solid fa-truck-medical"></i> <span>Police / EOC</span></a>
+          </div>
+          <a href="/index.html" class="topbar-icon-btn" title="View Landing Page"><i class="fa-solid fa-house"></i></a>
+          <a href="#location" class="topbar-icon-btn spa-nav-link" data-view="location" title="Live GeoNAV"><i class="fa-solid fa-location-arrow"></i></a>
+          <a href="#alerts" class="topbar-icon-btn spa-nav-link" data-view="alerts" title="Alerts"><i class="fa-regular fa-bell"></i><span class="badge-dot"></span></a>
+          <a href="#connect" class="btn-portal-primary spa-nav-link" data-view="connect" style="width: auto; background:#0284c7; padding: 8px 16px; font-size: 13px;">
+            <i class="fa-solid fa-plus"></i> Connect to User
+          </a>
+          <a href="#settings" class="topbar-icon-btn spa-nav-link" data-view="settings" title="Settings"><i class="fa-solid fa-gear"></i></a>
+          <a href="#settings" class="topbar-avatar-link spa-nav-link" data-view="settings"><img src="" alt="Avatar" class="topbar-avatar" id="topbar-guardian-img"></a>
+        </div>
+      </header>
+
+      <div class="portal-content">
+
+        <!-- ====================================================================
+             VIEW 1: GUARDIAN DASHBOARD OVERVIEW (Default)
+             ==================================================================== -->
+        <section class="portal-view active-view" id="view-overview">
+          <!-- 3 SUMMARY METRIC CARDS -->
+          <div class="portal-grid-3">
+            <!-- Linked Users -->
+            <div class="portal-card">
+              <div class="portal-card-header">
+                <span class="portal-card-title"><i class="fa-solid fa-users" style="color: #0284c7;"></i> Linked Wards</span>
+                <span class="status-badge approved">Approved</span>
+              </div>
+              <div style="font-size: 32px; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--portal-text-main);" id="metric-linked-count">
+                0
+              </div>
+              <p class="portal-card-subtitle" style="margin-top: 4px;">Protected individuals actively monitored</p>
+              <div style="margin-top: auto; padding-top: 14px;">
+                <a href="#linked-users" class="btn-portal-secondary spa-nav-link" data-view="linked-users" style="width: 100%; justify-content: center; font-size: 12px;">
+                  <i class="fa-regular fa-id-card"></i> View Linked Users
+                </a>
+              </div>
+            </div>
+
+            <!-- Pending Requests -->
+            <div class="portal-card">
+              <div class="portal-card-header">
+                <span class="portal-card-title"><i class="fa-solid fa-user-clock" style="color: #f59e0b;"></i> Pending Requests</span>
+                <span class="status-badge pending" id="metric-pending-badge">0 Pending</span>
+              </div>
+              <div style="font-size: 32px; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--portal-text-main);" id="metric-pending-count">
+                0
+              </div>
+              <p class="portal-card-subtitle" style="margin-top: 4px;">Awaiting authorization by protected users</p>
+              <div style="margin-top: auto; padding-top: 14px;">
+                <a href="#connect" class="btn-portal-secondary spa-nav-link" data-view="connect" style="width: 100%; justify-content: center; font-size: 12px;">
+                  <i class="fa-solid fa-link"></i> Connect New User
+                </a>
+              </div>
+            </div>
+
+            <!-- Quick Connect by ID -->
+            <div class="portal-card" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff;">
+              <div class="portal-card-header" style="border-bottom-color: rgba(255,255,255,0.2);">
+                <span class="portal-card-title" style="color: #ffffff;"><i class="fa-solid fa-shield-heart"></i> Add Protected User</span>
+                <span style="font-size: 10px; background: rgba(255,255,255,0.2); color: #ffffff; padding: 2px 7px; border-radius: 10px;">INSTANT LINK</span>
+              </div>
+              <p style="font-size: 13px; color: rgba(255,255,255,0.9); margin-top: 6px;">
+                Enter the user's 7-character Guardian ID to request immediate safety channel synchronization.
+              </p>
+              <div style="margin-top: auto; padding-top: 14px;">
+                <a href="#connect" class="btn-portal-secondary spa-nav-link" data-view="connect" style="width: 100%; justify-content: center; font-size: 12px; background: #ffffff; color: #0284c7; border:none; font-weight: 700;">
+                  <i class="fa-solid fa-key"></i> Enter Guardian ID Code
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTIVE WARDS TELEMETRY LIST -->
+          <div style="margin-top: 24px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <h2 style="font-size: 18px; font-weight: 700; color: var(--portal-text-main); display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-satellite-dish text-primary"></i> Active Wards Live Telemetry
+              </h2>
+              <a href="#location" class="spa-nav-link" data-view="location" style="font-size: 13px; color: #0284c7; font-weight: 600; text-decoration: none;">
+                Open Full Map &rarr;
+              </a>
+            </div>
+
+            <div id="guardian-linked-users-list">
+              <!-- Dynamically populated from MongoDB -->
+              <div style="text-align: center; padding: 40px 16px; background: #ffffff; border-radius: 12px; border: 1px dashed #cbd5e1;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 28px; color: #0284c7; margin-bottom: 10px;"></i>
+                <p style="font-size: 14px; color: #64748b;">Loading linked wards from database...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- INITIATED CONNECTIONS HISTORY -->
+          <div class="portal-card" style="margin-top: 24px;">
+            <div class="portal-card-header">
+              <div>
+                <span class="portal-card-title"><i class="fa-solid fa-list-check" style="color: #64748b;"></i> Initiated Connection History</span>
+                <p class="portal-card-subtitle">Status of connection requests sent with Guardian IDs</p>
+              </div>
+              <a href="#connect" class="btn-portal-secondary spa-nav-link" data-view="connect" style="font-size: 12px; padding: 6px 12px;">
+                <i class="fa-solid fa-plus"></i> Connect to User
+              </a>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="pending-conn-table">
+                <thead>
+                  <tr>
+                    <th>Protected User</th>
+                    <th>Request Date</th>
+                    <th>Relationship</th>
+                    <th>Connection Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="guardian-connections-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 2: CONNECT TO USER (ID Submission)
+             ==================================================================== -->
+        <section class="portal-view" id="view-connect">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-link" style="color: #0284c7;"></i> Connect to Protected User</h2>
+            <p class="view-page-desc">Enter the protected individual's unique Guardian ID to send an authorization request.</p>
+          </div>
+
+          <div class="portal-card" style="max-width: 640px; margin: 0 auto;">
+            <form id="form-connect-user">
+              <div class="portal-form-group">
+                <label class="portal-label">Enter Protected User's Connection ID (Guardian ID) <span class="required-mark">*</span></label>
+                <div style="position: relative;">
+                  <input type="text" id="input-guardian-code" class="portal-input" placeholder="e.g. GDN-7F4K92X" style="font-family: 'JetBrains Mono', monospace; font-size: 18px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.5px; padding-left: 44px;" required>
+                  <i class="fa-solid fa-id-card" style="position: absolute; left: 16px; top: 15px; color: #94a3b8; font-size: 16px;"></i>
+                </div>
+                <p style="font-size: 12px; color: #64748b; margin-top: 6px;">
+                  Ask the user for their unique Connection ID displayed under "Your Connection ID" in their User Safety Portal.
+                </p>
+              </div>
+
+              <div id="connect-feedback-box" style="display: none; padding: 14px 18px; border-radius: 12px; margin-bottom: 16px; font-size: 13.5px; line-height: 1.5;"></div>
+
+              <button type="submit" class="btn-portal-primary" id="btn-submit-connect" style="background:#0284c7; padding: 12px 24px; font-size: 15px; font-weight: 700;">
+                <i class="fa-solid fa-paper-plane"></i> Send Connection Request
+              </button>
+            </form>
+
+            <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid #f1f5f9; font-size: 13px; color: #64748b; line-height: 1.6;">
+              <strong><i class="fa-solid fa-shield-halved text-primary"></i> Instant Authorization & Privacy:</strong>
+              <p style="margin-top: 4px;">
+                When you click <strong>Send Connection Request</strong>, an interactive authorization popup will instantly appear in the protected user's portal asking them to <strong>Accept</strong> or <strong>Decline</strong>. Once accepted, both portals will automatically synchronize in real-time.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 3: LINKED USERS / WARDS
+             ==================================================================== -->
+        <section class="portal-view" id="view-linked-users">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-users" style="color: #0284c7;"></i> Linked Protected Users & Wards</h2>
+            <p class="view-page-desc">All verified wards actively monitored under your guardian supervision.</p>
+          </div>
+
+          <div id="full-linked-users-container">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 4: TRACK LIVE LOCATION
+             ==================================================================== -->
+        <section class="portal-view" id="view-location">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-location-arrow text-primary"></i> Track Ward Live Location</h2>
+            <p class="view-page-desc">High-frequency GPS tracking, breadcrumb trajectory, and boundary alerts.</p>
+          </div>
+
+          <div class="portal-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+              <div>
+                <span class="status-badge approved"><i class="fa-solid fa-satellite-dish"></i> Live Stream Active</span>
+                <span style="font-size: 13px; color: #475569; margin-left: 10px;">SRM Campus Zone &bull; <strong id="gdn-ward-coords">17.0005° N, 81.8040° E</strong></span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-portal-secondary" id="btn-gdn-recenter" style="font-size: 12px; padding: 6px 12px;"><i class="fa-solid fa-crosshairs"></i> Recenter on Ward</button>
+              </div>
+            </div>
+
+            <!-- Full Leaflet Map for Guardian -->
+            <div id="guardian-live-map" class="full-map-box"></div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 14px;">
+              <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="font-size: 12px; color: #64748b; display: block;">Geofence Boundary</span>
+                <strong style="color: #059669; font-size: 15px;"><i class="fa-solid fa-circle-check"></i> Inside Safe Perimeter</strong>
+                <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">SRM Campus (1,200m radius)</p>
+              </div>
+              <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="font-size: 12px; color: #64748b; display: block;">Ward Movement</span>
+                <strong style="color: #0f172a; font-size: 15px;" id="gdn-ward-speed">4.2 km/h &bull; Walking</strong>
+                <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">Velocity baseline normal</p>
+              </div>
+              <div style="background: #f0f9ff; padding: 14px; border-radius: 8px; border: 1px solid #bae6fd;">
+                <span style="font-size: 12px; color: #0369a1; display: block;">Hardware GPS & Satellites</span>
+                <strong style="color: #0284c7; font-size: 15px;" id="gdn-ward-sats"><i class="fa-solid fa-satellite text-info"></i> 14 Satellites Fixed</strong>
+                <p style="font-size: 11px; color: #0284c7; margin-top: 4px;">NEO-6M Precision &bull; HDOP 0.8</p>
+              </div>
+              <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="font-size: 12px; color: #64748b; display: block;">Emergency Contact</span>
+                <strong style="color: #0284c7; font-size: 15px;">Direct Line Active</strong>
+                <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">1-Click Speed Dial Ready</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 5: SAFE CORRIDORS
+             ==================================================================== -->
+        <section class="portal-view" id="view-journeys">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-route" style="color: #7c3aed;"></i> Supervised Safe Corridors</h2>
+            <p class="view-page-desc">Active travel route, safe corridor adherence, and ETA escort supervision.</p>
+          </div>
+
+          <div class="portal-card">
+            <div class="portal-card-header">
+              <div>
+                <span class="portal-card-title"><i class="fa-solid fa-person-walking text-primary"></i> Ward Active Transit Status</span>
+                <p class="portal-card-subtitle">Hostel Gate 2 &rarr; Science Complex Library</p>
+              </div>
+              <span class="status-badge approved">99.4% Adherence</span>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 16px 0;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="font-size: 13px; font-weight: 600;">Transit Adherence Rating</span>
+                <span style="font-size: 14px; font-weight: 800; color: #059669;">99.4% (Within ±45m Corridor)</span>
+              </div>
+              <div class="completion-progress-track">
+                <div class="completion-progress-bar" style="width: 99.4%; background: #10b981;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-top: 8px;">
+                <span>Estimated Arrival: <strong>8 minutes</strong></span>
+                <span>Street Lighting Rating: <strong>High (98%)</strong></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 6: ALERTS & AUDIT LOGS
+             ==================================================================== -->
+        <section class="portal-view" id="view-alerts">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-bell" style="color: #f59e0b;"></i> Ward Alerts & Audit Incident Logs</h2>
+            <p class="view-page-desc">Complete audit stream of all notifications and flags received from linked wards.</p>
+          </div>
+
+          <div class="portal-card">
+            <div style="border-left: 4px solid #f59e0b; background: #fffbeb; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <strong style="color: #92400e; font-size: 14px;"><i class="fa-solid fa-triangle-exclamation"></i> Corridor Boundary Notice (35m)</strong>
+                <span style="font-size: 12px; color: #b45309;">Today, 08:42 AM</span>
+              </div>
+              <p style="font-size: 13px; color: #78350f; margin-top: 6px;">
+                Ward veered 35m off pedestrian arcade. Biometrics remained baseline (76 BPM). Path re-synced within 90s.
+              </p>
+              <span class="status-badge approved" style="margin-top: 8px; display: inline-block;">Auto-Resolved</span>
+            </div>
+
+            <div style="border-left: 4px solid #0284c7; background: #f0f9ff; border-radius: 8px; padding: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <strong style="color: #0369a1; font-size: 14px;"><i class="fa-solid fa-heart-pulse"></i> Transient Pulse Elevation (118 BPM)</strong>
+                <span style="font-size: 12px; color: #0284c7;">Yesterday, 17:15 PM</span>
+              </div>
+              <p style="font-size: 13px; color: #075985; margin-top: 6px;">
+                Elevated heart rate detected during stair ascent. Motion telemetry verified steady gait without sudden deceleration.
+              </p>
+              <span class="status-badge approved" style="margin-top: 8px; display: inline-block;">Verified Safe</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 7: GUARDIAN BAND TELEMETRY
+             ==================================================================== -->
+        <section class="portal-view" id="view-band">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-stopwatch" style="color: #059669;"></i> Ward Wearable Band Telemetry</h2>
+            <p class="view-page-desc">Remote telemetry streamed from ward's ESP32 Guardian Band V3 hardware.</p>
+          </div>
+
+          <div class="portal-card">
+            <div class="portal-card-header">
+              <div>
+                <span class="portal-card-title"><i class="fa-solid fa-microchip text-primary"></i> Hardware Telemetry Stream</span>
+                <p class="portal-card-subtitle">Device: <strong>Guardian Band V3 (#GB-V3-982)</strong> &bull; BLE Paired</p>
+              </div>
+              <span class="status-badge approved"><i class="fa-solid fa-battery-three-quarters"></i> 84% Battery</span>
+            </div>
+
+            <!-- ECG Canvas -->
+            <div style="margin: 16px 0;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 13px; font-weight: 700; color: #334155;">Remote Real-Time ECG Heartbeat Waveform</span>
+                <span style="font-size: 16px; font-weight: 800; color: #0284c7; font-family: 'JetBrains Mono', monospace;">76 BPM</span>
+              </div>
+              <canvas id="guardian-ecg-canvas" class="ecg-canvas-large"></canvas>
+            </div>
+
+            <div class="portal-grid-3">
+              <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="font-size: 12px; color: #64748b; display: block;">SpO2 Oxygen</span>
+                <strong style="color: #0f172a; font-size: 20px;">99%</strong>
+              </div>
+              <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="font-size: 12px; color: #64748b; display: block;">Skin Temperature</span>
+                <strong style="color: #0f172a; font-size: 20px;">36.6 °C</strong>
+              </div>
+              <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="font-size: 12px; color: #64748b; display: block;">Fall Sensor</span>
+                <strong style="color: #059669; font-size: 20px;"><i class="fa-solid fa-shield-check"></i> Armed</strong>
+              </div>
+            </div>
+
+            <div style="margin-top: 18px;">
+              <button type="button" class="btn-portal-secondary" id="btn-gdn-buzz">
+                <i class="fa-solid fa-bell"></i> Send Gentle Haptic Buzz to Ward's Band
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 8: RISK INSIGHTS
+             ==================================================================== -->
+        <section class="portal-view" id="view-insights">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-chart-line" style="color: #0284c7;"></i> Ward Safety Insights & Threat Radar</h2>
+            <p class="view-page-desc">Comprehensive safety scores and predictive travel risk assessments for linked wards.</p>
+          </div>
+
+          <div class="portal-grid-3">
+            <div class="portal-card" style="text-align: center;">
+              <span class="portal-card-title" style="justify-content: center;">Safety Risk Index</span>
+              <div style="font-size: 48px; font-weight: 900; color: #059669; font-family: 'Plus Jakarta Sans', sans-serif; margin: 12px 0;">
+                94<span style="font-size: 18px; color: #94a3b8;">/100</span>
+              </div>
+              <span class="status-badge approved">Optimal Protection</span>
+            </div>
+
+            <div class="portal-card" style="text-align: center;">
+              <span class="portal-card-title" style="justify-content: center;">Incident-Free Days</span>
+              <div style="font-size: 48px; font-weight: 900; color: #0284c7; font-family: 'Plus Jakarta Sans', sans-serif; margin: 12px 0;">
+                42
+              </div>
+              <span style="font-size: 13px; color: #64748b;">Days without emergency</span>
+            </div>
+
+            <div class="portal-card" style="text-align: center;">
+              <span class="portal-card-title" style="justify-content: center;">Supervised Hours</span>
+              <div style="font-size: 48px; font-weight: 900; color: #7c3aed; font-family: 'Plus Jakarta Sans', sans-serif; margin: 12px 0;">
+                312 <span style="font-size: 18px; color: #94a3b8;">hrs</span>
+              </div>
+              <span style="font-size: 13px; color: #64748b;">Autonomous GPS escort</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 9: ACOUSTIC EMERGENCY TRIAGE
+             ==================================================================== -->
+        <section class="portal-view" id="view-acoustic">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-microphone" style="color: #0284c7;"></i> Acoustic Emergency Triage & Voice Memos</h2>
+            <p class="view-page-desc">Emergency ambient audio stream player, speech sentiment analysis, and distress keyword detection.</p>
+          </div>
+
+          <div class="portal-card">
+            <div class="audio-player-box">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <strong style="color: #0f172a; font-size: 15px;"><i class="fa-solid fa-file-audio text-primary"></i> Commute Audio Check-in #104</strong>
+                  <span style="font-size: 12px; color: #64748b; display: block;">Recorded: Today at 08:30 AM &bull; Duration: 00:24</span>
+                </div>
+                <span class="status-badge approved"><i class="fa-solid fa-circle-check"></i> Calm / Verified Safe</span>
+              </div>
+
+              <!-- Animated Waveform Visualizer -->
+              <div class="waveform-visualizer" id="audio-waveform-bars">
+                <!-- 30 bars generated via JS -->
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <button type="button" class="btn-portal-primary" id="btn-play-audio" style="width: auto; padding: 8px 20px; background: #0284c7;">
+                  <i class="fa-solid fa-play"></i> Play Audio Stream
+                </button>
+                <span style="font-size: 13px; color: #64748b;" id="audio-time-label">00:00 / 00:24</span>
+              </div>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-top: 14px;">
+              <strong style="font-size: 13px; color: #0f172a;"><i class="fa-solid fa-quote-left text-primary"></i> Speech-to-Text AI Transcript:</strong>
+              <p style="font-size: 13px; color: #475569; font-style: italic; margin-top: 6px;">
+                "Walking towards the campus library, everything is calm and well-lit. Checking in with you Dad, will reach in 10 minutes."
+              </p>
+              <div style="margin-top: 8px; font-size: 12px; color: #059669; font-weight: 600;">
+                <i class="fa-solid fa-brain"></i> AI Sentiment: Calm / Safe (Confidence 98.4%) &bull; Distress Keywords: None detected
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 10: VIEW PERMISSIONS
+             ==================================================================== -->
+        <section class="portal-view" id="view-permissions">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-shield-halved text-primary"></i> Ward Access Permissions Audit</h2>
+            <p class="view-page-desc">Inspection of granted access levels authorized by your linked protected users.</p>
+          </div>
+
+          <div class="portal-card">
+            <div id="guardian-permissions-content">
+              <!-- Dynamically populated -->
+              <div style="text-align: center; padding: 30px; color: #64748b;">
+                Loading granted permissions for linked users...
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 11: GUARDIAN SETTINGS & PROFILE
+             ==================================================================== -->
+        <section class="portal-view" id="view-settings">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-gear" style="color: #64748b;"></i> Guardian Profile & Preferences</h2>
+            <p class="view-page-desc">Manage your supervisor contact details, emergency notifications, and relation to wards.</p>
+          </div>
+
+          <div class="portal-card">
+            <form id="form-guardian-profile">
+              <div class="portal-grid-2">
+                <div class="portal-form-group">
+                  <label class="portal-label">Full Name</label>
+                  <input type="text" id="gprof-name" class="portal-input" required>
+                </div>
+                <div class="portal-form-group">
+                  <label class="portal-label">Registered Email</label>
+                  <input type="email" id="gprof-email" class="portal-input" readonly style="background:#f1f5f9; cursor:not-allowed;">
+                </div>
+              </div>
+
+              <div class="portal-grid-3">
+                <div class="portal-form-group">
+                  <label class="portal-label">Emergency Phone Number</label>
+                  <input type="tel" id="gprof-phone" class="portal-input" required>
+                </div>
+                <div class="portal-form-group">
+                  <label class="portal-label">Relationship to Wards</label>
+                  <select id="gprof-rel" class="portal-input">
+                    <option value="Father">Father</option>
+                    <option value="Mother">Mother</option>
+                    <option value="Brother">Brother</option>
+                    <option value="Sister">Sister</option>
+                    <option value="Spouse">Spouse</option>
+                    <option value="Guardian">Primary Guardian / Protector</option>
+                  </select>
+                </div>
+                <div class="portal-form-group">
+                  <label class="portal-label">City / Region</label>
+                  <input type="text" id="gprof-city" class="portal-input" placeholder="e.g. Rajahmundry">
+                </div>
+              </div>
+
+              <div style="margin-top: 14px;">
+                <button type="submit" class="btn-portal-primary" id="btn-save-gprof" style="width: auto; padding: 10px 24px; background: #0284c7;">
+                  <i class="fa-solid fa-floppy-disk"></i> Save Profile Details
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             VIEW 12: SOS EMERGENCY CRISIS CENTER
+             ==================================================================== -->
+        <section class="portal-view" id="view-sos">
+          <div class="view-page-header">
+            <h2 class="view-page-title"><i class="fa-solid fa-triangle-exclamation text-danger"></i> Emergency Crisis Response Center</h2>
+            <p class="view-page-desc">Simulate emergency dispatch response, police bridge, and priority triage.</p>
+          </div>
+
+          <div class="portal-card" style="border-color: #fca5a5; background: #fffafa;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+              <div>
+                <h3 style="font-size: 18px; font-weight: 800; color: #991b1b;"><i class="fa-solid fa-radiation"></i> Priority SOS Hotline Bridge</h3>
+                <p style="font-size: 13px; color: #7f1d1d;">Direct emergency broadcast channel connecting you and your linked wards.</p>
+              </div>
+              <span class="status-badge approved"><i class="fa-solid fa-bolt"></i> Pre-Warmed & Ready</span>
+            </div>
+
+            <div class="portal-grid-3">
+              <a href="tel:112" class="btn-portal-primary btn-portal-danger" style="text-decoration:none; padding: 14px; font-size: 14px; font-weight: 800;">
+                <i class="fa-solid fa-phone-volume"></i> Speed Dial Police (112)
+              </a>
+              <a href="tel:108" class="btn-portal-primary" style="text-decoration:none; padding: 14px; font-size: 14px; font-weight: 800; background: #ea580c;">
+                <i class="fa-solid fa-truck-medical"></i> Medical Ambulance (108)
+              </a>
+              <button type="button" class="btn-portal-secondary" id="btn-dispatch-sms-test" style="padding: 14px; font-size: 14px; font-weight: 700;">
+                <i class="fa-solid fa-paper-plane"></i> Test Emergency SMS Ping
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  <!-- CRITICAL SOS EMERGENCY MODAL WITH 1-MINUTE COUNTDOWN -->
+  <div id="guardian-emergency-modal" class="emergency-modal-overlay" style="display: none;">
+    <div class="emergency-modal-card">
+      <!-- Flashing Red Siren Header -->
+      <div class="emergency-modal-header">
+        <div class="emergency-siren-icon">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div>
+          <div class="emergency-tag">CRITICAL SOS ALERT • IMMEDIATE ACTION REQUIRED</div>
+          <h2 class="emergency-title" id="em-ward-name">Ward In Danger!</h2>
+        </div>
+      </div>
+
+      <!-- 1-Minute Live Countdown Timer Box -->
+      <div class="emergency-timer-box" id="em-timer-container">
+        <div class="timer-headline">
+          <i class="fa-regular fa-clock"></i>
+          <span>Guardian Response Window: <strong>1-Minute Countdown</strong></span>
+        </div>
+        <div class="timer-countdown-display" id="em-countdown-display">01:00</div>
+        <div class="timer-progress-track">
+          <div class="timer-progress-fill" id="em-timer-progress"></div>
+        </div>
+        <p class="timer-subtext" id="em-timer-note">
+          ⚠️ If not acknowledged within <strong>1 minute</strong>, this emergency will <strong>automatically escalate to Municipal Police Emergency Operations Center (112 EOC)</strong>!
+        </p>
+      </div>
+
+      <!-- Ward Telemetry Details -->
+      <div class="emergency-ward-grid">
+        <div class="ward-item">
+          <span class="ward-label">Live GPS Location</span>
+          <strong class="ward-value" id="em-ward-location">Sector 4 Metro, Main Rd</strong>
+        </div>
+        <div class="ward-item">
+          <span class="ward-label">Heart Rate Telemetry</span>
+          <strong class="ward-value text-danger" id="em-ward-bpm"><i class="fa-solid fa-heart-pulse"></i> 148 BPM</strong>
+        </div>
+        <div class="ward-item">
+          <span class="ward-label">Ward Contact Phone</span>
+          <strong class="ward-value" id="em-ward-phone">+91 98765 43210</strong>
+        </div>
+        <div class="ward-item">
+          <span class="ward-label">Emergency Trigger Reason</span>
+          <strong class="ward-value" id="em-ward-reason">Critical Panic SOS Triggered</strong>
+        </div>
+      </div>
+
+      <!-- Escalation Notice (shown if 1 min timer expired) -->
+      <div id="em-escalated-notice" class="escalated-notice" style="display: none;">
+        <i class="fa-solid fa-shield-halved text-error" style="font-size: 24px;"></i>
+        <div>
+          <strong>POLICE ESCALATION ENGAGED:</strong> 1-minute window expired. Incident transmitted to Municipal Police Dispatch. Police units alerted!
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="emergency-actions" id="em-actions-container">
+        <button type="button" class="btn-em-respond" id="btn-gdn-respond">
+          <i class="fa-solid fa-circle-check"></i> I AM RESPONDING (I WILL HANDLE THIS)
+        </button>
+        <button type="button" class="btn-em-escalate" id="btn-gdn-escalate">
+          <i class="fa-solid fa-shield"></i> ESCALATE TO POLICE NOW
+        </button>
+      </div>
+      
+      <div id="em-dismiss-container" style="display: none; margin-top: 14px; text-align: center;">
+        <button type="button" class="btn-portal-secondary" id="btn-gdn-close-modal" style="width: 100%;">
+          Close Window (Keep Live Tracking Active)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="../../js/guardian-core.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      // 1. Authenticate Guardian Session
+      const currentGuardian = GuardianCore.requireAuth('guardian', '/login.html');
+      if (!currentGuardian) return;
+
+      let gLiveMap = null;
+      let isPlayingAudio = false;
+      let audioPlayTimer = null;
+
+      // 2. Client-Side SPA View Router
+      function switchView(viewId) {
+        const cleanId = (viewId || 'overview').replace('#', '').replace('view-', '');
+
+        // Hide all views
+        document.querySelectorAll('.portal-view').forEach(v => {
+          v.classList.remove('active-view');
+        });
+
+        // Show target view
+        const targetView = document.getElementById('view-' + cleanId) || document.getElementById('view-overview');
+        if (targetView) {
+          targetView.classList.add('active-view');
+        }
+
+        // Update nav links active state
+        document.querySelectorAll('.spa-nav-link').forEach(link => {
+          if (link.getAttribute('data-view') === cleanId) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+
+        if (window.location.hash !== '#' + cleanId) {
+          history.replaceState(null, '', '#' + cleanId);
+        }
+
+        // View specific initializations
+        if (cleanId === 'location') {
+          setTimeout(initGuardianLiveMap, 200);
+        } else if (cleanId === 'band') {
+          initGuardianECG();
+        } else if (cleanId === 'acoustic') {
+          renderWaveformBars();
+        } else if (cleanId === 'linked-users') {
+          loadGuardianData();
+        }
+      }
+
+      // Wire SPA links
+      document.querySelectorAll('.spa-nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = link.getAttribute('data-view');
+          if (target) switchView(target);
+        });
+      });
+
+      window.addEventListener('hashchange', () => {
+        const hash = window.location.hash.replace('#', '');
+        if (hash) switchView(hash);
+      });
+
+      // 3. Dynamic Guardian Identity Binding (Zero hardcoded names!)
+      function applyGuardianIdentity(guardian) {
+        if (!guardian) return;
+
+        const gName = guardian.fullName || guardian.name || 'Guardian';
+        const firstName = gName.split(' ')[0];
+
+        // Topbar
+        const elGreeting = document.getElementById('guardian-header-greeting');
+        if (elGreeting) elGreeting.textContent = `Welcome, ${firstName}`;
+
+        const avatarSrc = guardian.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(gName)}&backgroundColor=0284c7,0ea5e9,0369a1`;
+
+        const elTopbarImg = document.getElementById('topbar-guardian-img');
+        if (elTopbarImg) elTopbarImg.src = avatarSrc;
+
+        const elSidebarImg = document.getElementById('sidebar-guardian-img');
+        if (elSidebarImg) elSidebarImg.src = avatarSrc;
+
+        const elSidebarName = document.getElementById('sidebar-guardian-name');
+        if (elSidebarName) elSidebarName.textContent = gName;
+
+        // Settings Form
+        const profName = document.getElementById('gprof-name');
+        if (profName) profName.value = gName;
+
+        const profEmail = document.getElementById('gprof-email');
+        if (profEmail) profEmail.value = guardian.email || '';
+
+        const profPhone = document.getElementById('gprof-phone');
+        if (profPhone) profPhone.value = guardian.phone || '';
+
+        const profRel = document.getElementById('gprof-rel');
+        if (profRel && guardian.relationship) profRel.value = guardian.relationship;
+
+        const profCity = document.getElementById('gprof-city');
+        if (profCity) profCity.value = guardian.city || '';
+      }
+
+      applyGuardianIdentity(currentGuardian);
+
+      // Sync freshest guardian data from MongoDB
+      async function syncLatestGuardian() {
+        try {
+          const res = await fetch(`/api/guardian/me?guardianId=${currentGuardian._id || currentGuardian.id || currentGuardian.email}`, {
+            headers: { 'x-guardian-id': currentGuardian._id || currentGuardian.id || '' }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.success && data.guardian) {
+              applyGuardianIdentity(data.guardian);
+              GuardianCore.setSession({ ...currentGuardian, ...data.guardian });
+            }
+          }
+        } catch (err) {}
+      }
+      syncLatestGuardian();
+
+      // 4. Real-time Cross-Portal Sync Engine & Audio Chime
+      const portalSync = ('BroadcastChannel' in window) ? new BroadcastChannel('guardian_ai_sync') : null;
+      let previousApprovedCount = null;
+
+      function playGuardianChime() {
+        try {
+          const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const now = audioCtx.currentTime;
+
+          const osc1 = audioCtx.createOscillator();
+          const gain1 = audioCtx.createGain();
+          osc1.type = 'triangle';
+          osc1.frequency.setValueAtTime(523.25, now); // C5
+          gain1.gain.setValueAtTime(0.12, now);
+          gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc1.connect(gain1);
+          gain1.connect(audioCtx.destination);
+          osc1.start(now);
+          osc1.stop(now + 0.3);
+
+          const osc2 = audioCtx.createOscillator();
+          const gain2 = audioCtx.createGain();
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(659.25, now + 0.1); // E5
+          gain2.gain.setValueAtTime(0.15, now + 0.1);
+          gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+          osc2.connect(gain2);
+          gain2.connect(audioCtx.destination);
+          osc2.start(now + 0.1);
+          osc2.stop(now + 0.45);
+
+          const osc3 = audioCtx.createOscillator();
+          const gain3 = audioCtx.createGain();
+          osc3.type = 'sine';
+          osc3.frequency.setValueAtTime(1046.50, now + 0.22); // C6
+          gain3.gain.setValueAtTime(0.18, now + 0.22);
+          gain3.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+          osc3.connect(gain3);
+          gain3.connect(audioCtx.destination);
+          osc3.start(now + 0.22);
+          osc3.stop(now + 0.7);
+        } catch (e) {}
+      }
+
+      // Load Guardian Linked Users & Connections from MongoDB
+      async function loadGuardianData(showToastOnNew = true) {
+        try {
+          const linkedUsers = (await GuardianCore.getGuardianLinkedUsers(currentGuardian._id || currentGuardian.id)) || [];
+          const allConnections = (await GuardianCore.getGuardianConnectionRequests(currentGuardian._id || currentGuardian.id)) || [];
+          const pendingConnections = allConnections.filter(c => c.status === 'pending');
+
+          // Check if newly accepted connections arrived
+          if (previousApprovedCount !== null && linkedUsers.length > previousApprovedCount && showToastOnNew) {
+            const newlyApproved = linkedUsers[0];
+            GuardianCore.showToast(`🎉 Connection Approved! ${newlyApproved?.userName || 'User'} has accepted your connection request!`, 'success');
+            playGuardianChime();
+
+            // Update feedback box if on connect view
+            const feedbackBox = document.getElementById('connect-feedback-box');
+            if (feedbackBox) {
+              feedbackBox.style.display = 'block';
+              feedbackBox.style.background = '#ecfdf5';
+              feedbackBox.style.border = '1px solid #a7f3d0';
+              feedbackBox.style.color = '#065f46';
+              feedbackBox.innerHTML = `
+                <div style="font-weight: 800; font-size: 14px;"><i class="fa-solid fa-circle-check"></i> Connection Approved by ${newlyApproved?.userName || 'User'}!</div>
+                <p style="margin-top: 4px; font-size: 13px;">The protected user reviewed and approved your request. Live telemetry and monitoring are active.</p>
+                <div style="margin-top: 10px;">
+                  <a href="#linked-users" class="btn-portal-primary spa-nav-link" data-view="linked-users" style="padding: 7px 16px; font-size: 12px; display: inline-flex; width: auto; background: #059669;">
+                    <i class="fa-solid fa-users"></i> View Linked Wards
+                  </a>
+                </div>
+              `;
+              feedbackBox.querySelectorAll('.spa-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  switchView(link.getAttribute('data-view'));
+                });
+              });
+            }
+          }
+          previousApprovedCount = linkedUsers.length;
+
+          // Metric counts
+          const elMetricLinked = document.getElementById('metric-linked-count');
+          if (elMetricLinked) elMetricLinked.textContent = linkedUsers.length;
+
+          const elNavBadge = document.getElementById('nav-linked-badge');
+          if (elNavBadge) {
+            elNavBadge.textContent = linkedUsers.length;
+            elNavBadge.style.display = linkedUsers.length > 0 ? 'inline-block' : 'none';
+          }
+
+          const elMetricPending = document.getElementById('metric-pending-count');
+          if (elMetricPending) elMetricPending.textContent = pendingConnections.length;
+
+          const elMetricPendingBadge = document.getElementById('metric-pending-badge');
+          if (elMetricPendingBadge) elMetricPendingBadge.textContent = `${pendingConnections.length} Pending`;
+
+          // Overview Linked Wards Container
+          const linkedContainer = document.getElementById('guardian-linked-users-list');
+          const fullLinkedContainer = document.getElementById('full-linked-users-container');
+
+          if (linkedUsers.length === 0) {
+            const emptyHtml = `
+              <div style="text-align: center; padding: 40px 16px; background: #ffffff; border-radius: 12px; border: 1px dashed #cbd5e1;">
+                <i class="fa-solid fa-users-slash" style="font-size: 36px; color: #cbd5e1; margin-bottom: 12px; display: block;"></i>
+                <h3 style="font-size: 16px; font-weight: 700; color: #0f172a;">No Approved Linked Users Yet</h3>
+                <p style="font-size: 13px; color: #64748b; max-width: 440px; margin: 6px auto 16px;">
+                  Connect to your ward by entering their unique Connection ID under Connect to User.
+                </p>
+                <a href="#connect" class="btn-portal-primary spa-nav-link" data-view="connect" style="width: auto; display: inline-flex; background:#0284c7; padding: 8px 20px;">
+                  <i class="fa-solid fa-link"></i> Connect to a User
+                </a>
+              </div>
+            `;
+            if (linkedContainer) linkedContainer.innerHTML = emptyHtml;
+            if (fullLinkedContainer) fullLinkedContainer.innerHTML = emptyHtml;
+          } else {
+            const cardsHtml = linkedUsers.map(u => `
+              <div class="user-overview-card">
+                <div class="user-profile-sub">
+                  <div style="display: flex; align-items: center; gap: 16px;">
+                    <img src="${u.userAvatar || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&h=240&q=80'}" alt="${u.userName}" class="u-avatar">
+                    <div class="u-meta">
+                      <h4>${u.userName} <span class="status-badge approved" style="font-size: 11px;">Active Escort</span></h4>
+                      <p>
+                        <span><i class="fa-regular fa-heart"></i> ${u.relationship || 'Ward'}</span> &nbsp;&bull;&nbsp;
+                        <span><i class="fa-solid fa-location-dot"></i> SRM Campus Safe Zone</span> &nbsp;&bull;&nbsp;
+                        <span><i class="fa-regular fa-clock"></i> Linked ${new Date(u.approvedDate || u.requestDate || Date.now()).toLocaleDateString()}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="#location" class="btn-portal-primary spa-nav-link" data-view="location" style="width: auto; background:#2563eb; padding: 7px 14px; font-size: 12px;">
+                      <i class="fa-solid fa-location-arrow"></i> Track Location
+                    </a>
+                    <a href="#acoustic" class="btn-portal-secondary spa-nav-link" data-view="acoustic" style="font-size: 12px; padding: 7px 14px;">
+                      <i class="fa-solid fa-microphone"></i> Audio Triage
+                    </a>
+                  </div>
+                </div>
+
+                <div class="telemetry-mini-pills">
+                  <div class="t-pill">
+                    <span>GPS Telemetry</span>
+                    <strong>Inside Safe Perimeter</strong>
+                  </div>
+                  <div class="t-pill">
+                    <span>Guardian Band</span>
+                    <strong style="color: #059669;"><i class="fa-solid fa-battery-three-quarters"></i> 84% Battery</strong>
+                  </div>
+                  <div class="t-pill">
+                    <span>Risk Index</span>
+                    <strong style="color: #0284c7;">94/100 (Optimal)</strong>
+                  </div>
+                </div>
+              </div>
+            `).join('');
+
+            if (linkedContainer) linkedContainer.innerHTML = cardsHtml;
+            if (fullLinkedContainer) fullLinkedContainer.innerHTML = cardsHtml;
+
+            // Re-wire links in dynamically injected content
+            document.querySelectorAll('#guardian-linked-users-list .spa-nav-link, #full-linked-users-container .spa-nav-link').forEach(link => {
+              link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = link.getAttribute('data-view');
+                if (target) switchView(target);
+              });
+            });
+          }
+
+          // Permissions View Content
+          const permContent = document.getElementById('guardian-permissions-content');
+          if (permContent) {
+            if (linkedUsers.length === 0) {
+              permContent.innerHTML = `<p style="text-align: center; color: #94a3b8; padding: 24px;">No linked users to display permissions for.</p>`;
+            } else {
+              permContent.innerHTML = linkedUsers.map(u => `
+                <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 16px; margin-bottom: 16px;">
+                  <h4 style="font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 10px;">
+                    Permissions for: ${u.userName}
+                  </h4>
+                  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; font-size: 13px;">
+                      <i class="fa-solid fa-check text-safe"></i> Live GPS Location: <strong>Authorized</strong>
+                    </div>
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; font-size: 13px;">
+                      <i class="fa-solid fa-check text-safe"></i> Biometrics Stream: <strong>Authorized</strong>
+                    </div>
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; font-size: 13px;">
+                      <i class="fa-solid fa-check text-safe"></i> Audio Triage: <strong>SOS Triggered Only</strong>
+                    </div>
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; font-size: 13px;">
+                      <i class="fa-solid fa-check text-safe"></i> Incident Logs: <strong>Authorized</strong>
+                    </div>
+                  </div>
+                </div>
+              `).join('');
+            }
+          }
+
+          // Connection History Table
+          const tbody = document.getElementById('guardian-connections-tbody');
+          if (tbody) {
+            if (allConnections.length === 0) {
+              tbody.innerHTML = `
+                <tr>
+                  <td colspan="5" style="text-align: center; color: #94a3b8; padding: 28px;">No connection requests initiated yet.</td>
+                </tr>
+              `;
+            } else {
+              tbody.innerHTML = allConnections.map(c => {
+                let badgeClass = 'pending';
+                if (c.status === 'approved') badgeClass = 'approved';
+                else if (c.status === 'rejected') badgeClass = 'rejected';
+
+                return `
+                  <tr>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <img src="${c.userAvatar || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&h=240&q=80'}" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+                        <strong style="color: var(--portal-text-main);">${c.userName}</strong>
+                      </div>
+                    </td>
+                    <td>${new Date(c.requestDate || Date.now()).toLocaleDateString()}</td>
+                    <td>${c.relationship || 'Ward'}</td>
+                    <td><span class="status-badge ${badgeClass}">${(c.status || 'PENDING').toUpperCase()}</span></td>
+                    <td>
+                      ${c.status === 'approved' 
+                        ? `<a href="#location" class="spa-nav-link" data-view="location" style="color:#0284c7; font-weight:700; text-decoration:none;"><i class="fa-solid fa-location-arrow"></i> Track Live</a>` 
+                        : `<span style="color:#94a3b8; font-size: 12px;"><i class="fa-solid fa-clock"></i> Awaiting User</span>`}
+                    </td>
+                  </tr>
+                `;
+              }).join('');
+
+              tbody.querySelectorAll('.spa-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  const target = link.getAttribute('data-view');
+                  if (target) switchView(target);
+                });
+              });
+            }
+          }
+
+        } catch (e) {
+          console.warn('Error loading guardian data:', e);
+        }
+      }
+
+      // Initial load & Periodic Polling every 2.5 seconds
+      loadGuardianData(false);
+      setInterval(() => loadGuardianData(true), 2500);
+
+      // Listen for instant sync from User portal (Accept / Decline)
+      if (portalSync) {
+        portalSync.onmessage = (event) => {
+          if (event.data?.type === 'CONNECTION_ACCEPTED' || event.data?.type === 'CONNECTION_DECLINED') {
+            loadGuardianData(true);
+          }
+        };
+      }
+
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'gdn_latest_event') {
+          try {
+            const evt = JSON.parse(e.newValue);
+            if (evt.type === 'CONNECTION_ACCEPTED' || evt.type === 'CONNECTION_DECLINED') {
+              loadGuardianData(true);
+            }
+          } catch (err) {}
+        }
+      });
+
+      // 5. Connect to User Form Handler (Submits Connection ID to MongoDB)
+      const formConnect = document.getElementById('form-connect-user');
+      const codeInput = document.getElementById('input-guardian-code');
+
+      if (codeInput) {
+        codeInput.addEventListener('input', () => {
+          let val = codeInput.value.toUpperCase().replace(/[^A-Z0-9\-]/g, '');
+          if (val.length > 3 && !val.includes('-')) {
+            val = val.substring(0, 3) + '-' + val.substring(3);
+          }
+          codeInput.value = val;
+        });
+      }
+
+      if (formConnect) {
+        formConnect.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const feedbackBox = document.getElementById('connect-feedback-box');
+          const submitBtn = document.getElementById('btn-submit-connect');
+
+          const code = (codeInput ? codeInput.value : '').trim().toUpperCase();
+          if (!code) return;
+
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting Request...';
+
+          try {
+            const res = await fetch('/api/guardian/connect', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                guardianId: currentGuardian._id || currentGuardian.id || currentGuardian.email,
+                guardianCode: code
+              })
+            });
+
+            const data = await res.json();
+            feedbackBox.style.display = 'block';
+
+            if (data.success) {
+              feedbackBox.style.background = '#ecfdf5';
+              feedbackBox.style.border = '1px solid #a7f3d0';
+              feedbackBox.style.color = '#065f46';
+              feedbackBox.innerHTML = `
+                <div style="font-weight: 800; font-size: 14px;"><i class="fa-solid fa-circle-check"></i> ${data.message}</div>
+                <div style="font-size: 13px; color: #047857; margin-top: 8px; display: flex; align-items: center; gap: 8px;">
+                  <span class="pulse-indicator" style="background:#10b981; width:8px; height:8px; border-radius:50%; display:inline-block;"></span>
+                  Waiting for <strong>${data.targetUser?.fullName || 'the user'}</strong> to review and accept in their User Portal...
+                </div>
+              `;
+              if (codeInput) codeInput.value = '';
+              GuardianCore.showToast(`Request sent to ${data.targetUser?.fullName || 'User'}!`, 'success');
+
+              // Broadcast instant event to User Portal
+              if (portalSync) {
+                portalSync.postMessage({
+                  type: 'CONNECTION_REQUEST_SENT',
+                  targetUserId: data.targetUser?._id,
+                  targetGuardianId: data.targetUser?.guardianId,
+                  guardianName: currentGuardian.fullName,
+                  timestamp: Date.now()
+                });
+              }
+              try {
+                localStorage.setItem('gdn_latest_event', JSON.stringify({
+                  type: 'CONNECTION_REQUEST_SENT',
+                  targetGuardianId: data.targetUser?.guardianId,
+                  guardianName: currentGuardian.fullName,
+                  timestamp: Date.now()
+                }));
+              } catch (e) {}
+
+              loadGuardianData(false);
+            } else {
+              feedbackBox.style.background = '#fef2f2';
+              feedbackBox.style.border = '1px solid #fecdd3';
+              feedbackBox.style.color = '#991b1b';
+              feedbackBox.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${data.message}`;
+            }
+          } catch (err) {
+            feedbackBox.style.display = 'block';
+            feedbackBox.style.background = '#fef2f2';
+            feedbackBox.style.color = '#991b1b';
+            feedbackBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Network error connecting to backend.';
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Connection Request';
+          }
+        });
+      }
+
+      // 6. Guardian Live Location Map
+      function initGuardianLiveMap() {
+        try {
+          const mapEl = document.getElementById('guardian-live-map');
+          if (!mapEl || typeof L === 'undefined') return;
+
+          if (!gLiveMap) {
+            const lat = 17.0005;
+            const lng = 81.8040;
+            gLiveMap = L.map('guardian-live-map', { zoomControl: true }).setView([lat, lng], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(gLiveMap);
+
+            L.circle([lat, lng], { color: '#10b981', fillColor: '#10b981', fillOpacity: 0.15, radius: 1200, weight: 2 }).addTo(gLiveMap);
+            L.polyline([[17.0120, 81.7920], [17.0060, 81.7990], [lat, lng]], { color: '#2563eb', weight: 5, opacity: 0.85 }).addTo(gLiveMap);
+
+            const markerIcon = L.divIcon({
+              className: 'gdn-ward-marker',
+              html: `<div style="width:16px;height:16px;background:#2563eb;border:3px solid #fff;border-radius:50%;box-shadow:0 0 12px #2563eb;"></div>`,
+              iconSize: [16, 16],
+              iconAnchor: [8, 8]
+            });
+            L.marker([lat, lng], { icon: markerIcon }).addTo(gLiveMap).bindPopup('Ward Live GPS Lock &bull; Speed: 4.2 km/h').openPopup();
+          }
+          gLiveMap.invalidateSize();
+        } catch (e) {}
+      }
+
+      // 7. Guardian Remote ECG Canvas Animation
+      function initGuardianECG() {
+        const canvas = document.getElementById('guardian-ecg-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width = canvas.parentElement.clientWidth || 600;
+        const height = canvas.height = 80;
+
+        let x = 0;
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2.5;
+
+        function animate() {
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.08)';
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.beginPath();
+          ctx.moveTo(x, height / 2);
+          
+          let nextY = height / 2;
+          let step = (x % 60);
+          if (step > 24 && step < 29) nextY = height / 2 - 24;
+          else if (step >= 29 && step < 35) nextY = height / 2 + 28;
+          else if (step >= 35 && step < 40) nextY = height / 2 - 12;
+
+          ctx.lineTo(x + 2.5, nextY);
+          ctx.stroke();
+
+          x = (x + 2.5) % width;
+          requestAnimationFrame(animate);
+        }
+        animate();
+      }
+
+      // 8. Acoustic Triage Waveform Generator
+      function renderWaveformBars() {
+        const container = document.getElementById('audio-waveform-bars');
+        if (!container || container.children.length > 0) return;
+
+        for (let i = 0; i < 36; i++) {
+          const bar = document.createElement('div');
+          bar.className = 'wave-bar';
+          bar.style.height = `${Math.floor(Math.random() * 60 + 20)}%`;
+          container.appendChild(bar);
+        }
+      }
+
+      document.getElementById('btn-play-audio')?.addEventListener('click', () => {
+        const btn = document.getElementById('btn-play-audio');
+        const label = document.getElementById('audio-time-label');
+        isPlayingAudio = !isPlayingAudio;
+
+        if (isPlayingAudio) {
+          btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause Audio';
+          btn.style.background = '#ea580c';
+          GuardianCore.showToast('Playing encrypted ambient audio memo...', 'info');
+
+          let sec = 0;
+          audioPlayTimer = setInterval(() => {
+            sec++;
+            if (label) label.textContent = `00:${sec < 10 ? '0' + sec : sec} / 00:24`;
+
+            // Animate bars
+            document.querySelectorAll('.wave-bar').forEach(bar => {
+              bar.style.height = `${Math.floor(Math.random() * 80 + 15)}%`;
+            });
+
+            if (sec >= 24) {
+              clearInterval(audioPlayTimer);
+              isPlayingAudio = false;
+              btn.innerHTML = '<i class="fa-solid fa-play"></i> Play Audio Stream';
+              btn.style.background = '#0284c7';
+              if (label) label.textContent = '00:00 / 00:24';
+            }
+          }, 1000);
+        } else {
+          clearInterval(audioPlayTimer);
+          btn.innerHTML = '<i class="fa-solid fa-play"></i> Play Audio Stream';
+          btn.style.background = '#0284c7';
+        }
+      });
+
+      // 9. Buzz Ward's Band
+      document.getElementById('btn-gdn-buzz')?.addEventListener('click', () => {
+        GuardianCore.showToast('Haptic buzz dispatched to ward\'s Guardian Band (#GB-V3-982)!', 'success');
+      });
+
+      // 10. Save Guardian Profile
+      const formGprof = document.getElementById('form-guardian-profile');
+      if (formGprof) {
+        formGprof.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const saveBtn = document.getElementById('btn-save-gprof');
+          saveBtn.disabled = true;
+          saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+          const fullName = document.getElementById('gprof-name').value.trim();
+          const phone = document.getElementById('gprof-phone').value.trim();
+          const relationship = document.getElementById('gprof-rel').value;
+          const city = document.getElementById('gprof-city').value.trim();
+
+          try {
+            const res = await fetch('/api/guardian/profile', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                guardianId: currentGuardian._id || currentGuardian.id || currentGuardian.email,
+                fullName,
+                phone,
+                relationship,
+                city
+              })
+            });
+
+            const data = await res.json();
+            if (data.success && data.guardian) {
+              GuardianCore.showToast('Guardian profile updated in database!', 'success');
+              applyGuardianIdentity(data.guardian);
+              GuardianCore.setSession({ ...currentGuardian, ...data.guardian });
+            } else {
+              GuardianCore.showToast(data.message || 'Error updating profile.', 'error');
+            }
+          } catch (err) {
+            GuardianCore.showToast('Network error saving profile.', 'error');
+          } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Profile Details';
+          }
+        });
+      }
+
+      // 11. SMS Dispatch Test
+      document.getElementById('btn-dispatch-sms-test')?.addEventListener('click', () => {
+        GuardianCore.showToast('High-priority test SMS dispatched to your phone!', 'success');
+      });
+
+      // 12. Sign Out
+      document.getElementById('btn-sidebar-logout')?.addEventListener('click', () => {
+        GuardianCore.confirmModal({
+          title: 'Sign Out',
+          message: 'Are you sure you want to end your Guardian session?',
+          confirmText: 'Sign Out',
+          onConfirm: () => GuardianCore.logout('/login.html')
+        });
+      });
+
+      // 13. REAL-TIME EMERGENCY SOS & 1-MINUTE ESCALATION ENGINE
+      let emergencySosIncident = null;
+      let emergencyTimerInterval = null;
+      let emergencyAudioInterval = null;
+      let audioCtx = null;
+
+      function playGuardianEmergencySiren() {
+        try {
+          if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          const now = audioCtx.currentTime;
+          osc.frequency.setValueAtTime(750, now);
+          osc.frequency.linearRampToValueAtTime(1050, now + 0.25);
+          osc.frequency.linearRampToValueAtTime(750, now + 0.5);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.5);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.5);
+        } catch (e) {}
+      }
+
+      function startSirenLoop() {
+        stopSirenLoop();
+        playGuardianEmergencySiren();
+        emergencyAudioInterval = setInterval(playGuardianEmergencySiren, 1400);
+      }
+
+      function stopSirenLoop() {
+        if (emergencyAudioInterval) {
+          clearInterval(emergencyAudioInterval);
+          emergencyAudioInterval = null;
+        }
+      }
+
+      function showEmergencyModal(incident) {
+        emergencySosIncident = incident;
+        const modalEl = document.getElementById('guardian-emergency-modal');
+        if (!modalEl) return;
+
+        modalEl.style.display = 'flex';
+
+        // Ward Telemetry Details
+        const nameEl = document.getElementById('em-ward-name');
+        const locEl = document.getElementById('em-ward-location');
+        const bpmEl = document.getElementById('em-ward-bpm');
+        const phoneEl = document.getElementById('em-ward-phone');
+        const reasonEl = document.getElementById('em-ward-reason');
+
+        if (nameEl) nameEl.textContent = (incident.userName || 'Protected Ward') + ' Needs Immediate Assistance!';
+        if (locEl) locEl.textContent = incident.location || 'Sector 4 Metro, Main Rd';
+        if (bpmEl) bpmEl.innerHTML = `<i class="fa-solid fa-heart-pulse"></i> ${incident.bpm || 148} BPM (Tachycardia)`;
+        if (phoneEl) phoneEl.textContent = incident.userPhone || '+91 98765 43210';
+        if (reasonEl) reasonEl.textContent = incident.reason || 'Critical Emergency SOS Beacon Dispatched';
+
+        const timerBox = document.getElementById('em-timer-container');
+        const escNotice = document.getElementById('em-escalated-notice');
+        const actionsBox = document.getElementById('em-actions-container');
+        const dismissBox = document.getElementById('em-dismiss-container');
+
+        if (incident.status === 'PENDING_GUARDIAN') {
+          if (timerBox) timerBox.style.display = 'block';
+          if (escNotice) escNotice.style.display = 'none';
+          if (actionsBox) actionsBox.style.display = 'grid';
+          if (dismissBox) dismissBox.style.display = 'none';
+
+          startSirenLoop();
+          start1MinuteCountdown(incident);
+        } else if (incident.status === 'ESCALATED_POLICE' || incident.status === 'POLICE_ACKNOWLEDGED') {
+          stopSirenLoop();
+          clearInterval(emergencyTimerInterval);
+          if (timerBox) timerBox.style.display = 'none';
+          if (escNotice) {
+            escNotice.style.display = 'flex';
+            escNotice.innerHTML = `
+              <i class="fa-solid fa-shield-halved text-error" style="font-size: 26px;"></i>
+              <div>
+                <strong>POLICE EOC ENGAGED:</strong> 1-minute window expired. Case #${incident.caseId} escalated to Municipal Police Emergency Operations Center!
+              </div>`;
+          }
+          if (actionsBox) actionsBox.style.display = 'none';
+          if (dismissBox) dismissBox.style.display = 'block';
+        } else if (incident.status === 'DISPATCHED') {
+          stopSirenLoop();
+          clearInterval(emergencyTimerInterval);
+          if (timerBox) timerBox.style.display = 'none';
+          if (escNotice) {
+            escNotice.style.display = 'flex';
+            escNotice.innerHTML = `
+              <i class="fa-solid fa-truck-medical text-primary" style="font-size: 26px;"></i>
+              <div>
+                <strong>TACTICAL POLICE DISPATCHED:</strong> ${incident.policeAction?.dispatchedUnit || 'Unit 01 (Intercept Patrol)'} en route! ETA: ${incident.policeAction?.eta || '2m 10s'}.
+              </div>`;
+          }
+          if (actionsBox) actionsBox.style.display = 'none';
+          if (dismissBox) dismissBox.style.display = 'block';
+        }
+      }
+
+      function start1MinuteCountdown(incident) {
+        clearInterval(emergencyTimerInterval);
+
+        const displayEl = document.getElementById('em-countdown-display');
+        const progressEl = document.getElementById('em-timer-progress');
+        const timeoutMs = new Date(incident.guardianTimeoutAt).getTime();
+        const totalDurationMs = (incident.guardianTimeoutSeconds || 60) * 1000;
+
+        function updateTick() {
+          const now = Date.now();
+          const remainingMs = Math.max(0, timeoutMs - now);
+          const remainingSec = Math.ceil(remainingMs / 1000);
+
+          const mins = Math.floor(remainingSec / 60);
+          const secs = remainingSec % 60;
+          const timeFormatted = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+          if (displayEl) {
+            displayEl.textContent = timeFormatted;
+            if (remainingSec <= 15) {
+              displayEl.style.color = '#ef4444';
+            } else {
+              displayEl.style.color = '#dc2626';
+            }
+          }
+
+          if (progressEl) {
+            const pct = Math.max(0, Math.min(100, (remainingMs / totalDurationMs) * 100));
+            progressEl.style.width = pct + '%';
+            if (remainingSec <= 15) {
+              progressEl.style.background = '#ef4444';
+            }
+          }
+
+          if (remainingSec <= 0) {
+            clearInterval(emergencyTimerInterval);
+            handleGuardianTimeoutAutoEscalate(incident);
+          }
+        }
+
+        updateTick();
+        emergencyTimerInterval = setInterval(updateTick, 1000);
+      }
+
+      async function handleGuardianTimeoutAutoEscalate(incident) {
+        stopSirenLoop();
+        try {
+          const res = await fetch('/api/sos/escalate-police', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              caseId: incident.caseId,
+              reason: 'Guardian did not respond within 1-minute response window (60s timeout). Autonomous municipal protocol engaged.'
+            })
+          });
+          const data = await res.json();
+          if (data.success) {
+            emergencySosIncident = data.incident;
+            const timerBox = document.getElementById('em-timer-container');
+            const escNotice = document.getElementById('em-escalated-notice');
+            const actionsBox = document.getElementById('em-actions-container');
+            const dismissBox = document.getElementById('em-dismiss-container');
+
+            if (timerBox) timerBox.style.display = 'none';
+            if (escNotice) {
+              escNotice.style.display = 'flex';
+              escNotice.innerHTML = `
+                <i class="fa-solid fa-shield-halved text-error" style="font-size: 26px;"></i>
+                <div>
+                  <strong>1-MINUTE WINDOW EXPIRED:</strong> Case #${data.incident.caseId} AUTOMATICALLY ESCALATED to Police Emergency Operations Center!
+                </div>`;
+            }
+            if (actionsBox) actionsBox.style.display = 'none';
+            if (dismissBox) dismissBox.style.display = 'block';
+
+            if (portalSync) {
+              portalSync.postMessage({ type: 'SOS_ESCALATED_POLICE', incident: data.incident, timestamp: Date.now() });
+            }
+            try {
+              localStorage.setItem('guardian_ai_event', JSON.stringify({ type: 'SOS_ESCALATED_POLICE', incident: data.incident, timestamp: Date.now() }));
+            } catch (e) {}
+
+            GuardianCore.showToast(`1-Minute window expired. Emergency escalated to Police Emergency Portal!`, 'error');
+          }
+        } catch (err) {
+          console.error('Auto escalate failed:', err);
+        }
+      }
+
+      // Guardian responds within 1 minute
+      document.getElementById('btn-gdn-respond')?.addEventListener('click', async () => {
+        if (!emergencySosIncident) return;
+        stopSirenLoop();
+        clearInterval(emergencyTimerInterval);
+
+        try {
+          const res = await fetch('/api/sos/respond-guardian', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              caseId: emergencySosIncident.caseId,
+              guardianId: currentGuardian._id || currentGuardian.id || currentGuardian.email,
+              guardianName: currentGuardian.fullName || 'Primary Guardian',
+              note: 'Guardian responded within 60s and is taking action'
+            })
+          });
+
+          const data = await res.json();
+          if (data.success) {
+            document.getElementById('guardian-emergency-modal').style.display = 'none';
+            GuardianCore.showToast('You took ownership of this SOS! Ward notified that you are responding.', 'success');
+            
+            if (portalSync) {
+              portalSync.postMessage({ type: 'SOS_GUARDIAN_RESPONDED', incident: data.incident, timestamp: Date.now() });
+            }
+            try {
+              localStorage.setItem('guardian_ai_event', JSON.stringify({ type: 'SOS_GUARDIAN_RESPONDED', incident: data.incident, timestamp: Date.now() }));
+            } catch (e) {}
+
+            switchView('location');
+          }
+        } catch (e) {
+          console.error('Failed to respond:', e);
+        }
+      });
+
+      // Guardian manually escalates to police immediately
+      document.getElementById('btn-gdn-escalate')?.addEventListener('click', async () => {
+        if (!emergencySosIncident) return;
+        stopSirenLoop();
+        clearInterval(emergencyTimerInterval);
+
+        try {
+          const res = await fetch('/api/sos/escalate-police', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              caseId: emergencySosIncident.caseId,
+              reason: 'Guardian requested immediate municipal police dispatch.'
+            })
+          });
+          const data = await res.json();
+          if (data.success) {
+            handleGuardianTimeoutAutoEscalate(emergencySosIncident);
+            GuardianCore.showToast('Escalated to Police Emergency Operations Center!', 'error');
+          }
+        } catch (e) {
+          console.error('Failed to escalate to police:', e);
+        }
+      });
+
+      // Close modal button
+      document.getElementById('btn-gdn-close-modal')?.addEventListener('click', () => {
+        document.getElementById('guardian-emergency-modal').style.display = 'none';
+        stopSirenLoop();
+        clearInterval(emergencyTimerInterval);
+      });
+
+      // 14. Real-time SOS Polling & Sync Listener
+      async function checkActiveSos() {
+        try {
+          const res = await fetch('/api/sos/active', { headers: { 'Cache-Control': 'no-cache' } });
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data.success && data.hasActiveSos && data.activeIncident) {
+            const inc = data.activeIncident;
+            const modalEl = document.getElementById('guardian-emergency-modal');
+            const isModalOpen = modalEl && modalEl.style.display !== 'none';
+
+            if (!isModalOpen && inc.status === 'PENDING_GUARDIAN') {
+              showEmergencyModal(inc);
+            } else if (isModalOpen && inc.status !== emergencySosIncident?.status) {
+              showEmergencyModal(inc);
+            }
+          } else if (data.success && !data.hasActiveSos) {
+            const modalEl = document.getElementById('guardian-emergency-modal');
+            if (modalEl && modalEl.style.display !== 'none' && emergencySosIncident?.status === 'RESOLVED') {
+              modalEl.style.display = 'none';
+              stopSirenLoop();
+              clearInterval(emergencyTimerInterval);
+            }
+          }
+        } catch (e) {}
+      }
+
+      // Socket.IO Real-Time Communication Hub
+      if (typeof io !== 'undefined') {
+        try {
+          const socket = io();
+          
+          // Live SOS Emergency Event
+          socket.on('emergency:new', (incident) => {
+            if (incident) showEmergencyModal(incident);
+          });
+          
+          socket.on('emergency:update', (incident) => {
+            if (incident) showEmergencyModal(incident);
+          });
+
+          // Live Telemetry & Biometrics Update
+          socket.on('telemetry:update', (tel) => {
+            if (!tel) return;
+            const hr = (tel.heartRate !== undefined && tel.heartRate !== null && tel.heartRate > 0) ? tel.heartRate : null;
+            const hrText = hr !== null ? `${hr} BPM` : '— BPM · No contact';
+            
+            const bpmEl = document.getElementById('ward-live-bpm');
+            if (bpmEl) bpmEl.textContent = hrText;
+            
+            const stepsEl = document.getElementById('ward-live-steps');
+            if (stepsEl) stepsEl.textContent = `${tel.steps || 0} steps`;
+
+            const sats = tel.satellites !== undefined ? tel.satellites : 14;
+            const hdop = tel.hdop !== undefined ? tel.hdop : 0.8;
+            const speed = tel.speedKmh !== undefined ? tel.speedKmh : (tel.activityStatus === 'RUNNING' ? 8.5 : 4.2);
+
+            const satsEl = document.getElementById('gdn-ward-sats');
+            if (satsEl) satsEl.innerHTML = `<i class="fa-solid fa-satellite text-info"></i> ${sats} Satellites Fixed (${tel.fixQuality || '3D Fix'})`;
+
+            const speedEl = document.getElementById('gdn-ward-speed');
+            if (speedEl) speedEl.textContent = `${speed} km/h • ${tel.activityStatus || 'Walking'}`;
+
+            const lat = tel.lat || tel.coords?.lat;
+            const lng = tel.lng || tel.coords?.lng;
+            if (lat && lng) {
+              const coordsEl = document.getElementById('gdn-ward-coords');
+              if (coordsEl) coordsEl.textContent = `${Number(lat).toFixed(4)}° N, ${Number(lng).toFixed(4)}° E`;
+
+              if (typeof guardianMap !== 'undefined' && guardianMap && typeof wardMarker !== 'undefined' && wardMarker) {
+                wardMarker.setLatLng([lat, lng]);
+              }
+            }
+          });
+
+          // Live Acoustic Voice Memo Ingestion
+          socket.on('audio:new', (audioRec) => {
+            GuardianCore.showToast(`🎙️ Voice recording received from ${audioRec.userName || 'Ward'}.`, 'info');
+            if (typeof loadAcousticRecordings === 'function') {
+              loadAcousticRecordings();
+            }
+          });
+        } catch (e) {
+          console.warn('Socket.IO connection warning:', e);
+        }
+      }
+
+      // Check SOS every 2.5 seconds
+      setInterval(checkActiveSos, 2500);
+      checkActiveSos();
+
+      // Listen to cross-tab broadcast events
+      if (portalSync) {
+        portalSync.addEventListener('message', (evt) => {
+          const { type, incident } = evt.data || {};
+          if (type === 'SOS_TRIGGERED' && incident) {
+            showEmergencyModal(incident);
+          } else if (['SOS_ESCALATED_POLICE', 'POLICE_ACKNOWLEDGED', 'POLICE_DISPATCHED'].includes(type) && incident) {
+            showEmergencyModal(incident);
+          } else if (type === 'SOS_RESOLVED' || type === 'POLICE_RESOLVED') {
+            const modalEl = document.getElementById('guardian-emergency-modal');
+            if (modalEl) modalEl.style.display = 'none';
+            stopSirenLoop();
+            clearInterval(emergencyTimerInterval);
+          }
+        });
+      }
+
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'guardian_ai_event') {
+          checkActiveSos();
+        }
+      });
+
+      // Initial hash check
+      if (window.location.hash) {
+        switchView(window.location.hash);
+      }
+
+    })();
+  </script>
+
+  <!-- Mobile Bottom Navigation Dock -->
+  <nav class="portal-mobile-bottom-dock" aria-label="Mobile Navigation Dock">
+    <a href="#overview" class="portal-bottom-nav-item spa-nav-link active" data-view="overview">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span>Home</span>
+    </a>
+    <a href="#location" class="portal-bottom-nav-item spa-nav-link" data-view="location">
+      <i class="fa-solid fa-location-arrow"></i>
+      <span>Live Map</span>
+    </a>
+    <a href="#sos" class="portal-bottom-nav-item spa-nav-link dock-sos-btn" data-view="sos">
+      <div class="dock-sos-icon-wrap">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <span>SOS Siren</span>
+    </a>
+    <a href="#linked-users" class="portal-bottom-nav-item spa-nav-link" data-view="linked-users">
+      <i class="fa-solid fa-users"></i>
+      <span>Wards</span>
+    </a>
+    <button type="button" class="portal-bottom-nav-item" id="dock-menu-toggle-btn" aria-label="Open More Menu">
+      <i class="fa-solid fa-bars"></i>
+      <span>More</span>
+    </button>
+  </nav>
+</body>
+</html>

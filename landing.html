@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardian AI — Personal Safety Sentinel & Autonomous Emergency Mesh</title>
+  <meta name="description" content="Next-generation autonomous personal safety sentinel powered by predictive AI, ESP32 wearable biosensors, and real-time family guardian synchronization.">
+  <meta name="keywords" content="personal safety, guardian ai, wearable biometrics, emergency sos, gps tracking, geofence, fall detection">
+
+  <!-- Modern Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+
+  <!-- Landing Page Custom Stylesheet -->
+  <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+
+  <!-- Cyber Grid Background Overlay -->
+  <div class="cyber-grid-overlay"></div>
+
+  <!-- Animated Ambient Floating Glow Orbs -->
+  <div class="mesh-glow-orb mesh-glow-1"></div>
+  <div class="mesh-glow-orb mesh-glow-2"></div>
+  <div class="mesh-glow-orb mesh-glow-3"></div>
+
+  <!-- Interactive Cyber Constellation Particle Canvas -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- ====================================================================
+       1. NAVIGATION BAR
+       ==================================================================== -->
+  <header class="lp-navbar">
+    <div class="lp-nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="lp-brand">
+        <div class="lp-brand-logo">
+          <i class="fa-solid fa-shield-heart"></i>
+        </div>
+        <div>
+          <span class="lp-brand-title">Guardian AI</span>
+          <span class="lp-brand-badge">Sentinel v2.4</span>
+        </div>
+      </a>
+
+      <!-- Quick Nav Links -->
+      <ul class="lp-nav-links">
+        <li><a href="#features" class="lp-nav-link">Sentinel Suite</a></li>
+        <li><a href="#personas" class="lp-nav-link">Dual Portals</a></li>
+        <li><a href="#simulator" class="lp-nav-link">Live Simulator</a></li>
+      </ul>
+
+      <!-- Live Sentinel Mesh Status -->
+      <div class="lp-nav-status">
+        <span class="pulse-dot"></span>
+        <span>Sentinel Mesh Active</span>
+      </div>
+
+      <!-- Navigation Single CTA Button -->
+      <div class="lp-nav-cta">
+        <a href="/login.html" class="btn-get-started btn-get-started-nav" id="btn-nav-get-started">
+          <span>Get Started</span>
+          <div class="btn-icon-wrap">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ====================================================================
+       2. HERO SECTION & KINETIC TYPOGRAPHY ANIMATION
+       ==================================================================== -->
+  <section class="lp-hero-section">
+    
+    <!-- Feature Pill Tag -->
+    <div class="lp-hero-pill">
+      <span class="pill-tag">Autonomous Protection</span>
+      <span>FIPS-140 Encrypted Telemetry & Real-Time Escort</span>
+    </div>
+
+    <!-- Kinetic Typography Headline with Dynamic Word Cycling -->
+    <h1 class="lp-hero-title">
+      <span class="static-text">Personal Safety Sentinel Powered by</span>
+      <span class="lp-typewriter-container">
+        <span class="lp-animated-word" id="animated-typewriter-word">Predictive AI</span><span class="lp-typewriter-cursor"></span>
+      </span>
+    </h1>
+
+    <!-- Descriptive Subtitle -->
+    <p class="lp-hero-subtitle">
+      Autonomous personal protection connecting protected wards, ESP32 wearable biosensors, and designated family guardians. Instant threat detection, live GPS escort, and zero-latency emergency triage.
+    </p>
+
+    <!-- ONLY "Get Started" Button (As Explicitly Requested) -->
+    <div class="lp-hero-action-wrap">
+      <a href="/login.html" class="btn-get-started" id="btn-hero-get-started">
+        <span>Get Started</span>
+        <div class="btn-icon-wrap">
+          <i class="fa-solid fa-arrow-right"></i>
+        </div>
+      </a>
+
+      <!-- Trust Meta Strip -->
+      <div class="lp-hero-meta-strip">
+        <div class="lp-hero-meta-item">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Instant Access</span>
+        </div>
+        <div class="lp-hero-meta-item">
+          <i class="fa-solid fa-lock"></i>
+          <span>Zero Knowledge Privacy</span>
+        </div>
+        <div class="lp-hero-meta-item">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Preloaded Demo Portals</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         3. LIVE TELEMETRY FLOATING HUD
+         ==================================================================== -->
+    <div class="lp-telemetry-hud">
+      <div class="lp-hud-header">
+        <div class="lp-hud-title">
+          <i class="fa-solid fa-microchip"></i>
+          <span>Guardian Sentinel Mesh &bull; Live Telemetry Feed</span>
+        </div>
+        <div class="lp-hud-status-pills">
+          <span class="lp-hud-badge"><i class="fa-solid fa-satellite-dish"></i> GPS FIXED</span>
+          <span class="lp-hud-badge"><i class="fa-solid fa-bluetooth"></i> BLE 5.2 ONLINE</span>
+          <span class="lp-hud-badge"><i class="fa-solid fa-shield-halved"></i> GEOFENCE ARMED</span>
+        </div>
+      </div>
+
+      <div class="lp-hud-grid">
+        <!-- Card 1: Pulse Rate & Real-Time ECG -->
+        <div class="lp-hud-stat">
+          <div class="lp-hud-label">
+            <span>Biometrics</span>
+            <i class="fa-solid fa-heart-pulse" style="color: #f43f5e;"></i>
+          </div>
+          <div class="lp-hud-value" id="hud-val-heart">76 <span style="font-size: 13px; color: var(--lp-text-muted);">BPM</span></div>
+          <canvas id="hud-ecg-canvas" class="lp-hud-ecg-canvas"></canvas>
+        </div>
+
+        <!-- Card 2: GPS Telemetry -->
+        <div class="lp-hud-stat">
+          <div class="lp-hud-label">
+            <span>Geo Coordinates</span>
+            <i class="fa-solid fa-location-arrow" style="color: #38bdf8;"></i>
+          </div>
+          <div class="lp-hud-value" style="font-size: 16px;">17.0005° N, 81.8040° E</div>
+          <div style="font-size: 12px; color: #10b981; margin-top: 6px; font-weight: 600;">
+            <i class="fa-solid fa-circle-check"></i> Inside Safe Geofence (1.5km)
+          </div>
+        </div>
+
+        <!-- Card 3: Wearable Hardware -->
+        <div class="lp-hud-stat">
+          <div class="lp-hud-label">
+            <span>Band V3 Hardware</span>
+            <i class="fa-solid fa-stopwatch" style="color: #10b981;"></i>
+          </div>
+          <div class="lp-hud-value">84% <span style="font-size: 13px; color: var(--lp-text-muted);">BATTERY</span></div>
+          <div style="font-size: 12px; color: var(--lp-text-muted); margin-top: 6px;">
+            ESP32 BLE &bull; Fall Sensor Armed
+          </div>
+        </div>
+
+        <!-- Card 4: AI Safety Score -->
+        <div class="lp-hud-stat">
+          <div class="lp-hud-label">
+            <span>AI Risk Index</span>
+            <i class="fa-solid fa-brain" style="color: #a78bfa;"></i>
+          </div>
+          <div class="lp-hud-value" style="color: #34d399;">98 <span style="font-size: 13px; color: var(--lp-text-muted);">/ 100</span></div>
+          <div style="font-size: 12px; color: var(--lp-text-muted); margin-top: 6px;">
+            Optimal Corridor &bull; No Anomalies
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ====================================================================
+       4. DUAL PORTALS SHOWCASE (GUARDIAN vs USER)
+       ==================================================================== -->
+  <section class="lp-section" id="personas">
+    <div class="lp-section-header">
+      <span class="lp-section-tag">Role-Based Protection</span>
+      <h2 class="lp-section-title">Two Integrated Portals. One United Sentinel Network.</h2>
+      <p class="lp-section-desc">Designed specifically for both family protectors and individuals needing real-time autonomous safety.</p>
+    </div>
+
+    <div class="lp-persona-card-grid">
+      
+      <!-- Persona 1: Guardian Protector Portal -->
+      <div class="lp-persona-card">
+        <span class="lp-persona-badge badge-guardian">
+          <i class="fa-solid fa-user-shield"></i> GUARDIAN PROTECTOR PORTAL
+        </span>
+        <h3 class="lp-card-title">Family Guardians & Protectors</h3>
+        <p class="lp-card-text">
+          Supervise active wards, monitor real-time GPS locations on dynamic maps, configure safe geofence perimeters, and receive immediate instant push alerts if distress triggers fire.
+        </p>
+
+        <div class="lp-card-visual" style="border-left: 3px solid #0284c7;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <strong style="color: #f1f5f9; font-size: 14px;">Guardian Supervisor: Ravi Sharma</strong>
+            <span style="font-size: 11px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 2px 8px; border-radius: 4px;">Primary Guardian</span>
+          </div>
+          <div style="font-size: 13px; color: var(--lp-text-muted);">
+            Protected Ward: <strong>Ananya Sharma</strong> &bull; Location: Rajahmundry Corridor #4
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <a href="guardian/dashboard/index.html" class="lp-nav-link" style="color: #38bdf8; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+            <span>Explore Guardian Dashboard</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Persona 2: User Safety Shield -->
+      <div class="lp-persona-card">
+        <span class="lp-persona-badge badge-user">
+          <i class="fa-solid fa-shield-heart"></i> USER SAFETY PORTAL
+        </span>
+        <h3 class="lp-card-title">Protected Individuals & Students</h3>
+        <p class="lp-card-text">
+          Wearable biometrics monitoring, 1-tap SOS distress beacon dispatch, safe travel corridors with crime-index avoidance, and discreet voice memo check-ins during commute.
+        </p>
+
+        <div class="lp-card-visual" style="border-left: 3px solid #10b981;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <strong style="color: #f1f5f9; font-size: 14px;">Protected User: Ananya Sharma</strong>
+            <span style="font-size: 11px; background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 2px 8px; border-radius: 4px;">Active Shield</span>
+          </div>
+          <div style="font-size: 13px; color: var(--lp-text-muted);">
+            Guardian ID: <strong>GDN-7F4K92X</strong> &bull; Emergency Band: GB-V3-982
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <a href="user/dashboard/index.html" class="lp-nav-link" style="color: #34d399; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+            <span>Explore User Dashboard</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       5. FEATURE BENTO GRID (ALL PLATFORM PILLARS)
+       ==================================================================== -->
+  <section class="lp-section" id="features">
+    <div class="lp-section-header">
+      <span class="lp-section-tag">Comprehensive Protection Mesh</span>
+      <h2 class="lp-section-title">Engineered For Zero Vulnerability</h2>
+      <p class="lp-section-desc">Six interlocking modules continuously analyze your environment, biometrics, and physical coordinates.</p>
+    </div>
+
+    <div class="lp-bento-grid">
+      
+      <!-- Bento 1: Live GPS GeoNAV (8 Cols) -->
+      <div class="lp-bento-card col-span-8">
+        <div>
+          <div class="lp-card-icon icon-cyan">
+            <i class="fa-solid fa-location-arrow"></i>
+          </div>
+          <h3 class="lp-card-title">Live GPS GeoNAV & Geofencing</h3>
+          <p class="lp-card-text">
+            Interactive high-accuracy Leaflet GPS coordinates tracking, custom radius safe boundaries, dynamic perimeter breaches alerts, and real-time breadcrumb travel telemetry.
+          </p>
+        </div>
+        <div class="lp-card-visual" style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <span style="font-size: 12px; color: var(--lp-text-dim); display: block;">PERIMETER RADIUS</span>
+            <strong style="color: #38bdf8; font-family: var(--lp-font-mono);">1,200 Meters</strong>
+          </div>
+          <a href="location.html" class="lp-nav-link" style="color: #38bdf8; font-size: 13px;">View Live Map &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Bento 2: Guardian Band V3 (4 Cols) -->
+      <div class="lp-bento-card col-span-4">
+        <div>
+          <div class="lp-card-icon icon-emerald">
+            <i class="fa-solid fa-stopwatch"></i>
+          </div>
+          <h3 class="lp-card-title">ESP32 Guardian Band</h3>
+          <p class="lp-card-text">
+            MAX30102 PPG pulse oximetry, MPU6050 fall detection, tactile haptic buzz alert, and GSM SMS fallback.
+          </p>
+        </div>
+        <div class="lp-card-visual">
+          <div style="font-size: 12px; color: var(--lp-text-muted); display: flex; justify-content: space-between;">
+            <span>Fall Sensor:</span> <strong style="color: #10b981;">Armed</strong>
+          </div>
+          <div style="font-size: 12px; color: var(--lp-text-muted); display: flex; justify-content: space-between; margin-top: 4px;">
+            <span>Haptic Buzzer:</span> <strong style="color: #38bdf8;">Ready</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento 3: Safe Corridors (4 Cols) -->
+      <div class="lp-bento-card col-span-4">
+        <div>
+          <div class="lp-card-icon icon-purple">
+            <i class="fa-solid fa-route"></i>
+          </div>
+          <h3 class="lp-card-title">Safe Corridors</h3>
+          <p class="lp-card-text">
+            AI-computed transit corridors avoiding unlit streets and high-crime sectors with automated ETA escort.
+          </p>
+        </div>
+        <div class="lp-card-visual">
+          <a href="journeys.html" class="lp-nav-link" style="color: #a78bfa; font-size: 13px;">Review Safe Routes &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Bento 4: Critical SOS Emergency Siren (8 Cols) -->
+      <div class="lp-bento-card col-span-8">
+        <div>
+          <div class="lp-card-icon icon-rose">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <h3 class="lp-card-title">Critical SOS Emergency Simulator</h3>
+          <p class="lp-card-text">
+            Instant 10-second emergency countdown with automatic siren dispatch, SMS geo-beacon distribution, and police escort notification channel.
+          </p>
+        </div>
+        <div class="lp-card-visual" style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-bullhorn text-danger"></i>
+            <span style="font-size: 13px; color: #f87171; font-weight: 600;">110dB High-Frequency Distress Siren Ready</span>
+          </div>
+          <a href="sos-alert.html" class="lp-nav-link" style="color: #f87171; font-size: 13px;">Test SOS Simulator &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       6. INTERACTIVE LIVE SAFETY STATE SIMULATOR
+       ==================================================================== -->
+  <section class="lp-section" id="simulator">
+    <div class="lp-section-header">
+      <span class="lp-section-tag">Interactive Simulation</span>
+      <h2 class="lp-section-title">See Sentinel AI In Action</h2>
+      <p class="lp-section-desc">Toggle between standard safe corridor escort and active emergency distress to see how telemetry reacts.</p>
+    </div>
+
+    <div class="lp-simulator-box">
+      
+      <!-- Toggle Buttons -->
+      <div class="lp-sim-toggle-strip">
+        <button type="button" class="lp-sim-btn active sim-normal" id="sim-btn-normal">
+          <i class="fa-solid fa-circle-check"></i> Standard Safe State
+        </button>
+        <button type="button" class="lp-sim-btn sim-sos" id="sim-btn-sos">
+          <i class="fa-solid fa-triangle-exclamation"></i> Emergency SOS Triggered
+        </button>
+      </div>
+
+      <!-- Live Display -->
+      <div class="lp-sim-display">
+        
+        <!-- Pane 1: Telemetry Diagnostics -->
+        <div class="lp-sim-pane" id="sim-pane-display">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <span style="font-size: 12px; color: var(--lp-text-dim); text-transform: uppercase;">TELEMETRY MONITOR</span>
+            <span class="lp-hud-badge" id="sim-threat-badge">LOW RISK</span>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <span style="font-size: 13px; color: var(--lp-text-muted);">Current Mesh Status:</span>
+            <div id="sim-status-text" style="font-size: 16px; font-weight: 700; color: #f8fafc; margin-top: 4px;">
+              <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Safe Corridor Escort Active
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px;">
+            <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: 8px;">
+              <span style="font-size: 11px; color: var(--lp-text-dim);">SAFETY SCORE</span>
+              <div id="sim-score-val" style="font-size: 20px; font-weight: 800; color: #38bdf8; font-family: var(--lp-font-mono);">98/100</div>
+            </div>
+            <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: 8px;">
+              <span style="font-size: 11px; color: var(--lp-text-dim);">HEART RATE</span>
+              <div id="sim-bpm-val" style="font-size: 20px; font-weight: 800; color: #f8fafc; font-family: var(--lp-font-mono);">74 <span style="font-size: 12px; color: #94a3b8;">BPM</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 2: Actions & Handshake Preview -->
+        <div class="lp-sim-pane">
+          <span style="font-size: 12px; color: var(--lp-text-dim); text-transform: uppercase; display: block; margin-bottom: 16px;">AUTONOMOUS ACTIONS FIRED</span>
+          
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: var(--lp-text-muted);">
+            <li style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-check text-emerald" style="color: #10b981;"></i>
+              <span>High-frequency GPS lock transmitted to Guardian console</span>
+            </li>
+            <li style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-check text-emerald" style="color: #10b981;"></i>
+              <span>Encrypted biometric telemetry synced with local guardian station</span>
+            </li>
+            <li style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-check text-emerald" style="color: #10b981;"></i>
+              <span>Multi-channel SMS and browser push notifications armed</span>
+            </li>
+            <li style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-check text-emerald" style="color: #10b981;"></i>
+              <span>Zero-knowledge token validation verified with hardware band</span>
+            </li>
+          </ul>
+
+          <div style="margin-top: 24px; text-align: center;">
+            <a href="/login.html" class="btn-get-started" style="padding: 10px 24px; font-size: 14px;">
+              <span>Get Started</span>
+              <div class="btn-icon-wrap" style="width: 24px; height: 24px; font-size: 11px;">
+                <i class="fa-solid fa-arrow-right"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       7. FINAL HIGH-IMPACT CALL TO ACTION
+       ==================================================================== -->
+  <section class="lp-cta-section">
+    <div class="lp-cta-card">
+      <h2 class="lp-cta-title">Activate Real-Time Autonomous Safety Today</h2>
+      <p class="lp-cta-desc">
+        Connect your guardians, pair your wearable device, and join the personal safety network designed for total peace of mind.
+      </p>
+
+      <!-- The Single "Get Started" Button -->
+      <a href="/login.html" class="btn-get-started" id="btn-final-get-started">
+        <span>Get Started</span>
+        <div class="btn-icon-wrap">
+          <i class="fa-solid fa-arrow-right"></i>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       8. FOOTER
+       ==================================================================== -->
+  <footer class="lp-footer">
+    <div class="lp-footer-container">
+      <div class="lp-footer-copy">
+        &copy; 2026 <strong>Guardian AI Sentinel Mesh Platform</strong>. All rights reserved. FIPS-140-2 Telemetry Compliant.
+      </div>
+      <div class="lp-footer-links">
+        <a href="/login.html" class="lp-footer-link">Sign In</a>
+        <a href="guardian/dashboard/index.html" class="lp-footer-link">Guardian Console</a>
+        <a href="user/dashboard/index.html" class="lp-footer-link">User Safety Hub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Landing Page Scripts -->
+  <script src="js/landing.js"></script>
+</body>
+</html>

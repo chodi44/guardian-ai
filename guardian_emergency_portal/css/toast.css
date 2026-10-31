@@ -1,0 +1,56 @@
+/* toast.css */
+#toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 350px;
+  pointer-events: none; /* Let clicks pass through container */
+}
+
+@keyframes slide-up {
+  0% { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast-item {
+  background-color: white;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  pointer-events: auto; /* Re-enable clicks for close button */
+  border-left-width: 4px;
+  border-left-style: solid;
+  border-left-color: var(--text-tertiary); /* Default */
+}
+
+/* Maintain internal classes that might be missing from Tailwind */
+.toast-item .flex-1 { flex: 1; }
+.toast-item h4 { margin: 0; font-size: 0.85rem; font-weight: 700; color: var(--color-primary); line-height: 1.2; }
+.toast-item p { margin: 0.25rem 0 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; }
+.toast-item button { 
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  color: var(--text-tertiary);
+  padding: 0.1rem;
+  transition: color 0.2s;
+}
+.toast-item button:hover { color: var(--color-primary); }
+
+.toast-item:has(.text-success) { border-left-color: var(--color-success); }
+.toast-item:has(.text-error) { border-left-color: var(--color-error); }
+.toast-item:has(.text-warning) { border-left-color: var(--color-warning); }
+.toast-item:has(.text-secondary) { border-left-color: var(--text-secondary); }

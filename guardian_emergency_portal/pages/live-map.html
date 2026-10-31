@@ -1,0 +1,110 @@
+<div class="live-map-container">
+  <!-- Header Bar -->
+  <div class="map-header">
+    <div class="map-header-left">
+      <h1 class="map-page-title">
+        <i data-lucide="map" style="width: 24px; height: 24px;"></i> LIVE TACTICAL MAP: SECTOR 4
+      </h1>
+      <div class="map-header-divider"></div>
+      <div class="map-badges">
+        <span class="badge-blue-solid">4 ACTIVE UNITS</span>
+        <span class="badge-error-solid">1 CRITICAL INCIDENT</span>
+      </div>
+    </div>
+    
+    <div class="map-header-right">
+      <div class="mesh-network-status">
+        <i data-lucide="signal" style="width: 16px; height: 16px;"></i> MESH NETWORK ONLINE
+      </div>
+      <select class="map-select">
+        <option>ALL ACTIVE UNITS</option>
+      </select>
+      <select class="map-select">
+        <option>CRITICAL INCIDENTS ONLY</option>
+      </select>
+      <button onclick="window.showToast('Filter Applied', 'Map filter updated successfully', 'success')" class="btn-outline-gray map-filter-btn">
+        <i data-lucide="filter" style="width: 16px; height: 16px;"></i> FILTER MAP
+      </button>
+    </div>
+  </div>
+
+  <div class="map-body">
+    <!-- Main Interactive Map Area -->
+    <div class="map-view" style="position: relative; padding: 0; min-height: 520px;">
+      <div id="leaflet-live-map" style="width: 100%; height: 100%; min-height: 520px; border-radius: 12px; z-index: 1;"></div>
+    </div>
+
+    <!-- Right Operations Desk -->
+    <div class="operations-desk">
+      <div class="desk-header">
+        <h2 class="desk-title">
+          <i data-lucide="radio" style="width: 18px; height: 18px;"></i> MAP OPERATIONS DESK
+        </h2>
+        <p class="desk-subtitle">Tactical command and live dispatch tracking</p>
+      </div>
+
+      <div class="desk-content">
+        <div class="desk-section-title">ACTIVE TACTICAL ROUTING</div>
+        
+        <div class="incident-target-box">
+          <div class="box-header error">
+            <i data-lucide="shield-alert" style="width: 16px; height: 16px;"></i> 
+            <span>INCIDENT TARGET</span>
+          </div>
+          <div class="box-main-value">Emily Johnson</div>
+          <div class="box-sub-value">ID: #GA-1024 • Rajahmundry Main Rd</div>
+        </div>
+
+        <div class="dispatch-box">
+          <div class="box-header primary">
+            <i data-lucide="navigation" style="width: 16px; height: 16px;"></i> 
+            <span>ACTIVE DISPATCH</span>
+          </div>
+          <div class="box-main-value mb-small">Unit 01 <span class="fw-normal text-secondary">(Intercept Patrol)</span></div>
+          <div class="box-mid-value">Officer K. Sharma</div>
+          
+          <div class="eta-box">
+            <span>CURRENT ETA</span>
+            <span class="eta-value">2m 10s</span>
+          </div>
+          <div class="eta-subtext">Arriving fast • Route optimized</div>
+        </div>
+
+        <div class="desk-section-title">TACTICAL ACTIONS</div>
+        
+        <div class="tactical-actions-group">
+          <button onclick="window.showToast('Ping Sent', 'Radio ping sent to Unit 01')" class="btn-tactical-action">
+            <span class="action-left"><i data-lucide="radio" class="text-primary" style="width: 16px; height: 16px;"></i> PING UNIT 01 RADIO</span>
+            <i data-lucide="arrow-right" class="text-secondary" style="width: 16px; height: 16px;"></i>
+          </button>
+          <button onclick="window.showToast('Route Updated', 'New tactical route sent to Unit 01 CAD', 'success')" class="btn-tactical-action">
+            <span class="action-left"><i data-lucide="map" class="text-primary" style="width: 16px; height: 16px;"></i> UPDATE INTERCEPT ROUTE</span>
+            <i data-lucide="arrow-right" class="text-secondary" style="width: 16px; height: 16px;"></i>
+          </button>
+          <button onclick="window.showToast('Broadcast Live', 'Broadcasting to all Sector 4 units', 'warning')" class="btn-tactical-action">
+            <span class="action-left"><i data-lucide="volume-2" class="text-primary" style="width: 16px; height: 16px;"></i> BROADCAST TO ALL LOCAL UNITS</span>
+            <i data-lucide="arrow-right" class="text-secondary" style="width: 16px; height: 16px;"></i>
+          </button>
+        </div>
+
+        <div class="desk-section-title">LIVE METRICS</div>
+        
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">TRAFFIC DENSITY</div>
+            <div class="metric-value text-success">Low (Clear)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">WEATHER</div>
+            <div class="metric-value">Clear • 28°C</div>
+          </div>
+          <div class="metric-card span-2">
+            <div class="metric-label">NEAREST HOSPITAL</div>
+            <div class="metric-value text-primary">Govt General Hospital</div>
+            <div class="metric-sub">3.5km from epicenter</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

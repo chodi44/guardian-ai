@@ -1,0 +1,13 @@
+{
+  "name": "guardian-ai-emergency-portal-vanilla",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve -s .",
+    "start": "npx serve -s ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}

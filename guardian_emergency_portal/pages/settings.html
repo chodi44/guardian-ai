@@ -1,0 +1,208 @@
+<div class="settings-container p-6 max-w-[1400px] mx-auto h-full overflow-y-auto">
+  <div class="mb-6 flex justify-between items-end">
+    <div>
+      <h1 class="text-2xl font-bold text-primary mb-1 flex items-center gap-2">
+        <i data-lucide="settings-2" style="width: 24px; height: 24px;"></i> SYSTEM AUDIT & SETTINGS
+      </h1>
+      <p class="text-sm text-secondary">Configure autonomous routing rules and view system compliance logs.</p>
+    </div>
+    <button onclick="window.showToast('Configuration Saved', 'System rules updated successfully', 'success')" class="bg-primary hover:bg-primary-dark text-white font-bold py-2.5 px-6 rounded shadow-md transition-colors text-sm flex items-center gap-2">
+      <i data-lucide="save" style="width: 16px; height: 16px;"></i> Save Configuration
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    
+    <!-- Left Column: Autonomous Rules & Settings -->
+    <div class="flex flex-col gap-6">
+      <!-- Autonomous Rules Card -->
+      <div class="settings-card">
+        <div class="settings-card-header">
+          <h2 class="settings-section-title">
+            <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i> AUTONOMOUS ESCALATION RULES
+          </h2>
+        </div>
+        <div class="flex flex-col">
+          <!-- Rule 1 -->
+          <div class="setting-row">
+            <div class="setting-info">
+              <p class="setting-title">Enable 5-Minute Guardian Timeout Failover</p>
+              <p class="setting-desc">Automatically routes cases to municipal EOC if primary guardian does not respond.</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" class="setting-toggle-input" data-key="timeout">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <!-- Rule 2 -->
+          <div class="setting-row">
+            <div class="setting-info">
+              <p class="setting-title">Auto-Dispatch Nearest Unit (HR &gt; 160 BPM)</p>
+              <p class="setting-desc">Skips human review and immediately dispatches medical unit for extreme tachycardia.</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" class="setting-toggle-input" data-key="heartRate">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <!-- Rule 3 -->
+          <div class="setting-row">
+            <div class="setting-info">
+              <p class="setting-title">Bypass Guardian on Impact &gt; 6.0G</p>
+              <p class="setting-desc">Severe kinetic shock triggers immediate 911/EOC routing.</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" class="setting-toggle-input" data-key="impact">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <!-- Rule 4 -->
+          <div class="setting-row">
+            <div class="setting-info">
+              <p class="setting-title">Geofence Auto-Alert (High-Risk Zones)</p>
+              <p class="setting-desc">Alerts guardians when subject enters designated hazard sectors.</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" class="setting-toggle-input" data-key="geofence">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLA & Thresholds Card -->
+      <div class="settings-card">
+        <div class="settings-card-header">
+          <h2 class="settings-section-title">
+            <i data-lucide="clock" style="width: 18px; height: 18px;"></i> SLA & RESPONSE THRESHOLDS
+          </h2>
+        </div>
+        <div class="flex flex-col">
+          <div class="setting-row items-center">
+            <div class="setting-info">
+              <p class="setting-title">Municipal SLA Response Target</p>
+              <p class="setting-desc">Threshold for alerting supervisors of delayed dispatch.</p>
+            </div>
+            <div class="sla-control-wrapper">
+              <input type="number" class="sla-input" value="5" min="1" max="60">
+              <span class="sla-unit">mins</span>
+            </div>
+          </div>
+          
+          <div class="setting-row items-center">
+            <div class="setting-info">
+              <p class="setting-title">Critical Escalation Delay</p>
+              <p class="setting-desc">Buffer time before escalating unacknowledged critical alerts.</p>
+            </div>
+            <div class="sla-control-wrapper">
+              <input type="number" class="sla-input" value="30" min="10" max="300">
+              <span class="sla-unit">secs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Audit Logs -->
+    <div class="settings-card flex flex-col h-[calc(100vh-140px)] min-h-[600px]">
+      <div class="settings-card-header pb-4">
+        <h2 class="settings-section-title mb-4">
+          <i data-lucide="server" style="width: 18px; height: 18px;"></i> SYSTEM HEALTH & AUDIT LOGS
+        </h2>
+
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="bg-gray-light border border-light p-3 rounded-lg">
+            <p class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-1">SYSTEM UPTIME</p>
+            <p class="font-bold text-success text-xl">99.998%</p>
+          </div>
+          <div class="bg-gray-light border border-light p-3 rounded-lg">
+            <p class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-1">ACTIVE NODES</p>
+            <p class="font-bold text-primary text-xl flex items-center gap-2">
+              142 <span class="text-[10px] text-success uppercase flex items-center gap-1"><span class="dot dot-success w-1.5 h-1.5"></span> ONLINE</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="relative">
+          <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary" style="width: 14px; height: 14px;"></i>
+          <input 
+            type="text" 
+            placeholder="Search audit logs (IDs, Operators)..." 
+            class="w-full pl-9 pr-4 py-2 border border-light rounded-md text-sm bg-white focus:outline-none focus:border-primary transition-colors shadow-sm"
+          />
+        </div>
+      </div>
+      
+      <div class="flex-1 overflow-y-auto">
+        <div class="audit-list">
+          
+          <div class="audit-item">
+            <div class="audit-icon-wrapper"><i data-lucide="shield" class="text-secondary" style="width: 16px; height: 16px;"></i></div>
+            <div class="audit-content">
+              <div class="audit-header">
+                <p class="audit-user">OP-8492 (Sarah Connor)</p>
+                <span class="audit-time">15:26:12</span>
+              </div>
+              <p class="audit-action">Acknowledged Case #GA-1024</p>
+            </div>
+          </div>
+          
+          <div class="audit-item error">
+            <div class="audit-icon-wrapper"><i data-lucide="shield-alert" class="text-error" style="width: 16px; height: 16px;"></i></div>
+            <div class="audit-content">
+              <div class="audit-header">
+                <p class="audit-user flex items-center gap-1.5">SYSTEM DAEMON <span class="badge badge-error-solid text-[9px] py-0 px-1.5 rounded-full">AUTO</span></p>
+                <span class="audit-time text-error">15:26:05</span>
+              </div>
+              <p class="audit-action font-semibold">Auto-escalated Case #GA-1024 (Timeout Failover)</p>
+            </div>
+          </div>
+          
+          <div class="audit-item">
+            <div class="audit-icon-wrapper"><i data-lucide="check-circle" class="text-success" style="width: 16px; height: 16px;"></i></div>
+            <div class="audit-content">
+              <div class="audit-header">
+                <p class="audit-user">OP-8492 (Sarah Connor)</p>
+                <span class="audit-time">08:00:01</span>
+              </div>
+              <p class="audit-action">Logged into terminal TX-DISPATCH-8492</p>
+            </div>
+          </div>
+          
+          <div class="audit-item">
+            <div class="audit-icon-wrapper"><i data-lucide="check-circle" class="text-success" style="width: 16px; height: 16px;"></i></div>
+            <div class="audit-content">
+              <div class="audit-header">
+                <p class="audit-user">OP-8492 (Sarah Connor)</p>
+                <span class="audit-time">Yesterday 22:15</span>
+              </div>
+              <p class="audit-action">Resolved Case #GA-0941 (Closed)</p>
+            </div>
+          </div>
+
+          <div class="audit-item">
+            <div class="audit-icon-wrapper"><i data-lucide="settings" class="text-secondary" style="width: 16px; height: 16px;"></i></div>
+            <div class="audit-content">
+              <div class="audit-header">
+                <p class="audit-user">SYS-ADMIN (John Doe)</p>
+                <span class="audit-time">Yesterday 14:30</span>
+              </div>
+              <p class="audit-action">Modified SLA Response Target (5 mins)</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
+      <div class="p-3 border-t border-light bg-gray-50 rounded-b-8 mt-auto flex justify-center">
+        <button class="font-bold text-primary text-xs hover:underline flex items-center gap-1">
+          View Full System Audit Report <i data-lucide="arrow-right" style="width: 12px; height: 12px;"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

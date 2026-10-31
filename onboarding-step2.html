@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Link Protected Person (Step 2) — Guardian AI System</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/onboarding-step2.css">
+</head>
+<body class="theme-light">
+
+  <div id="app-container" class="app-layout">
+    <main class="main-wrapper" style="margin-left: 0;">
+      <div class="views-container">
+        <section id="view-onboarding-step2" class="app-view">
+          <div class="onboarding-container">
+            <div class="onboarding-progress-header">
+              <span class="step-label">STEP 2 OF 2</span>
+              <span class="step-percent">Setup 100% Complete</span>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <span class="pill-brand-tag" style="font-size: 11px; font-weight: 800; color: var(--primary-blue);"><i class="fa-solid fa-shield"></i> Secure Telemetry Pairing</span>
+            <h1 class="page-main-title" style="font-size: 24px; font-weight: 800; color: var(--slate-900); margin-top: 4px;">Link Protected Person</h1>
+            <p class="page-subtitle" style="font-size: 13.5px; color: var(--slate-500); margin-top: 2px;">Connect a protected person to your Guardian network using their unique ID or device beacon.</p>
+
+            <div class="onboarding-card">
+              <!-- Unique ID Input -->
+              <div class="form-group">
+                <label>Protected Person Unique ID <span class="field-status"><i class="fa-solid fa-lock"></i> Encrypted Telemetry</span></label>
+                <div class="id-input-pair">
+                  <input type="text" class="form-input" value="GDN-PER-82A7X9" id="input-person-id">
+                  <span class="pill-badge pill-safe">● Verified</span>
+                </div>
+              </div>
+
+              <div class="scan-verify-pair">
+                <button class="btn-secondary"><i class="fa-solid fa-qrcode"></i> Scan QR Code</button>
+                <button class="btn-primary"><i class="fa-solid fa-shield-check"></i> Verify ID</button>
+              </div>
+
+              <!-- Matched Person Result Card -->
+              <div class="matched-person-card">
+                <div class="matched-person-header">
+                  <span class="pill-badge pill-safe">✓ PROTECTED PERSON FOUND</span>
+                  <span class="sync-text" style="font-size: 11px; color: var(--slate-500);">Beacon: Synced 2s ago</span>
+                </div>
+
+                <div class="person-profile-row">
+                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&h=150&q=80" alt="Ananya" class="matched-avatar">
+                  <div class="person-details">
+                    <h3>Ananya Sharma <i class="fa-solid fa-circle-check verified-icon" style="color: var(--primary-blue);"></i></h3>
+                    <p>GDN-PER-82A7X9 • Daughter • 19 yrs (Student)</p>
+                  </div>
+                </div>
+
+                <div class="telemetry-specs-grid">
+                  <div class="spec-tile">
+                    <i class="fa-solid fa-tower-broadcast" style="color: var(--primary-blue);"></i>
+                    <div>
+                      <span class="spec-label">Telemetry Link</span>
+                      <span class="spec-val">Online • 5G Ultra Active</span>
+                    </div>
+                  </div>
+                  <div class="spec-tile">
+                    <i class="fa-solid fa-location-crosshairs" style="color: var(--safe-green);"></i>
+                    <div>
+                      <span class="spec-label">Safety Zone</span>
+                      <span class="spec-val">Safe Zone (Transit)</span>
+                    </div>
+                  </div>
+                  <div class="spec-tile span-2">
+                    <i class="fa-solid fa-stopwatch" style="color: var(--purple-accent);"></i>
+                    <div class="tile-flex">
+                      <div>
+                        <span class="spec-label">Associated Wearable</span>
+                        <span class="spec-val">Guardian Band V3 (Connected)</span>
+                      </div>
+                      <span class="battery-tag"><i class="fa-solid fa-battery-full"></i> 92% Battery</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="biometrics-preview-box">
+                  <span class="spec-label"><i class="fa-solid fa-heart-pulse" style="color: var(--danger-red);"></i> Biometric Stream Stability</span>
+                  <canvas id="ecg-preview-canvas" height="30"></canvas>
+                </div>
+              </div>
+
+              <div class="onboarding-actions-vertical">
+                <button class="btn-primary-large" id="btn-launch-dashboard">Connect Profile & Launch Dashboard <i class="fa-solid fa-arrow-right"></i></button>
+                <button class="btn-secondary"><i class="fa-solid fa-user-plus"></i> Link Another Member</button>
+              </div>
+
+              <div class="troubleshooting-accordion">
+                <div class="accordion-header">
+                  <i class="fa-regular fa-circle-question"></i>
+                  <span>Troubleshooting: What if ID is not recognized?</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+              </div>
+            </div>
+
+            <p class="footer-security-note"><i class="fa-solid fa-lock"></i> Your connection is encrypted and limited strictly to authorized safety telemetry. Protected person retains dual-consent override.</p>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="js/common.js"></script>
+  <script src="js/onboarding-step2.js"></script>
+</body>
+</html>

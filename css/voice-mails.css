@@ -1,0 +1,152 @@
+.voice-mails-header {
+  margin-bottom: 24px;
+}
+
+.voice-mails-header h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--slate-900);
+  margin-bottom: 8px;
+}
+
+.voice-mails-header p {
+  color: var(--slate-600);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+
+.voice-mail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.voice-mail-card {
+  padding: 16px;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vm-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vm-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--slate-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--slate-700);
+  font-size: 16px;
+}
+
+.vm-icon.unread {
+  background: #e0e7ff;
+  color: var(--primary-blue);
+}
+
+.vm-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.vm-sender {
+  font-weight: 700;
+  color: var(--slate-900);
+  margin-bottom: 2px;
+}
+
+.vm-meta {
+  font-size: 12px;
+  color: var(--slate-500);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vm-dot {
+  font-size: 8px;
+}
+
+.vm-message-type {
+  font-size: 13px;
+  color: var(--slate-700);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.vm-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--slate-50);
+  padding: 12px;
+  border-radius: var(--radius-md);
+}
+
+.vm-play-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+.vm-progress-track {
+  flex: 1;
+  height: 4px;
+  background: var(--slate-200);
+  border-radius: 2px;
+  position: relative;
+}
+
+.vm-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--primary-blue);
+  border-radius: 2px;
+}
+
+.vm-duration {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slate-600);
+  min-width: 35px;
+  text-align: right;
+}
+
+/* Empty State */
+.card-empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--slate-500);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vm-empty-icon {
+  font-size: 48px;
+  color: var(--slate-300);
+  margin-bottom: 16px;
+}
+
+.card-empty-state h3 {
+  color: var(--slate-800);
+  font-size: 18px;
+  margin-bottom: 8px;
+}

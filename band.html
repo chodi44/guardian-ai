@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function() {
+      try {
+        const sess = JSON.parse(localStorage.getItem('gdn_portal_session') || '{}');
+        const role = sess.role === 'guardian' ? 'guardian' : 'user';
+        window.location.replace('/' + role + '/dashboard/index.html#band');
+      } catch(e) {
+        window.location.replace('/user/dashboard/index.html#band');
+      }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardian Band — Guardian AI</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/band.css">
+</head>
+<body class="theme-light">
+
+  <div id="app-container" class="app-layout">
+
+    <aside id="main-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="/guardian/dashboard/index.html" class="brand-logo" style="text-decoration: none;">
+          <div class="logo-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="brand-text">
+            <span class="brand-name">Guardian AI</span>
+            <span class="brand-hub-pill">GUARDIAN</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="user-profile-chip">
+        <div class="avatar-box">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma" class="user-avatar">
+          <span class="online-indicator"></span>
+        </div>
+        <div class="user-info">
+          <span class="user-name">Ravi Sharma</span>
+          <span class="user-id">GDN-7A92K4 <i class="fa-regular fa-circle-check verified-badge"></i></span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Telemetry & Safety</div>
+        <ul>
+          <li><a href="home.html" class="nav-link" data-view="home"><i class="fa-solid fa-house"></i><span>Monitoring Console</span></a></li>
+          <li><a href="location.html" class="nav-link" data-view="live-location"><i class="fa-solid fa-location-arrow"></i><span>Live Location</span></a></li>
+          <li><a href="journeys.html" class="nav-link" data-view="journeys"><i class="fa-solid fa-route"></i><span>Safe Corridors</span></a></li>
+          <li><a href="alerts.html" class="nav-link" data-view="alerts"><i class="fa-solid fa-bell"></i><span>Alerts & Logs</span><span class="badge-count badge-warning">3</span></a></li>
+          <li><a href="insights.html" class="nav-link" data-view="insights"><i class="fa-solid fa-chart-line"></i><span>Risk Insights</span></a></li>
+          <li><a href="band.html" class="nav-link active" data-view="band"><i class="fa-solid fa-stopwatch"></i><span>Guardian Band</span></a></li>
+          <li><a href="voice-mails.html" class="nav-link" data-view="voice-mails"><i class="fa-solid fa-microphone"></i><span>Acoustic Triage</span></a></li>
+        </ul>
+
+        <div class="nav-section-title">Guardian Supervision</div>
+        <ul>
+          <li><a href="/guardian/dashboard/index.html" class="nav-link" data-view="guardian-dashboard"><i class="fa-solid fa-shield-halved"></i><span>Protector Dashboard</span></a></li>
+          <li><a href="/guardian/linked-users/index.html" class="nav-link" data-view="linked-users"><i class="fa-solid fa-users"></i><span>Linked Users</span></a></li>
+          <li><a href="/guardian/connect-user/index.html" class="nav-link" data-view="connect-user"><i class="fa-solid fa-link"></i><span>Connect to User</span></a></li>
+          <li><a href="/guardian/permissions/index.html" class="nav-link" data-view="permissions"><i class="fa-solid fa-sliders"></i><span>Access Permissions</span></a></li>
+        </ul>
+
+        <div class="nav-divider"></div>
+        <ul>
+          <li><a href="profile.html" class="nav-link" data-view="profile"><i class="fa-solid fa-user"></i><span>Profile</span></a></li>
+          <li><a href="settings.html" class="nav-link" data-view="settings"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
+        </ul>
+        <div class="nav-divider"></div>
+        <div class="sos-trigger-box">
+          <a href="sos-alert.html" class="btn-sos-launch" style="text-decoration: none;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-dependent-card">
+        <div class="dependent-status-header">
+          <span class="dep-name">Ananya</span>
+          <span class="pill-badge pill-safe">● Safe • Normal</span>
+        </div>
+        <div class="dependent-status-details">
+          <i class="fa-solid fa-shield-heart text-safe"></i>
+          <span>Safe Geofence • GPS Lock</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-wrapper">
+      <header id="top-header" class="top-header">
+        <div class="header-breadcrumbs">
+          <span class="breadcrumb-root">Guardian System</span>
+          <i class="fa-solid fa-chevron-right breadcrumb-sep"></i>
+          <span class="breadcrumb-active">Guardian Band Wearable Suite</span>
+        </div>
+
+        <div class="header-right-controls">
+          <div class="dependent-selector-dropdown">
+            <button class="selector-btn">
+              <span class="dot-online"></span>
+              <span class="selected-person">Ananya (Daughter)</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+          <div class="sync-status-chip">
+            <span class="dot-pulse-green"></span>
+            <span class="sync-text">Synced <span id="sync-timer-sec">10</span> sec ago</span>
+          </div>
+          <a href="alerts.html" class="notification-icon-wrapper notification-button" aria-label="View alerts" style="text-decoration:none; color:inherit;">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge"></span>
+          </a>
+          <div class="header-user-avatar">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma">
+          </div>
+        </div>
+      </header>
+
+      <div class="views-container">
+        <section id="view-band" class="app-view">
+          <div class="band-hero-header">
+            <div>
+              <span class="pill-brand-tag">● Hardware Telemetry Active • Node GB-V3-982</span>
+              <h1 class="page-main-title">Guardian Band</h1>
+              <p class="page-subtitle">Hardware health, biometric telemetry, and sensor calibration for Ananya's wearable.</p>
+            </div>
+            <div class="header-action-buttons">
+              <div class="sync-chip">
+                <span class="dot-online"></span>
+                <span>Synced 10 sec ago</span>
+              </div>
+              <button class="btn-primary" id="btn-query-band-hardware"><i class="fa-solid fa-arrows-rotate"></i> Query Band</button>
+            </div>
+          </div>
+
+          <div class="grid-4col-row">
+            <div class="card card-hardware-tile">
+              <div class="hw-product-box">
+                <div class="hw-image-wrapper">
+                  <i class="fa-solid fa-stopwatch hw-icon-3d"></i>
+                </div>
+                <div class="hw-info-text">
+                  <h3 class="hw-model-title">Guardian Band Pro <i class="fa-solid fa-circle-check verified-icon" style="color:var(--primary-blue);"></i></h3>
+                  <p class="hw-specs">Titanium Slate Edition • S/N 8839-AX</p>
+                  <span class="pill-badge pill-info">Connected (BLE 5.3 + eSIM 5G)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-hardware-tile">
+              <div class="hw-top"><span class="hw-lbl">Power Cell</span> <i class="fa-solid fa-battery-three-quarters text-primary"></i></div>
+              <div class="hw-large-val">82% <span class="hw-sub-tag">Fast-charge ready</span></div>
+              <div class="progress-bar-track mt-5"><div class="progress-bar-fill" style="width: 82%;"></div></div>
+              <span class="subtext-caption mt-5">Est. 38 hours remaining</span>
+            </div>
+
+            <div class="card card-hardware-tile">
+              <div class="hw-top"><span class="hw-lbl">Firmware & Sec</span> <i class="fa-solid fa-shield-check text-safe"></i></div>
+              <div class="hw-large-val">v3.4.1 <span class="pill-badge pill-info">Latest</span></div>
+              <p class="hw-desc">SecureBoot active</p>
+              <span class="text-safe font-12 fw-600">● Zero Exploit Vectors</span>
+            </div>
+
+            <div class="card card-hardware-tile">
+              <div class="hw-top"><span class="hw-lbl">Hardware Integrity</span> <i class="fa-solid fa-droplet text-info"></i></div>
+              <div class="hw-large-val text-safe">100% <span class="hw-sub-tag">Optimal</span></div>
+              <p class="hw-desc">Water-resistant IP68</p>
+              <span class="subtext-caption">All micro-seals intact</span>
+            </div>
+          </div>
+
+          <div class="matrix-header-bar">
+            <h2><i class="fa-solid fa-wave-square text-primary"></i> Live Biometric & Kinetic Matrix</h2>
+            <span class="subtext-caption">Sampling: 50Hz • Continuous Stream</span>
+          </div>
+
+          <div class="grid-4col-row matrix-grid-row">
+            <div class="card card-matrix-tile">
+              <div class="m-head">
+                <i class="fa-solid fa-heart-pulse text-danger"></i>
+                <span class="pill-badge pill-info">● Resting Normal</span>
+              </div>
+              <span class="m-lbl">Pulse & Heart Rate</span>
+              <div class="m-num">78 <span class="unit" style="font-size:12px;">BPM</span></div>
+              
+              <div class="canvas-ecg-wrapper">
+                <canvas id="band-ecg-live-canvas" height="40"></canvas>
+              </div>
+
+              <div class="m-footer-stats">
+                <div><span>Daily Range</span> <strong>68–84 BPM</strong></div>
+                <div><span>Stress Anomalies</span> <strong class="text-safe">0 Detected</strong></div>
+              </div>
+            </div>
+
+            <div class="card card-matrix-tile">
+              <div class="m-head">
+                <i class="fa-solid fa-person-walking text-primary"></i>
+                <span class="pill-badge pill-info">● Active Cadence</span>
+              </div>
+              <span class="m-lbl">Motion & Kinetic State</span>
+              <div class="m-num-text">Walking <span class="unit-text">Smooth</span></div>
+
+              <div class="kinetic-meters">
+                <div class="k-row">
+                  <span>Velocity (km/h)</span>
+                  <strong>4.8 km/h</strong>
+                </div>
+                <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 48%;"></div></div>
+
+                <div class="k-row mt-5">
+                  <span>Cadence</span>
+                  <strong>108 steps/min</strong>
+                </div>
+                <div class="progress-bar-track"><div class="progress-bar-fill bg-blue" style="width: 65%;"></div></div>
+              </div>
+
+              <div class="m-footer-stats">
+                <div><span>Gait Symmetry</span> <strong class="text-safe">99% Steady</strong></div>
+                <div><span>Stride Variation</span> <strong>± 1.2% (Normal)</strong></div>
+              </div>
+            </div>
+
+            <div class="card card-matrix-tile">
+              <div class="m-head">
+                <i class="fa-solid fa-temperature-half text-warning"></i>
+                <span class="pill-badge pill-info">● Equilibrium</span>
+              </div>
+              <span class="m-lbl">Skin Temp & EDA</span>
+              <div class="m-num">36.6 <span class="unit" style="font-size:12px;">°C</span></div>
+
+              <div class="eda-box">
+                <div class="eda-left">
+                  <span>Electrodermal Activity</span>
+                  <strong class="eda-val">0.42 <span class="unit" style="font-size:11px;">µS</span></strong>
+                </div>
+                <span class="pill-badge pill-safe">Low Stress</span>
+              </div>
+
+              <div class="m-footer-stats">
+                <div><span>Thermal Gradient</span> <strong>+0.1° / 3h (Stable)</strong></div>
+                <div><span>Sympathetic Tone</span> <strong class="text-safe">Relaxed Baseline</strong></div>
+              </div>
+            </div>
+
+            <div class="card card-matrix-tile">
+              <div class="m-head">
+                <i class="fa-solid fa-satellite text-info"></i>
+                <span class="pill-badge pill-info">● Dual-Band L1/L5</span>
+              </div>
+              <span class="m-lbl">Satellite & Sensor Array</span>
+              <div class="m-num">14 <span class="unit" style="font-size:12px;">Satellites Locked</span></div>
+
+              <div class="sensors-mini-pills">
+                <div class="s-pill"><span>6-Axis Gyroscope</span> <strong class="text-safe">Calibrated</strong></div>
+                <div class="s-pill"><span>3-Axis Accelerometer</span> <strong class="text-primary">Active (±16g)</strong></div>
+              </div>
+
+              <div class="m-footer-stats">
+                <div><span>HDOP (Precision)</span> <strong class="text-primary">0.8 (Sub-meter accuracy)</strong></div>
+                <div><span>Altimeter Baro</span> <strong>1013.2 hPa</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2col-row band-bottom-grid">
+            <div class="card card-panel-tile">
+              <div class="card-header-row">
+                <div class="card-title-group">
+                  <i class="fa-solid fa-clipboard-check icon-blue-sm"></i>
+                  <div>
+                    <h3 class="card-title">Band Diagnostic & Sensor Self-Test</h3>
+                    <p class="card-subtitle">Automated on-chip hardware verification routine</p>
+                  </div>
+                </div>
+                <button class="btn-secondary-sm" id="btn-run-self-test">Run Self-Test</button>
+              </div>
+
+              <div class="tests-list">
+                <div class="test-item">
+                  <div class="t-left">
+                    <i class="fa-solid fa-heart-pulse text-primary"></i>
+                    <div>
+                      <strong>PPG Optical Heart Sensor</strong>
+                      <p>Green/Infrared multi-emitter array SNR &gt; 48dB</p>
+                    </div>
+                  </div>
+                  <span class="pill-badge pill-safe">PASS</span>
+                </div>
+
+                <div class="test-item">
+                  <div class="t-left">
+                    <i class="fa-solid fa-microphone text-info"></i>
+                    <div>
+                      <strong>Acoustic Triage Mic</strong>
+                      <p>Privacy-preserving on-device decibel trigger</p>
+                    </div>
+                  </div>
+                  <span class="pill-badge pill-safe">PASS</span>
+                </div>
+
+                <div class="test-item">
+                  <div class="t-left">
+                    <i class="fa-solid fa-asterisk text-warning"></i>
+                    <div>
+                      <strong>SOS Physical Haptic Clasp</strong>
+                      <p>Dual-contact micro-switch actuation resistance</p>
+                    </div>
+                  </div>
+                  <span class="pill-badge pill-safe">PASS</span>
+                </div>
+
+                <div class="test-item">
+                  <div class="t-left">
+                    <i class="fa-solid fa-person-falling text-danger"></i>
+                    <div>
+                      <strong>Fall & Impact Detection</strong>
+                      <p>Continuous g-force spike neural classifier</p>
+                    </div>
+                  </div>
+                  <span class="pill-badge pill-info">ARMED</span>
+                </div>
+
+                <div class="test-item">
+                  <div class="t-left">
+                    <i class="fa-solid fa-shield-halved text-safe"></i>
+                    <div>
+                      <strong>Geofence Proximity Anchor</strong>
+                      <p>Ultra-Wideband safe zone handshake radius</p>
+                    </div>
+                  </div>
+                  <span class="pill-badge pill-safe">LOCKED</span>
+                </div>
+              </div>
+
+              <div class="card-footer-row">
+                <span class="subtext-caption">Self-test last automated check: Today 08:30 AM</span>
+                <span class="text-safe fw-600">● All Subsystems Nominal</span>
+              </div>
+            </div>
+
+            <div class="card card-panel-tile">
+              <div class="card-header-row">
+                <div class="card-title-group">
+                  <i class="fa-solid fa-vibrate icon-purple-sm"></i>
+                  <div>
+                    <h3 class="card-title">Discreet Haptic Communications</h3>
+                    <p class="card-subtitle">Direct silent commands via linear resonant actuators</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="haptics-buttons-list">
+                <button class="btn-haptic-action" id="btn-buzz-ping">
+                  <div class="h-left">
+                    <i class="fa-solid fa-rss text-primary"></i>
+                    <div>
+                      <strong>Send Gentle Buzz Ping</strong>
+                      <p>Sends a silent dual-pulse "check-in" to Ananya</p>
+                    </div>
+                  </div>
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+
+                <button class="btn-haptic-action" id="btn-test-handshake">
+                  <div class="h-left">
+                    <i class="fa-solid fa-wifi text-info"></i>
+                    <div>
+                      <strong>Test Connection Handshake</strong>
+                      <p>Verify dual BLE/eSIM round-trip latency</p>
+                    </div>
+                  </div>
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+
+                <button class="btn-haptic-action" id="btn-calibrate-baseline">
+                  <div class="h-left">
+                    <i class="fa-solid fa-sliders text-safe"></i>
+                    <div>
+                      <strong>Calibrate Biometric Baseline</strong>
+                      <p>Re-zero resting EDA and optical threshold</p>
+                    </div>
+                  </div>
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+
+              <div class="haptic-security-note">
+                <i class="fa-solid fa-lock text-primary"></i>
+                <p>Commands are cryptographically authenticated via Hardware Security Module (HSM). Haptics are muted if Ananya is detected sleeping.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="emergency-override-banner">
+            <div class="banner-left">
+              <div class="override-icon"><i class="fa-solid fa-fingerprint"></i></div>
+              <div>
+                <h4>Emergency Touch Override is ARMED</h4>
+                <p>Triple-squeeze of Guardian Band clasp instantly dials Family Dispatch & activates 30-sec live audio snippet.</p>
+              </div>
+            </div>
+            <span class="pill-badge pill-safe">● Clasp Integrity: SECURE</span>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal-voice-call">
+    <div class="modal-card modal-call-card">
+      <button class="btn-close-modal" id="btn-close-call-modal">&times;</button>
+      <div class="call-avatar-pulse">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&h=150&q=80" alt="Ananya">
+        <span class="call-ripple-ring"></span>
+      </div>
+      <h3 class="call-person-name">Ananya Sharma</h3>
+      <p class="call-status-text" id="call-status-label">Encrypted Guardian Voice Link Connecting...</p>
+      <span class="call-timer" id="call-timer">00:04</span>
+
+      <div class="call-actions-row">
+        <button class="btn-round-action btn-mute"><i class="fa-solid fa-microphone-slash"></i></button>
+        <button class="btn-round-action btn-speaker"><i class="fa-solid fa-volume-high"></i></button>
+        <button class="btn-round-action btn-hangup" id="btn-hangup-call"><i class="fa-solid fa-phone-slash"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="js/guardian-core.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/band.js"></script>
+</body>
+</html>

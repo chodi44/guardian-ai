@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    window.location.replace('/guardian/dashboard/index.html#connect');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect to a User — Guardian AI Safety Sentinel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../css/portal.css">
+  <style>
+    .connect-card-box {
+      max-width: 640px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid var(--portal-border);
+      border-radius: var(--portal-radius-lg);
+      padding: 36px;
+      box-shadow: var(--portal-shadow);
+    }
+    .connect-input-lg {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 16px;
+      border: 2px solid var(--portal-border);
+      border-radius: var(--portal-radius-sm);
+      width: 100%;
+      margin: 16px 0;
+      color: #0284c7;
+      font-weight: 700;
+    }
+    .connect-input-lg:focus {
+      outline: none;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+    .security-callout-warning {
+      background: #f8fafc;
+      border-left: 4px solid #0284c7;
+      padding: 14px 18px;
+      border-radius: 0 var(--portal-radius-sm) var(--portal-radius-sm) 0;
+      margin-top: 24px;
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.5;
+    }
+    .quick-test-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      border: 1px dashed #7dd3fc;
+    }
+    .quick-test-badge:hover {
+      background: #bae6fd;
+    }
+  </style>
+</head>
+<body class="portal-body">
+  <div class="portal-app-wrapper">
+    <!-- Sidebar -->
+    <aside class="portal-sidebar">
+      <div class="portal-sidebar-header">
+        <a href="/guardian/dashboard/index.html" class="sidebar-brand">
+          <div class="portal-brand-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-user-shield"></i></div>
+          <div class="portal-brand-text-wrap">
+            <span class="sidebar-brand-name">Guardian AI</span>
+            <span class="portal-sub-badge guardian-badge">GUARDIAN</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="portal-nav-menu">
+        <div class="portal-nav-heading">Protector Hub</div>
+        <a href="/guardian/dashboard/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="/guardian/connect-user/index.html" class="portal-nav-item active">
+          <i class="fa-solid fa-link"></i>
+          <span>Connect to User</span>
+        </a>
+        <a href="/guardian/linked-users/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-users"></i>
+          <span>Linked Users</span>
+        </a>
+        <a href="/guardian/permissions/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>View Permissions</span>
+        </a>
+
+        <div class="portal-nav-heading">Live Telemetry & Safety</div>
+        <a href="/location.html" class="portal-nav-item">
+          <i class="fa-solid fa-location-arrow"></i>
+          <span>Track Live Location</span>
+        </a>
+        <a href="/journeys.html" class="portal-nav-item">
+          <i class="fa-solid fa-route"></i>
+          <span>Safe Corridors</span>
+        </a>
+        <a href="/alerts.html" class="portal-nav-item">
+          <i class="fa-solid fa-bell"></i>
+          <span>Alerts & Audit Logs</span>
+          <span class="badge-pill" style="background:#f59e0b; color:#fff;">3</span>
+        </a>
+        <a href="/band.html" class="portal-nav-item">
+          <i class="fa-solid fa-stopwatch"></i>
+          <span>Guardian Band Telemetry</span>
+        </a>
+        <a href="/insights.html" class="portal-nav-item">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Risk Insights</span>
+        </a>
+        <a href="/voice-mails.html" class="portal-nav-item">
+          <i class="fa-solid fa-microphone"></i>
+          <span>Acoustic Triage</span>
+        </a>
+        <a href="/home.html" class="portal-nav-item">
+          <i class="fa-solid fa-tower-broadcast"></i>
+          <span>Monitoring Console</span>
+        </a>
+
+        <div class="portal-nav-heading">System</div>
+        <a href="/guardian/settings/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+
+        <div style="margin-top: 14px; padding: 0 4px;">
+          <a href="/sos-alert.html" class="btn-portal-primary btn-portal-danger" style="text-decoration:none; padding: 10px 14px; font-size: 13px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="portal-sidebar-footer">
+        <div class="sidebar-user-card">
+          <img src="" alt="Avatar" class="sidebar-user-avatar" id="sidebar-guardian-img">
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="sidebar-guardian-name">Guardian</div>
+            <div class="sidebar-user-role">Primary Protector</div>
+          </div>
+          <button class="btn-sidebar-logout" id="btn-sidebar-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+      <header class="portal-topbar" style="border-top: 3px solid #0284c7;">
+        <div class="topbar-greeting-wrap">
+          <h1>Connect to a User</h1>
+          <p>Initiate an encrypted connection with a protected person using their unique ID</p>
+        </div>
+        <div class="topbar-actions">
+          <a href="/guardian/settings/index.html" class="topbar-icon-btn" title="Settings"><i class="fa-solid fa-gear"></i></a>
+          <a href="/guardian/settings/index.html" class="topbar-avatar-link"><img src="" alt="Avatar" class="topbar-avatar" id="topbar-guardian-img"></a>
+        </div>
+      </header>
+
+      <div class="portal-content">
+        <div class="connect-card-box">
+          <div style="text-align: center; margin-bottom: 24px;">
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px;">
+              <i class="fa-solid fa-link"></i>
+            </div>
+            <h2 style="font-size: 22px; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif;">Connect to a User</h2>
+            <p style="font-size: 14px; color: #64748b; margin-top: 6px;">
+              Enter the Guardian ID provided by the User.
+            </p>
+          </div>
+
+          <form id="form-connect-user">
+            <div>
+              <label class="portal-label" style="text-align: center;" for="input-guardian-id">USER GUARDIAN ID</label>
+              <input type="text" id="input-guardian-id" class="connect-input-lg" placeholder="GDN-XXXXXXX" maxlength="11" required autocomplete="off">
+            </div>
+
+            <button type="submit" id="btn-send-request" class="btn-portal-primary" style="background:#0284c7; padding: 14px 20px; font-size: 15px; margin-top: 10px;">
+              <i class="fa-solid fa-paper-plane" id="send-icon"></i>
+              <span id="send-text">Send Connection Request</span>
+            </button>
+          </form>
+
+          <div class="security-callout-warning">
+            <strong style="color: #0369a1;"><i class="fa-solid fa-shield"></i> Connection Privacy:</strong>
+            <p style="margin-top: 4px;">
+              Sending a request notifies the user. They must review and approve your link in their portal before live telemetry or location is shared.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="../../js/guardian-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentGuardian = GuardianCore.requireAuth('guardian');
+      if (!currentGuardian) return;
+
+      const avatarSrc = currentGuardian.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&h=240&q=80';
+      document.getElementById('sidebar-guardian-img').src = avatarSrc;
+      document.getElementById('topbar-guardian-img').src = avatarSrc;
+      document.getElementById('sidebar-guardian-name').textContent = currentGuardian.fullName;
+
+      const inputId = document.getElementById('input-guardian-id');
+      const form = document.getElementById('form-connect-user');
+      const sendBtn = document.getElementById('btn-send-request');
+      const sendText = document.getElementById('send-text');
+      const sendIcon = document.getElementById('send-icon');
+
+      // Auto-format input
+      inputId.addEventListener('input', () => {
+        let val = inputId.value.toUpperCase().replace(/[^A-Z0-9\-]/g, '');
+        if (val.length > 3 && !val.includes('-')) {
+          val = val.substring(0, 3) + '-' + val.substring(3);
+        }
+        inputId.value = val;
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const code = inputId.value.trim().toUpperCase();
+        if (!code || code.length < 8) {
+          GuardianCore.showToast('Please enter a valid Guardian ID (e.g. GDN-7F4K92X)', 'danger');
+          return;
+        }
+
+        sendBtn.disabled = true;
+        sendText.textContent = 'Verifying ID & Sending...';
+        sendIcon.className = 'fa-solid fa-spinner fa-spin';
+
+        try {
+          await GuardianCore.sendConnectionRequest(currentGuardian.id, code);
+          GuardianCore.showToast('Connection request sent.', 'success');
+
+          // Success modal feedback
+          GuardianCore.confirmModal({
+            title: 'Connection Request Sent',
+            message: `Your request has been delivered to the User. As per security regulations, you will be granted access once they approve the connection in their User Portal.`,
+            confirmText: 'Go to Dashboard',
+            onConfirm: () => {
+              window.location.href = '/guardian/dashboard/index.html';
+            }
+          });
+
+          inputId.value = '';
+        } catch (err) {
+          GuardianCore.showToast(err.message, 'danger');
+        } finally {
+          sendBtn.disabled = false;
+          sendText.textContent = 'Send Connection Request';
+          sendIcon.className = 'fa-solid fa-paper-plane';
+        }
+      });
+
+      // Sign out
+      document.getElementById('btn-sidebar-logout').addEventListener('click', () => {
+        GuardianCore.confirmModal({
+          title: 'Sign Out',
+          message: 'Are you sure you want to end your Guardian session?',
+          confirmText: 'Sign Out',
+          onConfirm: () => GuardianCore.logout('/guardian/login')
+        });
+      });
+    });
+  </script>
+</body>
+</html>

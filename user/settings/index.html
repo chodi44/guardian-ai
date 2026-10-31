@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    window.location.replace('/user/dashboard/index.html#settings');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Settings — Guardian AI Safety Sentinel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../css/portal.css">
+</head>
+<body class="portal-body">
+  <div class="portal-app-wrapper">
+    <!-- Sidebar -->
+    <aside class="portal-sidebar">
+      <div class="portal-sidebar-header">
+        <a href="/user/dashboard/index.html" class="sidebar-brand">
+          <div class="portal-brand-icon"><i class="fa-solid fa-shield-heart"></i></div>
+          <div class="portal-brand-text-wrap">
+            <span class="sidebar-brand-name">Guardian AI</span>
+            <span class="portal-sub-badge user-badge">USER PORTAL</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="portal-nav-menu">
+        <div class="portal-nav-heading">My Safety</div>
+        <a href="/user/dashboard/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Overview</span>
+        </a>
+        <a href="/location.html" class="portal-nav-item">
+          <i class="fa-solid fa-location-arrow"></i>
+          <span>Live Location</span>
+        </a>
+        <a href="/journeys.html" class="portal-nav-item">
+          <i class="fa-solid fa-route"></i>
+          <span>Safe Journeys</span>
+        </a>
+        <a href="/alerts.html" class="portal-nav-item">
+          <i class="fa-solid fa-bell"></i>
+          <span>Alerts Center</span>
+        </a>
+        <a href="/insights.html" class="portal-nav-item">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Safety Insights</span>
+        </a>
+        <a href="/band.html" class="portal-nav-item">
+          <i class="fa-solid fa-stopwatch"></i>
+          <span>Guardian Band</span>
+        </a>
+
+        <div class="portal-nav-heading">My Guardians</div>
+        <a href="/user/guardians/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-users"></i>
+          <span>My Guardians</span>
+        </a>
+        <a href="/user/guardian-requests/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-user-clock"></i>
+          <span>Guardian Requests</span>
+          <span class="badge-pill" id="nav-requests-badge" style="display: none;">0</span>
+        </a>
+        <a href="/user/guardian-id/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-id-badge"></i>
+          <span>Your Guardian ID</span>
+        </a>
+        <a href="/user/permissions/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Access Permissions</span>
+        </a>
+
+        <div class="portal-nav-heading">Account</div>
+        <a href="/user/profile/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-user"></i>
+          <span>User Profile</span>
+        </a>
+        <a href="/user/settings/index.html" class="portal-nav-item active">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+
+        <div style="margin-top: 14px; padding: 0 4px;">
+          <a href="/sos-alert.html" class="btn-portal-primary btn-portal-danger" style="text-decoration:none; padding: 10px 14px; font-size: 13px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="portal-sidebar-footer">
+        <div class="sidebar-user-card">
+          <img src="" alt="Avatar" class="sidebar-user-avatar" id="sidebar-user-img">
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="sidebar-user-name">User</div>
+            <div class="sidebar-user-role">Protected User</div>
+          </div>
+          <button class="btn-sidebar-logout" id="btn-sidebar-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+      <header class="portal-topbar">
+        <div class="topbar-greeting-wrap">
+          <h1>Settings & Preferences</h1>
+          <p>Account configuration, privacy preferences, session telemetry, and danger zone</p>
+        </div>
+        <div class="topbar-actions">
+          <a href="/user/profile/index.html" class="topbar-avatar-link"><img src="" alt="Avatar" class="topbar-avatar" id="topbar-avatar-img"></a>
+        </div>
+      </header>
+
+      <div class="portal-content">
+        <!-- 1. ACCOUNT SETTINGS -->
+        <div class="portal-card" style="margin-bottom: 24px;">
+          <div class="portal-card-header">
+            <span class="portal-card-title"><i class="fa-solid fa-user-gear text-primary"></i> Account Settings</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="permission-row">
+              <div class="permission-info">
+                <h5>Edit Profile Information</h5>
+                <p>Update your personal information, emergency dossier, and address.</p>
+              </div>
+              <a href="/user/profile/index.html" class="btn-portal-secondary">
+                <i class="fa-solid fa-user-pen"></i> Edit Profile
+              </a>
+            </div>
+
+            <div class="permission-row">
+              <div class="permission-info">
+                <h5>Change Password</h5>
+                <p>Update your security credentials for account authentication.</p>
+              </div>
+              <button class="btn-portal-secondary" id="btn-change-password">
+                <i class="fa-solid fa-key"></i> Change Password
+              </button>
+            </div>
+
+            <div class="permission-row">
+              <div class="permission-info">
+                <h5>Email Notifications</h5>
+                <p>Receive connection request notifications and safety digest summaries via email.</p>
+              </div>
+              <label class="portal-switch">
+                <input type="checkbox" id="pref-email-notif" checked>
+                <span class="slider-round"></span>
+              </label>
+            </div>
+
+            <div class="permission-row">
+              <div class="permission-info">
+                <h5>SMS / Phone Alerts</h5>
+                <p>Receive direct SMS text alerts when guardian links are initiated or updated.</p>
+              </div>
+              <label class="portal-switch">
+                <input type="checkbox" id="pref-sms-notif" checked>
+                <span class="slider-round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. PRIVACY PREFERENCES -->
+        <div class="portal-card" style="margin-bottom: 24px;">
+          <div class="portal-card-header">
+            <span class="portal-card-title"><i class="fa-solid fa-shield-halved" style="color: #0284c7;"></i> Privacy & Sharing</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="permission-row">
+              <div class="permission-info">
+                <h5>Guardian Access Permissions</h5>
+                <p>Manage individual permissions granted to your connected guardians.</p>
+              </div>
+              <a href="/user/permissions/index.html" class="btn-portal-secondary">
+                <i class="fa-solid fa-sliders"></i> Permissions Panel
+              </a>
+            </div>
+
+            <div class="permission-row">
+              <div class="permission-info">
+                <h5>Location Sharing Protocol</h5>
+                <p>Restrict location resolution strictly to emergency incidents vs active journey pings.</p>
+              </div>
+              <label class="portal-switch">
+                <input type="checkbox" id="pref-strict-loc">
+                <span class="slider-round"></span>
+              </label>
+            </div>
+
+            <div class="permission-row">
+              <div class="permission-info">
+                <h5>Anonymize Diagnostic Logs</h5>
+                <p>Strip personal identifiers from background system telemetry sent to Guardian AI.</p>
+              </div>
+              <label class="portal-switch">
+                <input type="checkbox" id="pref-anon-logs" checked>
+                <span class="slider-round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. SECURITY & SESSIONS -->
+        <div class="portal-card" style="margin-bottom: 24px;">
+          <div class="portal-card-header">
+            <span class="portal-card-title"><i class="fa-solid fa-lock" style="color: #6366f1;"></i> Security & Active Sessions</span>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #f8fafc; border: 1px solid var(--portal-border); border-radius: var(--portal-radius-sm); margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fa-solid fa-laptop" style="font-size: 20px; color: var(--portal-primary);"></i>
+                <div>
+                  <div style="font-size: 14px; font-weight: 600;">Current Active Session — macOS / Chrome</div>
+                  <div style="font-size: 12px; color: #64748b;">IP: 127.0.0.1 (Localhost) &nbsp;•&nbsp; Authenticated Active Now</div>
+                </div>
+              </div>
+              <span class="status-badge approved">Current Device</span>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #ffffff; border: 1px solid var(--portal-border); border-radius: var(--portal-radius-sm);">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fa-solid fa-mobile-screen" style="font-size: 20px; color: #64748b;"></i>
+                <div>
+                  <div style="font-size: 14px; font-weight: 600;">Guardian Band Companion App</div>
+                  <div style="font-size: 12px; color: #64748b;">Paired via BLE &nbsp;•&nbsp; Last synced 5 mins ago</div>
+                </div>
+              </div>
+              <span class="status-badge pending">Paired</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <button class="btn-portal-secondary" id="btn-settings-logout">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out of Account
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. DANGER ZONE -->
+        <div class="portal-card danger-zone-card">
+          <div class="portal-card-header">
+            <span class="portal-card-title text-danger"><i class="fa-solid fa-triangle-exclamation"></i> Danger Zone</span>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+            <div>
+              <h5 style="font-size: 15px; font-weight: 700; color: #991b1b;">Delete User Account</h5>
+              <p style="font-size: 13px; color: #7f1d1d; margin-top: 4px; max-width: 600px;">
+                Permanently revoke your Guardian ID, disconnect all linked guardians, and wipe your emergency profile dossiers from the system. This action cannot be reversed.
+              </p>
+            </div>
+            <button class="btn-portal-primary btn-portal-danger" id="btn-delete-account" style="width: auto;">
+              <i class="fa-solid fa-trash-can"></i> Delete Account
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="../../js/guardian-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = GuardianCore.requireAuth('user');
+      if (!currentUser) return;
+
+      const avatarSrc = currentUser.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&h=240&q=80';
+      document.getElementById('sidebar-user-img').src = avatarSrc;
+      document.getElementById('topbar-avatar-img').src = avatarSrc;
+      document.getElementById('sidebar-user-name').textContent = currentUser.fullName;
+
+      // Preferences toggles feedback
+      ['pref-email-notif', 'pref-sms-notif', 'pref-strict-loc', 'pref-anon-logs'].forEach(id => {
+        document.getElementById(id)?.addEventListener('change', () => {
+          GuardianCore.showToast('Preferences updated and saved.', 'success');
+        });
+      });
+
+      // Change Password
+      document.getElementById('btn-change-password').addEventListener('click', () => {
+        GuardianCore.confirmModal({
+          title: 'Update Password',
+          message: 'To change your password, enter a new password (min. 8 characters). For demo purposes, current password is verified.',
+          confirmText: 'Update Password',
+          onConfirm: () => {
+            GuardianCore.showToast('Password updated successfully!', 'success');
+          }
+        });
+      });
+
+      // Sign out
+      const logoutAction = () => {
+        GuardianCore.confirmModal({
+          title: 'Sign Out',
+          message: 'Are you sure you want to end your active user session?',
+          confirmText: 'Sign Out',
+          onConfirm: () => GuardianCore.logout('/user/login')
+        });
+      };
+
+      document.getElementById('btn-sidebar-logout').addEventListener('click', logoutAction);
+      document.getElementById('btn-settings-logout').addEventListener('click', logoutAction);
+
+      // Danger Zone: Delete Account
+      document.getElementById('btn-delete-account').addEventListener('click', () => {
+        GuardianCore.confirmModal({
+          title: 'Permanently Delete Account',
+          message: `Are you absolutely certain you want to delete the account for <strong>${currentUser.fullName}</strong> (${currentUser.guardianId})? All connected guardians will immediately be severed.`,
+          confirmText: 'Yes, Delete My Account',
+          isDanger: true,
+          onConfirm: () => {
+            GuardianCore.showToast('Account deleted. Redirecting to registration...', 'info');
+            setTimeout(() => {
+              GuardianCore.logout('/user/register');
+            }, 1000);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

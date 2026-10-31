@@ -1,0 +1,28 @@
+/* casehistory.css */
+.case-history-container {
+  background-color: #F8FAFC;
+}
+
+.badge-warning-solid {
+  background-color: var(--color-warning);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.badge-yellow-solid {
+  background-color: #EAB308;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.badge-gray-solid {
+  background-color: #94A3B8;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+}

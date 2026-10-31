@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    window.location.replace('/user/dashboard/index.html#requests');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardian Connection Requests — Guardian AI Safety Sentinel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../css/portal.css">
+  <style>
+    .request-row-card {
+      background: #ffffff;
+      border: 1px solid var(--portal-border);
+      border-radius: var(--portal-radius);
+      padding: 22px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: var(--portal-shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .request-row-card:hover {
+      box-shadow: var(--portal-shadow);
+      border-color: #cbd5e1;
+    }
+    .request-profile-meta {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .request-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #e2e8f0;
+    }
+    .request-info h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--portal-text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .request-info p {
+      font-size: 13px;
+      color: var(--portal-text-muted);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .request-actions-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .empty-requests-box {
+      text-align: center;
+      padding: 64px 20px;
+      background: #ffffff;
+      border: 1px dashed var(--portal-border);
+      border-radius: var(--portal-radius);
+    }
+    .empty-requests-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #94a3b8;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body class="portal-body">
+  <div class="portal-app-wrapper">
+    <!-- Sidebar -->
+    <aside class="portal-sidebar">
+      <div class="portal-sidebar-header">
+        <a href="/user/dashboard/index.html" class="sidebar-brand">
+          <div class="portal-brand-icon"><i class="fa-solid fa-shield-heart"></i></div>
+          <div class="portal-brand-text-wrap">
+            <span class="sidebar-brand-name">Guardian AI</span>
+            <span class="portal-sub-badge user-badge">USER PORTAL</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="portal-nav-menu">
+        <div class="portal-nav-heading">My Safety</div>
+        <a href="/user/dashboard/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Overview</span>
+        </a>
+        <a href="/location.html" class="portal-nav-item">
+          <i class="fa-solid fa-location-arrow"></i>
+          <span>Live Location</span>
+        </a>
+        <a href="/journeys.html" class="portal-nav-item">
+          <i class="fa-solid fa-route"></i>
+          <span>Safe Journeys</span>
+        </a>
+        <a href="/alerts.html" class="portal-nav-item">
+          <i class="fa-solid fa-bell"></i>
+          <span>Alerts Center</span>
+        </a>
+        <a href="/insights.html" class="portal-nav-item">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Safety Insights</span>
+        </a>
+        <a href="/band.html" class="portal-nav-item">
+          <i class="fa-solid fa-stopwatch"></i>
+          <span>Guardian Band</span>
+        </a>
+
+        <div class="portal-nav-heading">My Guardians</div>
+        <a href="/user/guardians/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-users"></i>
+          <span>My Guardians</span>
+        </a>
+        <a href="/user/guardian-requests/index.html" class="portal-nav-item active">
+          <i class="fa-solid fa-user-clock"></i>
+          <span>Guardian Requests</span>
+          <span class="badge-pill" id="nav-requests-badge" style="display: none;">0</span>
+        </a>
+        <a href="/user/guardian-id/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-id-badge"></i>
+          <span>Your Guardian ID</span>
+        </a>
+        <a href="/user/permissions/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Access Permissions</span>
+        </a>
+
+        <div class="portal-nav-heading">Account</div>
+        <a href="/user/profile/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-user"></i>
+          <span>User Profile</span>
+        </a>
+        <a href="/user/settings/index.html" class="portal-nav-item">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+
+        <div style="margin-top: 14px; padding: 0 4px;">
+          <a href="/sos-alert.html" class="btn-portal-primary btn-portal-danger" style="text-decoration:none; padding: 10px 14px; font-size: 13px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="portal-sidebar-footer">
+        <div class="sidebar-user-card">
+          <img src="" alt="Avatar" class="sidebar-user-avatar" id="sidebar-user-img">
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="sidebar-user-name">User</div>
+            <div class="sidebar-user-role">Protected User</div>
+          </div>
+          <button class="btn-sidebar-logout" id="btn-sidebar-logout" title="Sign Out">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+      <header class="portal-topbar">
+        <div class="topbar-greeting-wrap">
+          <h1>Guardian Connection Requests</h1>
+          <p>Review and authorize guardians seeking connection to your account</p>
+        </div>
+        <div class="topbar-actions">
+          <a href="/user/settings/index.html" class="topbar-icon-btn" title="Settings"><i class="fa-solid fa-gear"></i></a>
+          <a href="/user/profile/index.html" class="topbar-avatar-link"><img src="" alt="Avatar" class="topbar-avatar" id="topbar-avatar-img"></a>
+        </div>
+      </header>
+
+      <div class="portal-content">
+        <!-- Advisory Notice -->
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--portal-radius); padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px;">
+          <i class="fa-solid fa-shield-halved" style="font-size: 24px; color: var(--portal-primary);"></i>
+          <p style="font-size: 13px; color: #1e40af; line-height: 1.5;">
+            Guardians cannot monitor your telemetry or receive distress dispatches until you explicitly accept their request here. After accepting, you can customize granular access under <a href="/user/permissions/index.html" style="font-weight:700; color:#1e40af; text-decoration: underline;">Permissions</a>.
+          </p>
+        </div>
+
+        <!-- Requests List Container -->
+        <div id="requests-list-container">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="../../js/guardian-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = GuardianCore.requireAuth('user');
+      if (!currentUser) return;
+
+      const avatarSrc = currentUser.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&h=240&q=80';
+      document.getElementById('sidebar-user-img').src = avatarSrc;
+      document.getElementById('topbar-avatar-img').src = avatarSrc;
+      document.getElementById('sidebar-user-name').textContent = currentUser.fullName;
+
+      const container = document.getElementById('requests-list-container');
+      const badge = document.getElementById('nav-requests-badge');
+
+      async function loadRequests() {
+        try {
+          const requests = (await GuardianCore.getUserGuardianRequests(currentUser.id)) || [];
+
+          if (requests.length > 0) {
+            badge.textContent = requests.length;
+            badge.style.display = 'inline-block';
+          } else {
+            badge.style.display = 'none';
+          }
+
+          if (requests.length === 0) {
+            container.innerHTML = `
+              <div class="empty-requests-box">
+                <div class="empty-requests-icon">
+                  <i class="fa-solid fa-user-check"></i>
+                </div>
+                <h3 style="font-size: 18px; font-weight: 700; color: var(--portal-text-main); margin-bottom: 6px;">No Pending Requests</h3>
+                <p style="font-size: 14px; color: var(--portal-text-muted); max-width: 440px; margin: 0 auto 20px;">
+                  You are all caught up. When someone attempts to connect using your Guardian ID, their request will appear here for your review.
+                </p>
+                <a href="/user/guardian-id/index.html" class="btn-portal-secondary" style="display:inline-flex;">
+                  <i class="fa-solid fa-id-badge"></i> View Your Guardian ID
+                </a>
+              </div>
+            `;
+            return;
+          }
+
+          container.innerHTML = requests.map(req => `
+            <div class="request-row-card" id="req-card-${req.id || req._id}">
+              <div class="request-profile-meta">
+                <img src="${req.guardianAvatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&h=240&q=80'}" alt="${req.guardianName}" class="request-avatar">
+                <div class="request-info">
+                  <h3>
+                    ${req.guardianName}
+                    <span class="status-badge pending" style="font-size: 11px;">${req.relationship || 'Guardian'}</span>
+                  </h3>
+                  <p>
+                    <span><i class="fa-regular fa-envelope"></i> ${req.guardianEmail || 'N/A'}</span>
+                    <span><i class="fa-solid fa-phone"></i> ${req.guardianPhone || 'N/A'}</span>
+                    <span><i class="fa-solid fa-location-dot"></i> ${req.guardianCity || 'Unknown'}</span>
+                    <span><i class="fa-regular fa-clock"></i> Requested ${new Date(req.requestDate || Date.now()).toLocaleDateString()}</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="request-actions-wrap">
+                <button class="btn-portal-secondary" onclick="handleReject('${req.id || req._id}', '${req.guardianName}')" style="border-color:#fecaca; color:#b91c1c;">
+                  <i class="fa-solid fa-xmark"></i> Reject
+                </button>
+                <button class="btn-portal-primary btn-portal-success" onclick="handleAccept('${req.id || req._id}', '${req.guardianName}')" style="width: auto;">
+                  <i class="fa-solid fa-check"></i> Accept Connection
+                </button>
+              </div>
+            </div>
+          `).join('');
+        } catch (err) {
+          container.innerHTML = `<div class="empty-requests-box"><p style="color:#b91c1c;">Failed to load requests: ${err.message}</p></div>`;
+        }
+      }
+
+      window.handleAccept = (linkId, guardianName) => {
+        GuardianCore.confirmModal({
+          title: 'Accept Guardian Connection',
+          message: `Are you sure you want to approve <strong>${guardianName}</strong> as your connected guardian? They will be granted initial baseline permissions which you can customize anytime.`,
+          confirmText: 'Accept Connection',
+          onConfirm: async () => {
+            try {
+              await GuardianCore.acceptGuardianRequest(linkId);
+              GuardianCore.showToast(`Guardian connection with ${guardianName} approved!`, 'success');
+              await loadRequests();
+            } catch (err) {
+              GuardianCore.showToast(err.message, 'danger');
+            }
+          }
+        });
+      };
+
+      window.handleReject = (linkId, guardianName) => {
+        GuardianCore.confirmModal({
+          title: 'Reject Connection Request',
+          message: `Are you sure you want to reject the connection request from <strong>${guardianName}</strong>? They will not be granted access to your account.`,
+          confirmText: 'Reject Request',
+          isDanger: true,
+          onConfirm: async () => {
+            try {
+              await GuardianCore.rejectGuardianRequest(linkId);
+              GuardianCore.showToast(`Connection request from ${guardianName} rejected.`, 'info');
+              await loadRequests();
+            } catch (err) {
+              GuardianCore.showToast(err.message, 'danger');
+            }
+          }
+        });
+      };
+
+      loadRequests();
+
+      // Logout handler
+      document.getElementById('btn-sidebar-logout').addEventListener('click', () => {
+        GuardianCore.confirmModal({
+          title: 'Sign Out',
+          message: 'Are you sure you want to end your current session?',
+          confirmText: 'Sign Out',
+          onConfirm: () => GuardianCore.logout('/user/login')
+        });
+      });
+    });
+  </script>
+</body>
+</html>

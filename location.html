@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function() {
+      try {
+        const sess = JSON.parse(localStorage.getItem('gdn_portal_session') || '{}');
+        const role = sess.role === 'guardian' ? 'guardian' : 'user';
+        window.location.replace('/' + role + '/dashboard/index.html#location');
+      } catch(e) {
+        window.location.replace('/user/dashboard/index.html#location');
+      }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time GeoNAV — Guardian AI</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/location.css">
+</head>
+<body class="theme-light">
+
+  <div id="app-container" class="app-layout">
+
+    <aside id="main-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="/guardian/dashboard/index.html" class="brand-logo" style="text-decoration: none;">
+          <div class="logo-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="brand-text">
+            <span class="brand-name">Guardian AI</span>
+            <span class="brand-hub-pill">GUARDIAN</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="user-profile-chip">
+        <div class="avatar-box">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma" class="user-avatar">
+          <span class="online-indicator"></span>
+        </div>
+        <div class="user-info">
+          <span class="user-name">Ravi Sharma</span>
+          <span class="user-id">GDN-7A92K4 <i class="fa-regular fa-circle-check verified-badge"></i></span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Telemetry & Safety</div>
+        <ul>
+          <li><a href="home.html" class="nav-link" data-view="home"><i class="fa-solid fa-house"></i><span>Monitoring Console</span></a></li>
+          <li><a href="location.html" class="nav-link active" data-view="live-location"><i class="fa-solid fa-location-arrow"></i><span>Live Location</span></a></li>
+          <li><a href="journeys.html" class="nav-link" data-view="journeys"><i class="fa-solid fa-route"></i><span>Safe Corridors</span></a></li>
+          <li><a href="alerts.html" class="nav-link" data-view="alerts"><i class="fa-solid fa-bell"></i><span>Alerts & Logs</span><span class="badge-count badge-warning">3</span></a></li>
+          <li><a href="insights.html" class="nav-link" data-view="insights"><i class="fa-solid fa-chart-line"></i><span>Risk Insights</span></a></li>
+          <li><a href="band.html" class="nav-link" data-view="band"><i class="fa-solid fa-stopwatch"></i><span>Guardian Band</span></a></li>
+          <li><a href="voice-mails.html" class="nav-link" data-view="voice-mails"><i class="fa-solid fa-microphone"></i><span>Acoustic Triage</span></a></li>
+        </ul>
+
+        <div class="nav-section-title">Guardian Supervision</div>
+        <ul>
+          <li><a href="/guardian/dashboard/index.html" class="nav-link" data-view="guardian-dashboard"><i class="fa-solid fa-shield-halved"></i><span>Protector Dashboard</span></a></li>
+          <li><a href="/guardian/linked-users/index.html" class="nav-link" data-view="linked-users"><i class="fa-solid fa-users"></i><span>Linked Users</span></a></li>
+          <li><a href="/guardian/connect-user/index.html" class="nav-link" data-view="connect-user"><i class="fa-solid fa-link"></i><span>Connect to User</span></a></li>
+          <li><a href="/guardian/permissions/index.html" class="nav-link" data-view="permissions"><i class="fa-solid fa-sliders"></i><span>Access Permissions</span></a></li>
+        </ul>
+
+        <div class="nav-divider"></div>
+        <ul>
+          <li><a href="profile.html" class="nav-link" data-view="profile"><i class="fa-solid fa-user"></i><span>Profile</span></a></li>
+          <li><a href="settings.html" class="nav-link" data-view="settings"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
+        </ul>
+        <div class="nav-divider"></div>
+        <div class="sos-trigger-box">
+          <a href="sos-alert.html" class="btn-sos-launch" style="text-decoration: none;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>SOS Alert Simulator</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-dependent-card">
+        <div class="dependent-status-header">
+          <span class="dep-name">Ananya</span>
+          <span class="pill-badge pill-safe">● Safe • Normal</span>
+        </div>
+        <div class="dependent-status-details">
+          <i class="fa-solid fa-shield-heart text-safe"></i>
+          <span>Safe Geofence • GPS Lock</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-wrapper">
+      <header id="top-header" class="top-header">
+        <div class="header-breadcrumbs">
+          <span class="breadcrumb-root">Guardian System</span>
+          <i class="fa-solid fa-chevron-right breadcrumb-sep"></i>
+          <span class="breadcrumb-active">Real-Time GeoNAV</span>
+        </div>
+
+        <div class="header-right-controls">
+          <div class="dependent-selector-dropdown">
+            <button class="selector-btn">
+              <span class="dot-online"></span>
+              <span class="selected-person">Ananya (Daughter)</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+          <div class="sync-status-chip">
+            <span class="dot-pulse-green"></span>
+            <span class="sync-text">Synced <span id="sync-timer-sec">10</span> sec ago</span>
+          </div>
+          <a href="alerts.html" class="notification-icon-wrapper notification-button" aria-label="View alerts" style="text-decoration:none; color:inherit;">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge"></span>
+          </a>
+          <div class="header-user-avatar">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Ravi Sharma">
+          </div>
+        </div>
+      </header>
+
+      <div class="views-container">
+        <section id="view-live-location" class="app-view">
+          <div class="live-loc-header-bar">
+            <div class="person-stream-status">
+              <div class="person-avatar-mini">A</div>
+              <div>
+                <div class="name-status-row">
+                  <strong class="person-name-title">Ananya</strong>
+                  <span class="pill-badge pill-safe">● SAFE</span>
+                </div>
+                <div class="stream-specs-row">
+                  <span><i class="fa-solid fa-signal"></i> Live GPS Stream</span>
+                  <span>• ±8m precision</span>
+                  <span>• Synced 12s ago</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="live-header-actions">
+              <button class="btn-secondary" id="btn-timeline-log"><i class="fa-solid fa-clock-rotate-left"></i> Timeline Log</button>
+              <button class="btn-secondary" id="btn-share-link"><i class="fa-solid fa-share-nodes"></i> Share Link</button>
+              <button class="btn-danger-glow" id="btn-trigger-escort-alert-hero">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Trigger Escort Alert</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="live-map-grid-container">
+            <div class="live-map-wrapper">
+              <div class="map-controls-toolbar">
+                <div class="layer-toggle-group">
+                  <button class="layer-btn active"><i class="fa-solid fa-route"></i> Safe Corridor (Active)</button>
+                  <button class="layer-btn active"><i class="fa-solid fa-shield-heart"></i> Safe Havens (3)</button>
+                  <button class="layer-btn"><i class="fa-solid fa-fire"></i> Density Heatmap</button>
+                  <button class="layer-btn"><i class="fa-solid fa-layer-group"></i> Layers</button>
+                </div>
+                <div class="map-zoom-tools">
+                  <button class="zoom-btn" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
+                  <button class="zoom-btn" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
+                  <button class="zoom-btn" title="Recenter"><i class="fa-solid fa-crosshairs"></i></button>
+                  <button class="zoom-btn" title="Toggle Satellite"><i class="fa-solid fa-earth-americas"></i></button>
+                </div>
+              </div>
+
+              <div id="live-location-map" class="leaflet-map-full"></div>
+
+              <div class="map-telemetry-bottom-overlay">
+                <div class="telemetry-item">
+                  <span class="dot-online"></span>
+                  <span>Live Telemetry Synchronized</span>
+                  <span class="sep">•</span>
+                  <span>Cellular 5G Ultra + Dual-Band L1/L5 GPS</span>
+                  <span class="sep">•</span>
+                  <span class="text-safe fw-600">AES-256 Encrypted</span>
+                </div>
+                <div class="telemetry-item">
+                  <span><i class="fa-solid fa-gauge-high"></i> Latency 42ms</span>
+                  <span class="sep">•</span>
+                  <span><i class="fa-solid fa-satellite"></i> 14 Sats Fixed</span>
+                </div>
+              </div>
+
+              <div class="map-bottom-trio">
+                <div class="trio-card">
+                  <i class="fa-solid fa-shield-halved text-safe"></i>
+                  <div>
+                    <span class="t-lbl">ACTIVE CORRIDOR</span>
+                    <strong class="t-val">Geofence #4 Protected</strong>
+                  </div>
+                </div>
+                <div class="trio-card">
+                  <i class="fa-solid fa-person-walking text-primary"></i>
+                  <div>
+                    <span class="t-lbl">VELOCITY & CADENCE</span>
+                    <strong class="t-val">4.2 km/h • 108 steps/min</strong>
+                  </div>
+                </div>
+                <div class="trio-card">
+                  <i class="fa-solid fa-circle-nodes text-info"></i>
+                  <div>
+                    <span class="t-lbl">SAFE HAVENS ON PATH</span>
+                    <strong class="t-val">Next: Post #2 (350m)</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="live-panel-sidebar">
+              <div class="card card-panel-tile">
+                <div class="tile-header-bar">
+                  <span class="panel-tag"><i class="fa-solid fa-location-dot"></i> CURRENT LOCATION</span>
+                  <span class="sync-text">12 sec ago</span>
+                </div>
+                <h3 class="panel-loc-title">Near Rajahmundry Main Rd</h3>
+                <p class="panel-loc-sub">Corridor Segment #04 • Commercial Thoroughfare</p>
+
+                <div class="safe-spots-box">
+                  <div class="spot-item">
+                    <i class="fa-solid fa-lightbulb text-warning"></i>
+                    <span>Well-lit commercial zone with continuous street lighting</span>
+                  </div>
+                  <div class="spot-item">
+                    <i class="fa-solid fa-building-shield text-primary"></i>
+                    <span>Community Police & Transit Safe Haven 350m ahead</span>
+                  </div>
+                </div>
+
+                <div class="coords-row">
+                  <span>10.9891° N, 81.7840° E</span>
+                  <a href="#" class="btn-link-sm">View coordinates <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+              </div>
+
+              <div class="card card-panel-tile">
+                <div class="tile-header-bar">
+                  <span class="panel-tag"><i class="fa-solid fa-person-walking"></i> JOURNEY STATUS</span>
+                  <span class="pill-badge pill-info">Heading Home</span>
+                </div>
+                <div class="journey-eta-big">
+                  <div class="eta-num-box">
+                    <span class="eta-val">~15 mins</span>
+                    <span class="eta-sub">Expected arrival 7:15 PM</span>
+                  </div>
+                  <div class="comp-box">
+                    <span class="comp-val">68%</span>
+                    <span class="comp-sub">Completed</span>
+                  </div>
+                </div>
+
+                <div class="stepper-mini-bar">
+                  <div class="step-lbls">
+                    <span>Campus (6:35 PM)</span>
+                    <span class="fw-700 text-primary">En Route</span>
+                    <span>Home (7:15 PM)</span>
+                  </div>
+                  <div class="step-track">
+                    <div class="step-fill" style="width: 68%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card card-panel-tile">
+                <div class="tile-header-bar">
+                  <span class="panel-tag"><i class="fa-solid fa-brain"></i> NEURAL THREAT MATRIX</span>
+                  <span class="pill-badge pill-safe">Nominal / Safe</span>
+                </div>
+
+                <div class="composite-risk-box">
+                  <div class="c-left">
+                    <span class="c-lbl">AI Composite Risk Score</span>
+                    <div class="c-score-val">18 <span class="c-denom">/ 100</span></div>
+                  </div>
+                  <div class="c-badge-icon"><i class="fa-solid fa-shield-check"></i></div>
+                </div>
+
+                <div class="threat-meters-list">
+                  <div class="meter-item">
+                    <div class="m-top"><span>Ambient Audio Anomaly</span> <strong>4%</strong></div>
+                    <div class="m-bar"><div class="m-fill" style="width: 4%;"></div></div>
+                  </div>
+                  <div class="meter-item">
+                    <div class="m-top"><span>Route Deviation Index</span> <strong>6%</strong></div>
+                    <div class="m-bar"><div class="m-fill" style="width: 6%;"></div></div>
+                  </div>
+                  <div class="meter-item">
+                    <div class="m-top"><span>Crowd Density Baseline</span> <strong>12%</strong></div>
+                    <div class="m-bar"><div class="m-fill" style="width: 12%;"></div></div>
+                  </div>
+                  <div class="meter-item">
+                    <div class="m-top"><span>Velocity Consistency</span> <strong class="text-safe">98% (Optimal)</strong></div>
+                    <div class="m-bar"><div class="m-fill bg-safe" style="width: 98%;"></div></div>
+                  </div>
+                </div>
+
+                <div class="ai-summary-note">
+                  <i class="fa-solid fa-sparkles text-primary"></i>
+                  <p>Predictive threat assessment detects zero active risks along Route #4 corridor. Environmental signals match baseline.</p>
+                </div>
+              </div>
+
+              <div class="card card-panel-tile">
+                <div class="tile-header-bar">
+                  <span class="panel-tag"><i class="fa-solid fa-robot"></i> COMPANION AI ESCORT</span>
+                  <span class="pill-badge pill-safe">● Active Monitoring</span>
+                </div>
+                <div class="escort-specs">
+                  <div class="esc-row">
+                    <span>Audio Triage:</span>
+                    <strong>Passive Onboard Classifier (Privacy-Preserved)</strong>
+                  </div>
+                  <div class="esc-row">
+                    <span>Autonomous Check-in:</span>
+                    <strong class="text-primary">Scheduled in 8 mins</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card card-panel-tile">
+                <div class="tile-header-bar">
+                  <span class="panel-tag"><i class="fa-solid fa-stopwatch"></i> GUARDIAN BAND TELEMETRY</span>
+                  <span class="pill-badge pill-safe">Connected</span>
+                </div>
+                <div class="band-mini-trio">
+                  <div class="b-mini">
+                    <i class="fa-solid fa-battery-full text-safe"></i>
+                    <strong>82%</strong>
+                    <span>Battery</span>
+                  </div>
+                  <div class="b-mini">
+                    <i class="fa-solid fa-heart-pulse text-danger"></i>
+                    <strong>78</strong>
+                    <span>BPM</span>
+                  </div>
+                  <div class="b-mini">
+                    <i class="fa-solid fa-person-walking text-primary"></i>
+                    <strong>Normal</strong>
+                    <span>Kinetic</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-action-buttons">
+                <button class="btn-primary-large btn-full-width" id="btn-call-ananya-live">
+                  <i class="fa-solid fa-phone"></i>
+                  <span>Call Ananya</span>
+                </button>
+                <button class="btn-secondary btn-full-width" id="btn-send-safety-ping-live">
+                  <i class="fa-solid fa-bell"></i>
+                  <span>Send Safety Ping</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal-voice-call">
+    <div class="modal-card modal-call-card">
+      <button class="btn-close-modal" id="btn-close-call-modal">&times;</button>
+      <div class="call-avatar-pulse">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&h=150&q=80" alt="Ananya">
+        <span class="call-ripple-ring"></span>
+      </div>
+      <h3 class="call-person-name">Ananya Sharma</h3>
+      <p class="call-status-text" id="call-status-label">Encrypted Guardian Voice Link Connecting...</p>
+      <span class="call-timer" id="call-timer">00:04</span>
+
+      <div class="call-actions-row">
+        <button class="btn-round-action btn-mute"><i class="fa-solid fa-microphone-slash"></i></button>
+        <button class="btn-round-action btn-speaker"><i class="fa-solid fa-volume-high"></i></button>
+        <button class="btn-round-action btn-hangup" id="btn-hangup-call"><i class="fa-solid fa-phone-slash"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="js/guardian-core.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/location.js"></script>
+</body>
+</html>

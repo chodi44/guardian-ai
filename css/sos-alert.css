@@ -1,0 +1,229 @@
+/* CRITICAL SOS ALERT PAGE STYLES */
+.sos-banner-emergency {
+  background: linear-gradient(135deg, var(--danger-red-dark), #b91c1c);
+  color: #ffffff;
+  padding: 18px 24px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 25px var(--danger-red-glow);
+}
+
+.sos-banner-left { display: flex; align-items: center; gap: 18px; }
+.sos-icon-pulse {
+  width: 48px;
+  height: 48px;
+  background: #ffffff;
+  color: var(--danger-red-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  animation: pulseWhite 1.5s infinite;
+}
+
+@keyframes pulseWhite {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+  70% { box-shadow: 0 0 0 12px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+.sos-title-row { display: flex; align-items: center; gap: 12px; }
+.sos-main-title { font-size: 18px; font-weight: 800; letter-spacing: -0.2px; }
+.sos-tag-critical { background: #ffffff; color: var(--danger-red-dark); font-weight: 800; font-size: 11px; padding: 3px 8px; border-radius: var(--radius-full); }
+.sos-subtitle { font-size: 13px; color: #fecaca; margin-top: 4px; }
+
+.sos-banner-right { display: flex; align-items: center; gap: 14px; }
+.audio-stream-tag { font-size: 11px; font-weight: 700; color: #ffffff; background: rgba(0,0,0,0.2); padding: 6px 12px; border-radius: var(--radius-full); }
+.btn-secondary-white { background: #ffffff; color: var(--danger-red-dark); font-weight: 700; font-size: 12.5px; padding: 8px 14px; border-radius: var(--radius-sm); }
+
+.card-sos-metric { text-align: center; }
+.border-crit { border: 2px solid var(--danger-red) !important; background: var(--danger-red-light) !important; }
+.sos-m-lbl { font-size: 10.5px; font-weight: 700; color: var(--slate-500); display: block; margin-bottom: 4px; }
+.sos-m-val { font-size: 28px; font-weight: 800; color: var(--slate-900); }
+.sos-m-val-sm { font-size: 15px; font-weight: 800; color: var(--slate-900); }
+.sos-m-sub { font-size: 11px; color: var(--slate-500); margin-top: 4px; }
+
+.sos-main-grid {
+  grid-template-columns: 1fr 360px;
+}
+
+.map-legend-pills { display: flex; gap: 6px; }
+.leg-pill { font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: var(--radius-full); }
+.leg-realtime { background: var(--primary-blue-light); color: var(--primary-blue); }
+.leg-hazard { background: var(--danger-red-light); color: var(--danger-red-dark); }
+.leg-haven { background: var(--safe-green-light); color: var(--safe-green-dark); }
+.leg-extract { background: #fef3c7; color: #d97706; }
+
+.perimeter-assessment-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--danger-red-light);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: var(--danger-red-dark);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.leaflet-map-sos {
+  width: 100%;
+  max-width: 100%;
+  height: 380px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--slate-200);
+  box-sizing: border-box;
+}
+
+.havens-trio-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.haven-card {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--slate-200);
+  background: var(--slate-50);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.h-name { font-size: 13px; font-weight: 800; color: var(--slate-900); display: block; }
+.h-sub { font-size: 11px; color: var(--slate-500); }
+
+.btn-emergency-112 {
+  width: 100%;
+  background: linear-gradient(135deg, var(--danger-red-dark), #991b1b);
+  color: #ffffff;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 4px 15px var(--danger-red-glow);
+  text-align: left;
+  transition: var(--trans-fast);
+}
+
+.btn-emergency-112:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--danger-red-glow);
+}
+
+.btn-emergency-112 i { font-size: 22px; }
+.btn-emergency-112 strong { font-size: 15px; display: block; }
+.btn-emergency-112 span { font-size: 11px; opacity: 0.9; }
+
+.actions-vertical-stack { display: flex; flex-direction: column; gap: 10px; }
+
+.dispatch-unit-card {
+  background: var(--primary-blue-light);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-top: 16px;
+}
+
+.d-top { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: var(--primary-blue); margin-bottom: 8px; }
+.d-body { display: flex; align-items: center; gap: 12px; }
+.d-icon { width: 36px; height: 36px; border-radius: 50%; background: #ffffff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.d-body strong { font-size: 13px; color: var(--slate-900); }
+.d-body p { font-size: 11px; color: var(--slate-500); }
+
+.d-eta { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 12px; border-top: 1px solid rgba(37, 99, 235, 0.15); padding-top: 8px; }
+.eta-large { font-size: 18px; font-weight: 800; }
+
+.chain-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+.chain-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); }
+.chain-item img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+.c-info { flex: 1; }
+.c-info strong { font-size: 12.5px; color: var(--slate-900); display: block; }
+.c-info span { font-size: 10.5px; color: var(--slate-500); }
+.btn-icon-call { width: 28px; height: 28px; border-radius: 50%; background: #ffffff; border: 1px solid var(--slate-300); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; font-size: 12px; }
+
+.timeline-vertical-flow {
+  position: relative;
+  padding-left: 20px;
+  margin-top: 16px;
+}
+
+.timeline-vertical-flow::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 6px;
+  width: 2px;
+  background: var(--slate-200);
+}
+
+.t-node { position: relative; margin-bottom: 20px; }
+.t-dot { position: absolute; left: -20px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: #ffffff; border: 3px solid var(--slate-400); }
+.danger-node .t-dot { border-color: var(--danger-red); background: var(--danger-red); }
+.info-node .t-dot { border-color: var(--primary-blue); background: var(--primary-blue); }
+
+.t-header { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 3px; }
+.t-header strong { font-size: 13.5px; color: var(--slate-900); }
+.t-time { font-size: 11px; color: var(--slate-500); }
+.t-content p { font-size: 12px; color: var(--slate-600); }
+
+.audio-triage-player {
+  background: var(--slate-900);
+  color: #ffffff;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  margin-top: 10px;
+}
+
+.audio-top-row { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; margin-bottom: 10px; }
+.player-controls { display: flex; align-items: center; gap: 14px; }
+.btn-play-pause { width: 34px; height: 34px; border-radius: 50%; background: var(--primary-blue); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+.waveform-visualizer { display: flex; align-items: center; gap: 3px; flex: 1; height: 30px; }
+.bar { flex: 1; height: 6px; background: rgba(255,255,255,0.3); border-radius: 2px; transition: height 0.2s ease; }
+.h-high { height: 26px; background: var(--danger-red); }
+.h-med  { height: 16px; background: var(--warning-amber); }
+.audio-timer { font-size: 11px; color: var(--slate-400); font-family: monospace; }
+
+/* Responsive adjustments for SOS Alert Page */
+@media (max-width: 767px) {
+  .sos-main-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sos-banner-emergency {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  .sos-banner-left {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .sos-banner-right {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn-secondary-white {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .havens-trio-row {
+    grid-template-columns: 1fr;
+  }
+}

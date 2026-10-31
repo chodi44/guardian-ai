@@ -1,0 +1,73 @@
+/* ONBOARDING STEP 2 STYLES */
+.onboarding-container {
+  max-width: 680px;
+  margin: 20px auto;
+}
+
+.onboarding-progress-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--slate-500);
+}
+
+.progress-bar-track { flex: 1; height: 8px; background: var(--slate-200); border-radius: var(--radius-full); overflow: hidden; }
+.progress-bar-fill { height: 100%; background: var(--primary-blue); border-radius: var(--radius-full); }
+
+.onboarding-card {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-lg);
+  padding: 30px;
+  margin-top: 16px;
+}
+
+.form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--slate-700); margin-bottom: 6px; }
+.field-status { float: right; font-size: 11px; font-weight: 600; color: var(--safe-green-dark); }
+
+.id-input-pair { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.form-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--slate-300);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  color: var(--slate-900);
+  background: #ffffff;
+  outline: none;
+}
+
+.scan-verify-pair { display: flex; gap: 10px; margin-bottom: 20px; }
+
+.matched-person-card {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-top: 16px;
+}
+
+.matched-person-header { display: flex; justify-content: space-between; margin-bottom: 14px; }
+.person-profile-row { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.matched-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.person-details h3 { font-size: 16px; font-weight: 800; color: var(--slate-900); }
+.person-details p { font-size: 12px; color: var(--slate-500); }
+
+.telemetry-specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.spec-tile { padding: 10px; background: #ffffff; border: 1px solid var(--slate-200); border-radius: var(--radius-sm); display: flex; align-items: center; gap: 10px; }
+.spec-label { font-size: 10.5px; color: var(--slate-400); font-weight: 600; display: block; }
+.spec-val { font-size: 12px; font-weight: 700; color: var(--slate-900); }
+.tile-flex { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.battery-tag { font-size: 11px; font-weight: 700; color: var(--safe-green-dark); }
+
+.biometrics-preview-box { padding: 10px; background: #ffffff; border: 1px solid var(--slate-200); border-radius: var(--radius-sm); }
+
+.onboarding-actions-vertical { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+.troubleshooting-accordion { margin-top: 20px; padding: 12px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-sm); font-size: 12px; color: var(--slate-600); }
+.accordion-header { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.accordion-header i:last-child { margin-left: auto; }
+.footer-security-note { text-align: center; font-size: 11.5px; color: var(--slate-500); margin-top: 20px; }

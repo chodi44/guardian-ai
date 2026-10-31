@@ -1,0 +1,119 @@
+<div class="history-container">
+  <div class="history-header">
+    <div>
+      <h1 class="history-title">
+        <i data-lucide="archive" style="width: 24px; height: 24px;"></i> CASE HISTORY & ARCHIVE
+      </h1>
+      <p class="history-subtitle">Historical logs of all municipal emergency cases.</p>
+    </div>
+    
+    <div class="history-actions">
+      <div class="search-wrapper">
+        <i data-lucide="search" class="search-icon" style="width: 16px; height: 16px;"></i>
+        <input 
+          type="text" 
+          placeholder="Search by ID, Name, or Node..." 
+          class="search-input"
+        />
+      </div>
+      <button onclick="window.showToast('Filter Applied', 'Showing all cases', 'info')" class="btn-outline-gray">
+        <i data-lucide="filter" style="width: 16px; height: 16px;"></i> FILTER
+      </button>
+      <button onclick="window.showToast('Export Complete', 'Downloaded cases.csv', 'success')" class="btn-outline-gray">
+        <i data-lucide="download" style="width: 16px; height: 16px;"></i> EXPORT CSV
+      </button>
+    </div>
+  </div>
+
+  <div class="history-card">
+    <div class="table-scroll-area">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>CASE ID</th>
+            <th>DATE / TIME</th>
+            <th>PROTECTED PERSON</th>
+            <th>PRIMARY REASON</th>
+            <th>SEVERITY</th>
+            <th>RESOLUTION</th>
+            <th class="text-right">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Row 1 -->
+          <tr>
+            <td class="cell-id">#GA-1019</td>
+            <td class="cell-time">Today 14:10</td>
+            <td class="cell-name">Michael Chang</td>
+            <td class="cell-reason">Medical (Heart Rate)</td>
+            <td><span class="badge badge-warning-solid text-tiny">HIGH</span></td>
+            <td class="cell-resolution">Dispatched Unit 02 - EMT Treated</td>
+            <td class="text-right">
+              <button onclick="window.router.navigate('/case/GA-1019')" class="btn-view">
+                <i data-lucide="eye" style="width: 14px; height: 14px;"></i> VIEW
+              </button>
+            </td>
+          </tr>
+          
+          <!-- Row 2 -->
+          <tr>
+            <td class="cell-id">#GA-1012</td>
+            <td class="cell-time">Today 12:45</td>
+            <td class="cell-name">Sarah Connor</td>
+            <td class="cell-reason">Distress Signal</td>
+            <td><span class="badge badge-yellow-solid text-tiny">MEDIUM</span></td>
+            <td class="cell-resolution">False Alarm - Stood down</td>
+            <td class="text-right">
+              <button onclick="window.router.navigate('/case/GA-1012')" class="btn-view">
+                <i data-lucide="eye" style="width: 14px; height: 14px;"></i> VIEW
+              </button>
+            </td>
+          </tr>
+
+          <!-- Row 3 -->
+          <tr>
+            <td class="cell-id">#GA-0982</td>
+            <td class="cell-time">Yesterday 21:30</td>
+            <td class="cell-name">Robert Paulson</td>
+            <td class="cell-reason">Impact Detection</td>
+            <td><span class="badge badge-error-solid text-tiny">CRITICAL</span></td>
+            <td class="cell-resolution">Dispatched Unit 04 - Hospitalized</td>
+            <td class="text-right">
+              <button onclick="window.router.navigate('/case/GA-0982')" class="btn-view">
+                <i data-lucide="eye" style="width: 14px; height: 14px;"></i> VIEW
+              </button>
+            </td>
+          </tr>
+
+          <!-- Row 4 -->
+          <tr>
+            <td class="cell-id">#GA-0941</td>
+            <td class="cell-time">12 Oct 2023</td>
+            <td class="cell-name">Elena Fisher</td>
+            <td class="cell-reason">Geofence Breach</td>
+            <td><span class="badge badge-gray-solid text-tiny">LOW</span></td>
+            <td class="cell-resolution">Guardian Handled</td>
+            <td class="text-right">
+              <button onclick="window.router.navigate('/case/GA-0941')" class="btn-view">
+                <i data-lucide="eye" style="width: 14px; height: 14px;"></i> VIEW
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="history-pagination">
+      <div class="pagination-text">Showing 1-10 of 245 cases</div>
+      <div class="pagination-controls">
+        <button class="btn-page" disabled>
+          <i data-lucide="chevron-left" style="width: 18px; height: 18px;"></i>
+        </button>
+        <button class="btn-page">
+          <i data-lucide="chevron-right" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

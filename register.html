@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — Guardian & Missing Person Police Dossier</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-page-body">
+
+  <div class="auth-container" style="max-width: 680px;">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-brand-logo">
+          <div class="auth-logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <span class="auth-brand-name">Guardian AI</span>
+        </div>
+        <h1 class="auth-title">Guardian & Band User Registration</h1>
+        <p class="auth-subtitle">Configure Primary Guardian account & build the missing person search dossier for emergency police dispatch.</p>
+      </div>
+
+      <form id="form-register">
+        
+        <!-- SECTION 1: GUARDIAN DETAILS -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="font-size: 15px; font-weight: 700; color: var(--primary-700); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-user-shield"></i>
+            <span>1. Primary Guardian Information</span>
+          </h3>
+
+          <div class="form-row-2col">
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-guardian-name">Guardian Full Name</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-user auth-input-icon"></i>
+                <input type="text" id="reg-guardian-name" class="auth-input" placeholder="e.g. John Doe" required>
+              </div>
+            </div>
+
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-guardian-email">Email Address</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-envelope auth-input-icon"></i>
+                <input type="email" id="reg-guardian-email" class="auth-input" placeholder="name@example.com" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-guardian-phone">Emergency Phone Number</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-phone auth-input-icon"></i>
+                <input type="tel" id="reg-guardian-phone" class="auth-input" placeholder="+91 98480 23145" required>
+              </div>
+            </div>
+
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-guardian-pass">Set Security Password</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-key auth-input-icon"></i>
+                <input type="password" id="reg-guardian-pass" class="auth-input" placeholder="••••••••" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="reg-guardian-address">Residential Address</label>
+            <div class="auth-input-wrapper">
+              <i class="fa-solid fa-house-chimney auth-input-icon"></i>
+              <input type="text" id="reg-guardian-address" class="auth-input" placeholder="House #, Street, City, State" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-section-divider">
+          <span class="auth-section-title">Police Missing Person Search Dossier</span>
+        </div>
+
+        <!-- SECTION 2: BAND USER (WEARER) POLICE DOSSIER DETAILS -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="font-size: 15px; font-weight: 700; color: #7c3aed; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-id-card"></i>
+            <span>2. Band User Identification & Missing Person Dossier</span>
+          </h3>
+          <p style="font-size: 12px; color: var(--slate-500); margin-bottom: 14px;">
+            <i class="fa-solid fa-triangle-exclamation text-warning"></i> Details required by Law Enforcement / Police search teams in case of emergency missing person report.
+          </p>
+
+          <div class="form-row-2col">
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-banduser-name">Protected Wearer Full Name</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-hospital-user auth-input-icon"></i>
+                <input type="text" id="reg-banduser-name" class="auth-input" placeholder="e.g. Jane Doe" required>
+              </div>
+            </div>
+
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-banduser-dob">Date of Birth (DOB) & Age</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-calendar-days auth-input-icon"></i>
+                <input type="text" id="reg-banduser-dob" class="auth-input" placeholder="e.g. 14 Apr 2007 (19 yrs)" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-banduser-gender">Gender</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-venus-mars auth-input-icon"></i>
+                <input type="text" id="reg-banduser-gender" class="auth-input" placeholder="e.g. Female" required>
+              </div>
+            </div>
+
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-banduser-photo">Profile Photo URL / Avatar</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-image auth-input-icon"></i>
+                <input type="text" id="reg-banduser-photo" class="auth-input" placeholder="https://...">
+              </div>
+            </div>
+          </div>
+
+          <!-- PHYSICAL CHARACTERISTICS FOR POLICE -->
+          <div class="form-row-2col">
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-banduser-height">Height & Weight</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-ruler-vertical auth-input-icon"></i>
+                <input type="text" id="reg-banduser-height" class="auth-input" placeholder="e.g. 5 ft 6 in (168 cm) / 54 kg" required>
+              </div>
+            </div>
+
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-banduser-hair-eyes">Hair & Eye Color</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-eye auth-input-icon"></i>
+                <input type="text" id="reg-banduser-hair-eyes" class="auth-input" placeholder="e.g. Dark Brown Hair, Black Eyes" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="reg-banduser-marks">Distinguishing Features (Scars / Birthmarks / Tattoos / Glasses)</label>
+            <div class="auth-input-wrapper">
+              <i class="fa-solid fa-fingerprint auth-input-icon"></i>
+              <input type="text" id="reg-banduser-marks" class="auth-input" placeholder="e.g. Small scar near right eyebrow, wears black rimmed glasses">
+            </div>
+          </div>
+
+          <!-- MEDICAL & LOCATION IDENTIFIERS -->
+          <div class="form-row-2col">
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-banduser-blood">Blood Group & Medical Conditions</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-heart-pulse auth-input-icon"></i>
+                <input type="text" id="reg-banduser-blood" class="auth-input" placeholder="e.g. O+ Positive, Mild Asthma" required>
+              </div>
+            </div>
+
+            <div class="auth-form-group">
+              <label class="auth-form-label" for="reg-band-device">Guardian Band Hardware Serial ID</label>
+              <div class="auth-input-wrapper">
+                <i class="fa-solid fa-microchip auth-input-icon"></i>
+                <input type="text" id="reg-band-device" class="auth-input" placeholder="e.g. GB-V3-982" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="reg-banduser-locations">Frequent / Daily Routines & Locations (For Search Grid)</label>
+            <div class="auth-input-wrapper">
+              <i class="fa-solid fa-location-dot auth-input-icon"></i>
+              <input type="text" id="reg-banduser-locations" class="auth-input" placeholder="e.g. SRM Campus Library, Block B Science Labs, Metro Station" value="SRM University Campus, Central Library, Green Arcade">
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary-large btn-full-width">
+          <i class="fa-solid fa-shield-check"></i>
+          <span>Save Guardian & Provision Police Missing Person Dossier</span>
+        </button>
+      </form>
+
+      <div class="auth-footer-link">
+        <span>Already registered?</span>
+        <a href="login.html">Return to Sign In Page</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="js/guardian-core.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>

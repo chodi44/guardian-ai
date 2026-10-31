@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardian Registration — Guardian AI Safety Sentinel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../css/portal.css">
+  <style>
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #475569;
+    }
+    .checkbox-row input {
+      margin-top: 3px;
+    }
+    .alert-error-banner {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: var(--portal-radius-sm);
+      padding: 12px 14px;
+      color: #b91c1c;
+      font-size: 13px;
+      margin-bottom: 18px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert-error-banner.active {
+      display: flex;
+    }
+  </style>
+</head>
+<body class="portal-body">
+  <div class="portal-auth-container">
+    <div class="portal-auth-card">
+      <div class="portal-auth-header">
+        <div class="portal-brand-badge">
+          <div class="portal-brand-icon" style="background: linear-gradient(135deg, #0284c7, #0369a1);"><i class="fa-solid fa-user-shield"></i></div>
+          <span class="portal-brand-text">Guardian AI</span>
+        </div>
+        <p style="font-size: 12px; font-weight: 700; color: #0284c7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Protector Console</p>
+        <h1 class="portal-auth-title">Create Guardian Account</h1>
+        <p class="portal-auth-subtitle">Register as a primary protector to safeguard family members and dependents.</p>
+      </div>
+
+      <!-- API Error Banner -->
+      <div id="api-error-banner" class="alert-error-banner">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="api-error-message">Error</span>
+      </div>
+
+      <form id="form-guardian-register" novalidate>
+        <!-- Full Name -->
+        <div class="portal-form-group">
+          <label class="portal-label" for="greg-name">Full Name <span class="required-mark">*</span></label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-user-shield leading-icon"></i>
+            <input type="text" id="greg-name" class="portal-input" placeholder="e.g. Ravi Sharma" required>
+          </div>
+          <div class="portal-field-error" id="err-greg-name">Full name is required.</div>
+        </div>
+
+        <!-- Email & Phone Grid -->
+        <div class="form-grid-2">
+          <div class="portal-form-group">
+            <label class="portal-label" for="greg-email">Email Address <span class="required-mark">*</span></label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-envelope leading-icon"></i>
+              <input type="email" id="greg-email" class="portal-input" placeholder="e.g. ravi@sentinel-ai.com" required>
+            </div>
+            <div class="portal-field-error" id="err-greg-email">Valid email is required.</div>
+          </div>
+
+          <div class="portal-form-group">
+            <label class="portal-label" for="greg-phone">Phone Number <span class="required-mark">*</span></label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-phone leading-icon"></i>
+              <input type="tel" id="greg-phone" class="portal-input" placeholder="+91 98480 23146" required>
+            </div>
+            <div class="portal-field-error" id="err-greg-phone">Valid phone number is required.</div>
+          </div>
+        </div>
+
+        <!-- Relationship & City Grid -->
+        <div class="form-grid-2">
+          <div class="portal-form-group">
+            <label class="portal-label" for="greg-relationship">Primary Relationship <span class="required-mark">*</span></label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-people-roof leading-icon"></i>
+              <select id="greg-relationship" class="portal-select" required>
+                <option value="">Select relationship</option>
+                <option value="Parent">Parent</option>
+                <option value="Sibling">Sibling</option>
+                <option value="Spouse">Spouse</option>
+                <option value="Friend">Friend</option>
+                <option value="Relative">Relative</option>
+                <option value="Caregiver">Caregiver</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="portal-field-error" id="err-greg-rel">Please select your relationship.</div>
+          </div>
+
+          <div class="portal-form-group">
+            <label class="portal-label" for="greg-city">City <span class="optional-mark">(Optional)</span></label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-city leading-icon"></i>
+              <input type="text" id="greg-city" class="portal-input" placeholder="e.g. Rajahmundry">
+            </div>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="portal-form-group">
+          <label class="portal-label" for="greg-password">Password <span class="required-mark">*</span></label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-lock leading-icon"></i>
+            <input type="password" id="greg-password" class="portal-input" placeholder="Minimum 8 characters" required minlength="8">
+            <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Toggle password visibility">
+              <i class="fa-solid fa-eye" id="toggle-password-icon"></i>
+            </button>
+          </div>
+          <div class="password-meter-wrap">
+            <div class="password-meter-bars">
+              <div class="meter-bar" id="meter-bar-1"></div>
+              <div class="meter-bar" id="meter-bar-2"></div>
+              <div class="meter-bar" id="meter-bar-3"></div>
+            </div>
+            <div class="password-meter-text">
+              <span>Strength: <strong id="strength-label">Too short</strong></span>
+              <span>Min. 8 characters</span>
+            </div>
+          </div>
+          <div class="portal-field-error" id="err-greg-password">Password must be at least 8 characters long.</div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="portal-form-group">
+          <label class="portal-label" for="greg-confirm-password">Confirm Password <span class="required-mark">*</span></label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-lock-check leading-icon"></i>
+            <input type="password" id="greg-confirm-password" class="portal-input" placeholder="Re-enter password" required>
+            <button type="button" class="password-toggle-btn" id="toggle-confirm-password" aria-label="Toggle confirm password visibility">
+              <i class="fa-solid fa-eye" id="toggle-confirm-icon"></i>
+            </button>
+          </div>
+          <div class="portal-field-error" id="err-greg-confirm">Passwords do not match.</div>
+        </div>
+
+        <!-- Checkboxes -->
+        <div class="checkbox-row">
+          <input type="checkbox" id="greg-terms" required>
+          <label for="greg-terms">I agree to the <a href="#" style="color:#0284c7; text-decoration:none;">Terms and Conditions</a> as an authorized safety guardian. <span class="required-mark">*</span></label>
+        </div>
+        <div class="portal-field-error" id="err-greg-terms" style="margin-bottom: 10px;">You must accept the Terms and Conditions.</div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="greg-privacy" required>
+          <label for="greg-privacy">I agree to the <a href="#" style="color:#0284c7; text-decoration:none;">Privacy Policy</a> governing sensitive emergency telemetry. <span class="required-mark">*</span></label>
+        </div>
+        <div class="portal-field-error" id="err-greg-privacy" style="margin-bottom: 16px;">You must accept the Privacy Policy.</div>
+
+        <button type="submit" id="btn-submit-guardian" class="btn-portal-primary" style="background:#0284c7; margin-top: 10px;">
+          <span id="btn-text">Create Guardian Account</span>
+          <i class="fa-solid fa-shield-halved" id="btn-icon"></i>
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 24px; font-size: 13px; color: #64748b;">
+        Already have a Guardian account? <a href="/guardian/login/index.html" style="color:#0284c7; font-weight: 700; text-decoration: none;">Guardian Sign In</a>
+      </div>
+
+      <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--portal-border); text-align: center; font-size: 13px; color: #64748b;">
+        Looking to register as a protected individual? <a href="/user/register/index.html" style="color:var(--portal-primary); font-weight: 700; text-decoration: none;">Create User Account <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="../../js/guardian-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('form-guardian-register');
+      const nameInput = document.getElementById('greg-name');
+      const emailInput = document.getElementById('greg-email');
+      const phoneInput = document.getElementById('greg-phone');
+      const relSelect = document.getElementById('greg-relationship');
+      const cityInput = document.getElementById('greg-city');
+      const passwordInput = document.getElementById('greg-password');
+      const confirmInput = document.getElementById('greg-confirm-password');
+      const termsCheck = document.getElementById('greg-terms');
+      const privacyCheck = document.getElementById('greg-privacy');
+      const submitBtn = document.getElementById('btn-submit-guardian');
+      const btnText = document.getElementById('btn-text');
+      const btnIcon = document.getElementById('btn-icon');
+      const apiErrorBanner = document.getElementById('api-error-banner');
+      const apiErrorMessage = document.getElementById('api-error-message');
+
+      // Toggles
+      document.getElementById('toggle-password').addEventListener('click', () => {
+        const isPwd = passwordInput.type === 'password';
+        passwordInput.type = isPwd ? 'text' : 'password';
+        document.getElementById('toggle-password-icon').className = isPwd ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+      });
+
+      document.getElementById('toggle-confirm-password').addEventListener('click', () => {
+        const isPwd = confirmInput.type === 'password';
+        confirmInput.type = isPwd ? 'text' : 'password';
+        document.getElementById('toggle-confirm-icon').className = isPwd ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+      });
+
+      // Strength
+      passwordInput.addEventListener('input', () => {
+        const val = passwordInput.value;
+        const b1 = document.getElementById('meter-bar-1');
+        const b2 = document.getElementById('meter-bar-2');
+        const b3 = document.getElementById('meter-bar-3');
+        const label = document.getElementById('strength-label');
+
+        b1.className = 'meter-bar';
+        b2.className = 'meter-bar';
+        b3.className = 'meter-bar';
+
+        if (val.length === 0) {
+          label.textContent = 'Too short';
+          return;
+        }
+
+        let score = 0;
+        if (val.length >= 8) score++;
+        if (/[0-9]/.test(val) && /[a-zA-Z]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val) || val.length >= 12) score++;
+
+        if (score === 1) {
+          b1.classList.add('active-weak');
+          label.textContent = 'Weak';
+          label.style.color = '#ef4444';
+        } else if (score === 2) {
+          b1.classList.add('active-medium');
+          b2.classList.add('active-medium');
+          label.textContent = 'Medium';
+          label.style.color = '#f59e0b';
+        } else if (score >= 3) {
+          b1.classList.add('active-strong');
+          b2.classList.add('active-strong');
+          b3.classList.add('active-strong');
+          label.textContent = 'Strong';
+          label.style.color = '#10b981';
+        }
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        apiErrorBanner.classList.remove('active');
+        document.querySelectorAll('.portal-field-error').forEach(el => el.classList.remove('active'));
+
+        let isValid = true;
+
+        if (!nameInput.value.trim()) {
+          document.getElementById('err-greg-name').classList.add('active');
+          isValid = false;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value.trim())) {
+          document.getElementById('err-greg-email').classList.add('active');
+          isValid = false;
+        }
+
+        if (phoneInput.value.replace(/[\s\-\(\)]/g, '').length < 8) {
+          document.getElementById('err-greg-phone').classList.add('active');
+          isValid = false;
+        }
+
+        if (!relSelect.value) {
+          document.getElementById('err-greg-rel').classList.add('active');
+          isValid = false;
+        }
+
+        if (passwordInput.value.length < 8) {
+          document.getElementById('err-greg-password').classList.add('active');
+          isValid = false;
+        }
+
+        if (passwordInput.value !== confirmInput.value) {
+          document.getElementById('err-greg-confirm').classList.add('active');
+          isValid = false;
+        }
+
+        if (!termsCheck.checked) {
+          document.getElementById('err-greg-terms').classList.add('active');
+          isValid = false;
+        }
+        if (!privacyCheck.checked) {
+          document.getElementById('err-greg-privacy').classList.add('active');
+          isValid = false;
+        }
+
+        if (!isValid) return;
+
+        submitBtn.disabled = true;
+        btnText.textContent = 'Creating Guardian Account...';
+        btnIcon.className = 'fa-solid fa-spinner fa-spin';
+
+        (async () => {
+          try {
+            await GuardianCore.registerGuardian({
+              fullName: nameInput.value,
+              email: emailInput.value,
+              phone: phoneInput.value,
+              relationship: relSelect.value,
+              city: cityInput.value,
+              password: passwordInput.value
+            });
+
+            GuardianCore.showToast('Guardian account registered successfully! Redirecting...', 'success');
+            setTimeout(() => {
+              window.location.href = '/guardian/dashboard/index.html';
+            }, 800);
+          } catch (err) {
+            submitBtn.disabled = false;
+            btnText.textContent = 'Create Guardian Account';
+            btnIcon.className = 'fa-solid fa-shield-halved';
+            apiErrorMessage.textContent = err.message;
+            apiErrorBanner.classList.add('active');
+            GuardianCore.showToast(err.message, 'danger');
+          }
+        })();
+      });
+    });
+  </script>
+</body>
+</html>
