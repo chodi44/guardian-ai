@@ -1,14 +1,24 @@
 {
-  "name": "g-1-2",
+  "name": "guardian-ai",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Guardian AI - AI-Powered Personal Safety & Emergency Response Ecosystem",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm install"
   },
-  "keywords": [],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "safety",
+    "emergency-response",
+    "ai",
+    "iot",
+    "esp32",
+    "police-dispatch"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
